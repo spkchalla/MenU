@@ -1,0 +1,33 @@
+High level Plan for MenU
+
+1. Choosing of Api
+	. My choice is Gemini Api, since it is free
+	. Figure out how is the file sent and received
+	. Learn how the setup is made. Like the setup of the api and writing the prompt for it.
+
+2. Starting the Backend
+	. Start the writing of uploading pdf api
+	. Store it temporarily
+
+3. LLM pdf forwarding
+	. Now send the stored pdf to the llm
+	. Make it to read it and give  you the json file (Be strict with the prompt)
+
+4. Enforce the strictness of json
+	. Reject if the response is not a json
+	. Reject if it misses any of the fields or days
+	. Retry or fail gracefully
+
+5. Mongo DB integration
+	. Create a mail Id or use existing one
+	. Make a schema
+	. store the correct json into the schema
+imp	. index by date 
+
+6. Business Logic API
+	. write api for next meal
+	. api for remaining meal of today (both before and after the next meal, but not the next meal)
+	. api for this week any day menu
+	. api for any day in the calander menu
+
+7. Frontend	
