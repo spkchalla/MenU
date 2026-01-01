@@ -12,7 +12,7 @@ const Footer = () => {
         <div className="footer-links">
           <a href="mailto:cspk1694@protonmail.com" className="footer-link">Contact Email</a>
           <a href="https://github.com/spkchalla/MenU" target="_blank" rel="noopener noreferrer" className="footer-link">GitHub</a>
-          <a href="https://buymeacoffee.com" target="_blank" rel="noopener noreferrer" className="footer-link">Buy me a Coffee</a>
+          <a href="https://buymeachai.ezee.li/spkumar_buymeachai" target="_blank" rel="noopener noreferrer" className="footer-link">Buy me a Coffee</a>
         </div>
 
         <div className="footer-info">
