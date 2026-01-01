@@ -1,0 +1,256 @@
+.menu-container {
+    padding: 20px;
+    max-width: 800px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+}
+
+/* Headings */
+h2,
+h3 {
+    font-weight: 600;
+    margin-bottom: 12px;
+    color: var(--text-primary);
+}
+
+h2 {
+    font-size: 1.5rem;
+    border-bottom: 2px solid var(--card-border);
+    padding-bottom: 8px;
+    margin-bottom: 16px;
+}
+
+/* Card Styles */
+.meal-card {
+    background: var(--card-bg);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid var(--card-border);
+    border-radius: 16px;
+    padding: 20px;
+    box-shadow: var(--glass-shadow);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.meal-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 12px 40px 0 rgba(0, 0, 0, 0.45);
+    border-color: rgba(255, 255, 255, 0.2);
+}
+
+.meal-title {
+    font-size: 1.25rem;
+    color: var(--accent-color);
+    margin-bottom: 12px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.meal-items {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.meal-items li {
+    font-size: 1rem;
+    color: var(--text-secondary);
+    padding-left: 12px;
+    border-left: 2px solid var(--accent-color);
+    line-height: 1.4;
+}
+
+/* Current Meal - Horizontal Layout */
+.current-meal-card {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+@media (min-width: 480px) {
+    .current-meal-card {
+        flex-direction: row;
+        align-items: flex-start;
+        gap: 20px;
+    }
+
+    .current-meal-card .meal-title {
+        min-width: 120px;
+        /* Fixed width for title in side-by-side */
+        margin-bottom: 0;
+    }
+
+    .current-meal-card .meal-items {
+        flex: 1;
+        display: flex;
+        flex-direction: row;
+        /* Horizontal list if space permits, or wrap */
+        flex-wrap: wrap;
+        gap: 12px 24px;
+    }
+
+    .current-meal-card .meal-items li {
+        border-left: none;
+        border-bottom: 2px solid var(--accent-color);
+        padding-left: 0;
+        padding-bottom: 4px;
+    }
+}
+
+/* Other Meals Grid */
+.other-meals-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+}
+
+/* If there are 3 items (Present Day), the last one spans full width */
+.other-meals-grid:has(> :nth-child(3):last-child)> :last-child {
+    grid-column: span 2;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Make the spanning card look like the current meal card on larger screens */
+@media (min-width: 480px) {
+    .other-meals-grid:has(> :nth-child(3):last-child)> :last-child {
+        flex-direction: row;
+        align-items: flex-start;
+        gap: 20px;
+    }
+
+    .other-meals-grid:has(> :nth-child(3):last-child)> :last-child .meal-title {
+        min-width: 120px;
+        margin-bottom: 0;
+    }
+
+    .other-meals-grid:has(> :nth-child(3):last-child)> :last-child .meal-items {
+        flex: 1;
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+        gap: 12px 24px;
+    }
+
+    .other-meals-grid:has(> :nth-child(3):last-child)> :last-child .meal-items li {
+        border-left: none;
+        border-bottom: 2px solid var(--accent-color);
+        padding-left: 0;
+        padding-bottom: 4px;
+    }
+}
+
+
+/* Days Navigation */
+.days-container {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin-top: 20px;
+}
+
+.days-row {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+}
+
+/* Day Buttons */
+.day-btn {
+    background: transparent;
+    border: 1px solid var(--text-secondary);
+    color: var(--text-secondary);
+    padding: 10px 16px;
+    border-radius: 8px;
+    font-size: 0.9rem;
+    transition: all 0.2s;
+    font-weight: 500;
+}
+
+.day-btn:hover {
+    border-color: var(--accent-color);
+    color: var(--text-primary);
+    background: rgba(255, 255, 255, 0.05);
+}
+
+/* Highlight Selected Day */
+.day-btn.selected-day {
+    background: var(--accent-gradient);
+    border: none;
+    color: white;
+    box-shadow: 0 4px 12px rgba(56, 189, 248, 0.3);
+    font-weight: 600;
+}
+
+/* Outline Today (when not selected) */
+.day-btn.today-outline {
+    border: 2px solid var(--accent-color);
+    color: var(--accent-color);
+    font-weight: 600;
+}
+
+.day-btn:active {
+    transform: scale(0.95);
+}
+
+/* Calendar Section */
+.calendar-section {
+    text-align: center;
+    padding: 24px;
+    background: var(--card-bg);
+    border: 1px solid var(--card-border);
+    border-radius: 16px;
+    margin-top: 20px;
+    backdrop-filter: blur(12px);
+}
+
+.calendar-section h3 {
+    margin-bottom: 16px;
+    font-size: 1.1rem;
+}
+
+.date-picker {
+    padding: 12px 16px;
+    border-radius: 8px;
+    border: 1px solid var(--card-border);
+    background: rgba(0, 0, 0, 0.2);
+    color: var(--text-primary);
+    font-family: var(--font-main);
+    font-size: 1rem;
+    cursor: pointer;
+    outline: none;
+}
+
+.date-picker:focus {
+    border-color: var(--accent-color);
+}
+
+/* Light mode adjustments for date picker */
+[data-theme='light'] .date-picker {
+    background: rgba(255, 255, 255, 0.5);
+    color: var(--text-primary);
+}
+
+.back-btn {
+    background: transparent;
+    border: 1px solid var(--accent-color);
+    color: var(--accent-color);
+    padding: 8px 16px;
+    border-radius: 8px;
+    cursor: pointer;
+    margin-bottom: 16px;
+    font-weight: 500;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    transition: all 0.2s;
+}
+
+.back-btn:hover {
+    background: var(--accent-color);
+    color: white;
+}

@@ -1,10 +1,11 @@
 import express from "express";
-import {createWeeklyMenu, updateWeeklyMenu, deleteWeeklyMenu, showTodayMenu, getSpecificMenu, currentMeal, otherMeals, specificDayMenu} from "../controller/menuController.js"
+import {createWeeklyMenu, updateWeeklyMenu, deleteWeeklyMenu, showTodayMenu, getSpecificMenu, currentMeal, otherMeals, specificDayMenu, getAllMenus} from "../controller/menuController.js"
 import { protectAdmin, protectUser } from "../middleware/middleware.js";
 
 const menuRouter = express.Router();
 
 menuRouter.post('/createMenu', express.text(), protectUser, protectAdmin, createWeeklyMenu);
+menuRouter.get('/allMenus', protectUser, protectAdmin, getAllMenus);
 menuRouter.get('/todayMenu', showTodayMenu);
 menuRouter.get('/specificDay/:date', getSpecificMenu);
 menuRouter.get('/currentMeal', currentMeal);
