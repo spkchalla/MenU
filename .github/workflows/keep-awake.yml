@@ -1,0 +1,21 @@
+name: Keep APIs Awake
+
+on:
+  schedule:
+    - cron: "* * * * *"   # every 1 minute
+  workflow_dispatch:
+
+jobs:
+  ping:
+    runs-on: ubuntu-latest
+    timeout-minutes: 2
+
+    steps:
+      - name: Ping multiple APIs
+        run: |
+          echo "Pinging APIs at $(date)"
+          
+          curl -s https://api-1.onrender.com/ > /dev/null
+          curl -s https://api-2.onrender.com/ > /dev/null
+          curl -s https://api-3.onrender.com/ > /dev/null
+          # curl -s https://api-4.onrender.com/ > /dev/null
