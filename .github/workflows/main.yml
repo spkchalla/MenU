@@ -1,0 +1,14 @@
+name: Keep Render App Awake
+
+on:
+  schedule:
+    - cron: "*/10 * * * *"   # every 10 minutes
+  workflow_dispatch:        # allows manual runs
+
+jobs:
+  ping:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Ping Render service
+        run: |
+          curl -s https://men-u-7es9.vercel.app/ > /dev/null
