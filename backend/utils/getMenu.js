@@ -82,19 +82,19 @@ export const getCurrentMealByTime = async () => {
     const todayMenu = await getTodayMenu();
     // if time b/n 0:00 and 10:30 show breakfast
     if (currentHour < 10 || (currentHour === 10 && currentMinutes <= 30)) {
-      return todayMenu.breakfast;
+      return { ...todayMenu.breakfast, type: "Breakfast" };
     }
     // if time b/n 10:31 and 15:00 show lunch
     else if (currentHour < 15 || (currentHour === 15 && currentMinutes === 0)) {
-      return todayMenu.lunch;
+      return { ...todayMenu.lunch, type: "Lunch" };
     }
     // if time b/n 15:01 and 18:30 show snacks
     else if (currentHour < 18 || (currentHour === 18 && currentMinutes <= 30)) {
-      return todayMenu.snacks;
+      return { ...todayMenu.snacks, type: "Snacks" };
     }
     // else show dinner.
     else {
-      return todayMenu.dinner;
+      return { ...todayMenu.dinner, type: "Dinner" };
     }
   } catch (err) {
     throw new Error("Error in fetching Current meal: " + err.message);

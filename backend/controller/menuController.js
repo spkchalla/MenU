@@ -119,6 +119,18 @@ export const updateWeeklyMenu = async (req, res) => {
   }
 };
 
+export const getAllMenus = async (req, res) => {
+  try {
+    const menus = await WeeklyMenu.find().sort({ weekStartDate: -1 });
+    res.status(200).json({
+      message: "Successfully fetched all menus",
+      menus,
+    });
+  } catch (err) {
+    res.status(500).json({ message: "Failed to fetch menus: " + err.message });
+  }
+};
+
 export const deleteWeeklyMenu = async (req, res) => {
   try {
     const { weekStartDate } = req.params;
