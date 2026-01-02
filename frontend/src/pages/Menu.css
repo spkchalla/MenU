@@ -7,6 +7,26 @@
     gap: 24px;
 }
 
+/* Mobile styles - full screen for iPhone SE and smaller */
+@media (max-width: 480px) {
+    .menu-container {
+        padding: 12px;
+        max-width: 100%;
+        margin: 0;
+        gap: 16px;
+    }
+
+    h2 {
+        font-size: 1.3rem;
+        margin-bottom: 12px;
+    }
+
+    h3 {
+        font-size: 1rem;
+        margin-bottom: 8px;
+    }
+}
+
 /* Headings */
 h2,
 h3 {
@@ -22,6 +42,10 @@ h2 {
     margin-bottom: 16px;
 }
 
+h3 {
+    font-size: 1.1rem;
+}
+
 /* Card Styles */
 .meal-card {
     background: var(--card-bg);
@@ -32,6 +56,19 @@ h2 {
     padding: 20px;
     box-shadow: var(--glass-shadow);
     transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+/* Mobile styles - full screen for iPhone SE and smaller */
+@media (max-width: 480px) {
+    .meal-card {
+        padding: 16px;
+        border-radius: 12px;
+    }
+
+    .meal-title {
+        font-size: 1.1rem;
+        margin-bottom: 8px;
+    }
 }
 
 .meal-card:hover {
@@ -171,6 +208,15 @@ h2 {
     font-weight: 500;
 }
 
+/* Mobile styles for day buttons */
+@media (max-width: 480px) {
+    .day-btn {
+        padding: 8px 12px;
+        font-size: 0.8rem;
+        border-radius: 6px;
+    }
+}
+
 .day-btn:hover {
     border-color: var(--accent-color);
     color: var(--text-primary);
@@ -213,6 +259,20 @@ h2 {
     font-size: 1.1rem;
 }
 
+/* Mobile styles for calendar */
+@media (max-width: 480px) {
+    .calendar-section {
+        padding: 16px;
+        margin-top: 16px;
+        border-radius: 12px;
+    }
+
+    .calendar-section h3 {
+        font-size: 1rem;
+        margin-bottom: 12px;
+    }
+}
+
 .date-picker {
     padding: 12px 16px;
     border-radius: 8px;
@@ -248,6 +308,17 @@ h2 {
     align-items: center;
     gap: 8px;
     transition: all 0.2s;
+    font-size: 0.9rem;
+}
+
+/* Mobile styles for back button */
+@media (max-width: 480px) {
+    .back-btn {
+        padding: 6px 12px;
+        font-size: 0.8rem;
+        margin-bottom: 12px;
+        border-radius: 6px;
+    }
 }
 
 .back-btn:hover {
