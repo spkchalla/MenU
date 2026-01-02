@@ -8,6 +8,7 @@ import {
   getspecificDayMenu,
   getTodayMenu,
 } from "../utils/getMenu.js";
+import { getWeeklyMenuByDate } from "../utils/getWeeklyMenuByDate.js";
 
 export const createWeeklyMenu = async (req, res) => {
   try {
@@ -46,6 +47,19 @@ export const getSpecificMenu = async (req, res) => {
       });
   } catch (err) {
     res.status(500).json({ message: "Failed to fetch menu, Server Error" });
+  }
+};
+
+export const getWeeklyMenu = async (req, res) => {
+  try {
+    const { date } = req.params;
+    const { weeklyMenu } = await getWeeklyMenuByDate(date);
+    res.status(200).json({
+      message: "Successfully fetched weekly menu",
+      weeklyMenu,
+    });
+  } catch (err) {
+    res.status(500).json({ message: "Failed to fetch weekly menu: " + err.message });
   }
 };
 

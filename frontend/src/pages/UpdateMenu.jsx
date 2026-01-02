@@ -44,46 +44,44 @@ export const UpdateMenu = () => {
 
   const handleFetchMenu = async () => {
     if (!weekStartDate) {
-      alert("Please select a week start date first.");
+      alert("Please select a date first.");
       return;
     }
     setLoading(true);
     try {
-      // Since we don't have a single "getWeeklyMenu" endpoint, we will fetch each day individually
-      // This is a frontend workaround.
-      const startDate = new Date(weekStartDate);
-      const newFormData = { ...formData };
+      // Calculate selected day name to set it as active
+      const selectedDate = new Date(weekStartDate);
+      const dayName = selectedDate.toLocaleDateString('en-US', { weekday: 'long' });
+      setActiveDay(dayName);
 
-      const fetchPromises = days.map(async (day, index) => {
-        const currentDate = new Date(startDate);
-        currentDate.setDate(startDate.getDate() + index);
-        const dateStr = currentDate.toISOString().split('T')[0];
+      const res = await api.get(`/menu/weeklyMenu/${weekStartDate}`);
+      if (res.data && res.data.weeklyMenu) {
+        const weeklyMenu = res.data.weeklyMenu;
 
-        try {
-          const res = await api.get(`/menu/specificDay/${dateStr}`);
-          if (res.data && res.data.menu) {
-            const menu = res.data.menu;
-            // Map backend structure to form structure
-            // Backend: { breakfast: { items: [] }, ... }
-            // Form: { breakfast: "item1, item2", ... }
-            meals.forEach(meal => {
-              if (menu[meal] && menu[meal].items) {
-                newFormData[day][meal] = menu[meal].items.join(', ');
-              }
-            });
-          }
-        } catch (e) {
-          // Ignore 404s or errors for specific days, just leave them blank
-          console.log(`No menu found for ${dateStr} (${day})`);
+        // Sync weekStartDate with the actual Monday from backend
+        if (weeklyMenu.weekStartDate) {
+          setWeekStartDate(weeklyMenu.weekStartDate.split('T')[0]);
         }
-      });
 
-      await Promise.all(fetchPromises);
-      setFormData(newFormData);
-      alert("Menu data loaded for the week!");
+        const newFormData = { ...formData };
+
+        weeklyMenu.days.forEach(dayData => {
+          const dayName = dayData.day;
+          meals.forEach(meal => {
+            if (dayData[meal] && dayData[meal].items) {
+              newFormData[dayName][meal] = dayData[meal].items.join(', ');
+            } else {
+              newFormData[dayName][meal] = '';
+            }
+          });
+        });
+
+        setFormData(newFormData);
+        alert("Menu data loaded for the week!");
+      }
     } catch (err) {
       console.error("Error fetching menu:", err);
-      alert("Failed to load menu data.");
+      alert("Failed to load menu data. " + (err.response?.data?.message || err.message));
     } finally {
       setLoading(false);
     }
@@ -124,7 +122,7 @@ export const UpdateMenu = () => {
 
         <form onSubmit={handleSubmit} className="auth-form">
           <div className="form-group">
-            <label htmlFor="weekStartDate">Week Start Date (Monday)</label>
+            <label htmlFor="weekStartDate">Select Date</label>
             <div style={{ display: 'flex', gap: '10px' }}>
               <input
                 type="date"
