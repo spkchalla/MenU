@@ -33,6 +33,13 @@ export const AdminDashboard = () => {
     const [editData, setEditData] = useState({ items: [] });
     const [editTarget, setEditTarget] = useState(null); // { date, day, mealType }
 
+    // date changed to DD/MM/YYYY
+    const formatDate = (dateStr) => {
+        if (!dateStr) return "";
+        const [year, month, day] = dateStr.split('-');
+        return `${day}/${month}/${year}`;
+    };
+
     useEffect(() => {
         const checkAdmin = async () => {
             const token = localStorage.getItem('menu_token');
@@ -143,7 +150,7 @@ export const AdminDashboard = () => {
 
                 {selectedDate && (
                     <div className="week-info" style={{ width: '100%', marginBottom: '10px', color: 'var(--accent-color)' }}>
-                        Week of: {selectedDate} (Monday)
+                        Week of: {formatDate(selectedDate)} (Monday)
                     </div>
                 )}
 

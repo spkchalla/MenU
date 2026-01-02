@@ -120,6 +120,13 @@ export const Menu = () => {
   const otherMealsList = getOtherMealsArray();
   const todayName = new Date().toLocaleDateString('en-US', { weekday: 'long' });
 
+  // date changed to DD/MM/YYYY
+  const formatDate = (dateStr) => {
+    if (!dateStr) return "";
+    const [year, month, day] = dateStr.split('-');
+    return `${day}/${month}/${year}`;
+  };
+
   // -----------------------------
   // JSX
   // -----------------------------
@@ -164,7 +171,7 @@ export const Menu = () => {
       {/* Other Meals */}
       {otherMealsList.length > 0 && (
         <div className="other-meals-section">
-          <h2>{currentMeal ? "Other Meals" : `Menu for ${selectedDate || selectedDay || "the Day"}`}</h2>
+          <h2>{currentMeal ? "Other Meals" : `Menu for ${formatDate(selectedDate) || selectedDay || "the Day"}`}</h2>
           <div className="other-meals-grid">
             {otherMealsList.map((meal, index) => (
               <div key={index} className="meal-card">
