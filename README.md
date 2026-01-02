@@ -5,11 +5,11 @@ MenU is a comprehensive platform designed for managing and viewing dietary menus
 ## Usage
 
 ### Public Access
-The platform is designed for ease of use. If you are here to look up the menu, you can do so directly from the home page.
+The platform is designed for effortless meal tracking. The Home page serves as your primary dashboard for checking what's being served.
 
-*   Viewing Today's Menu: Simply navigate to the home page to see the current offerings.
-*   Viewing a Specific Day: Click on the corresponding day button in the navigation or selection area.
-*   Viewing a Specific Date: Use the calendar picker to select a desired date.
+*   **Dynamic Meal Rotation**: The system automatically detects the current time and rotates the display to show the most relevant meal (Breakfast, Lunch, Snacks, or Dinner).
+*   **Present Week Overview**: You can instantly view the full menu for any day of the current week by clicking the day buttons (Monday through Sunday).
+*   **Specific Date Search**: Use the calendar picker at the bottom of the page to look up the menu for any past or future specific date.
 
 ### Administration
 Administrative functions are restricted to authorized personnel. To experience admin privileges:
