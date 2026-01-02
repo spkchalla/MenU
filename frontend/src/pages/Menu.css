@@ -7,6 +7,26 @@
     gap: 24px;
 }
 
+/* Mobile styles - full screen for iPhone SE and smaller */
+@media (max-width: 480px) {
+    .menu-container {
+        padding: 12px;
+        max-width: 100%;
+        margin: 0;
+        gap: 16px;
+    }
+
+    h2 {
+        font-size: 1.2rem;
+        margin-bottom: 12px;
+    }
+
+    h3 {
+        font-size: 0.9rem;
+        margin-bottom: 8px;
+    }
+}
+
 /* Headings */
 h2,
 h3 {
@@ -16,10 +36,14 @@ h3 {
 }
 
 h2 {
-    font-size: 1.5rem;
+    font-size: 1.4rem;
     border-bottom: 2px solid var(--card-border);
     padding-bottom: 8px;
     margin-bottom: 16px;
+}
+
+h3 {
+    font-size: 1rem;
 }
 
 /* Card Styles */
@@ -34,6 +58,19 @@ h2 {
     transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
+/* Mobile styles - full screen for iPhone SE and smaller */
+@media (max-width: 480px) {
+    .meal-card {
+        padding: 16px;
+        border-radius: 12px;
+    }
+
+    .meal-title {
+        font-size: 1rem;
+        margin-bottom: 8px;
+    }
+}
+
 .meal-card:hover {
     transform: translateY(-2px);
     box-shadow: 0 12px 40px 0 rgba(0, 0, 0, 0.45);
@@ -41,7 +78,7 @@ h2 {
 }
 
 .meal-title {
-    font-size: 1.25rem;
+    font-size: 1.15rem;
     color: var(--accent-color);
     margin-bottom: 12px;
     font-weight: 600;
@@ -159,6 +196,18 @@ h2 {
     justify-content: center;
 }
 
+/* Mobile styles for days container */
+@media (max-width: 480px) {
+    .days-container {
+        gap: 8px;
+        margin-top: 16px;
+    }
+
+    .days-row {
+        gap: 8px;
+    }
+}
+
 /* Day Buttons */
 .day-btn {
     background: transparent;
@@ -166,24 +215,24 @@ h2 {
     color: var(--text-secondary);
     padding: 10px 16px;
     border-radius: 8px;
-    font-size: 0.9rem;
+    font-size: 0.85rem;
     transition: all 0.2s;
     font-weight: 500;
+}
+
+/* Mobile styles for day buttons */
+@media (max-width: 480px) {
+    .day-btn {
+        padding: 8px 12px;
+        font-size: 0.75rem;
+        border-radius: 6px;
+    }
 }
 
 .day-btn:hover {
     border-color: var(--accent-color);
     color: var(--text-primary);
     background: rgba(255, 255, 255, 0.05);
-}
-
-/* Highlight Selected Day */
-.day-btn.selected-day {
-    background: var(--accent-gradient);
-    border: none;
-    color: white;
-    box-shadow: 0 4px 12px rgba(56, 189, 248, 0.3);
-    font-weight: 600;
 }
 
 /* Outline Today (when not selected) */
@@ -210,7 +259,21 @@ h2 {
 
 .calendar-section h3 {
     margin-bottom: 16px;
-    font-size: 1.1rem;
+    font-size: 1rem;
+}
+
+/* Mobile styles for calendar */
+@media (max-width: 480px) {
+    .calendar-section {
+        padding: 16px;
+        margin-top: 16px;
+        border-radius: 12px;
+    }
+
+    .calendar-section h3 {
+        font-size: 0.9rem;
+        margin-bottom: 12px;
+    }
 }
 
 .date-picker {
@@ -220,7 +283,7 @@ h2 {
     background: rgba(0, 0, 0, 0.2);
     color: var(--text-primary);
     font-family: var(--font-main);
-    font-size: 1rem;
+    font-size: 0.9rem;
     cursor: pointer;
     outline: none;
 }
@@ -248,6 +311,17 @@ h2 {
     align-items: center;
     gap: 8px;
     transition: all 0.2s;
+    font-size: 0.85rem;
+}
+
+/* Mobile styles for back button */
+@media (max-width: 480px) {
+    .back-btn {
+        padding: 6px 12px;
+        font-size: 0.75rem;
+        margin-bottom: 12px;
+        border-radius: 6px;
+    }
 }
 
 .back-btn:hover {

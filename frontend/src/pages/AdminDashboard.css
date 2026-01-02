@@ -7,6 +7,15 @@
     gap: 24px;
 }
 
+/* Mobile styles */
+@media (max-width: 480px) {
+    .admin-container {
+        padding: 12px;
+        max-width: 100%;
+        margin: 0;
+    }
+}
+
 .dashboard-controls {
     display: flex;
     flex-wrap: wrap;
@@ -17,6 +26,14 @@
     border: 1px solid var(--card-border);
     backdrop-filter: blur(12px);
     align-items: flex-end;
+}
+
+/* Mobile styles */
+@media (max-width: 480px) {
+    .dashboard-controls {
+        padding: 16px;
+        gap: 12px;
+    }
 }
 
 .control-group {

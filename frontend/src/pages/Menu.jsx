@@ -120,6 +120,38 @@ export const Menu = () => {
   const otherMealsList = getOtherMealsArray();
   const todayName = new Date().toLocaleDateString('en-US', { weekday: 'long' });
 
+  // date changed to DD/MM/YYYY
+  const formatDate = (dateStr) => {
+    if (!dateStr) return "";
+    const [year, month, day] = dateStr.split('-');
+    return `${day}/${month}/${year}`;
+  };
+
+  // Get date for a specific day of the current week
+  const getDateForDay = (dayName) => {
+    const daysOfWeek = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+    const today = new Date();
+    const todayIndex = today.getDay(); // 0 = Sunday, 1 = Monday, etc.
+    const targetIndex = daysOfWeek.indexOf(dayName);
+    
+    // Calculate difference in days
+    let dayDifference = targetIndex - todayIndex;
+    
+    // If the target day is earlier in the week, it should be next week
+    if (dayDifference <= 0) {
+      dayDifference += 7;
+    }
+    
+    const targetDate = new Date(today);
+    targetDate.setDate(today.getDate() + dayDifference);
+    
+    const year = targetDate.getFullYear();
+    const month = String(targetDate.getMonth() + 1).padStart(2, '0');
+    const day = String(targetDate.getDate()).padStart(2, '0');
+    
+    return `${day}/${month}/${year}`;
+  };
+
   // -----------------------------
   // JSX
   // -----------------------------
@@ -164,7 +196,7 @@ export const Menu = () => {
       {/* Other Meals */}
       {otherMealsList.length > 0 && (
         <div className="other-meals-section">
-          <h2>{currentMeal ? "Other Meals" : `Menu for ${selectedDate || selectedDay || "the Day"}`}</h2>
+          <h2>{currentMeal ? "Other Meals" : `Menu for ${selectedDate ? formatDate(selectedDate) : selectedDay ? `${selectedDay} (${getDateForDay(selectedDay)})` : "the Day"}`}</h2>
           <div className="other-meals-grid">
             {otherMealsList.map((meal, index) => (
               <div key={index} className="meal-card">
@@ -191,7 +223,7 @@ export const Menu = () => {
               <button
                 key={day}
                 onClick={() => fetchMenuByDay(day)}
-                className={`day-btn ${isSelected ? 'selected-day' : ''} ${isToday && !isSelected ? 'today-outline' : ''}`}
+                className={`day-btn ${isToday ? 'today-outline' : ''}`}
               >
                 {day}
               </button>
@@ -207,7 +239,7 @@ export const Menu = () => {
               <button
                 key={day}
                 onClick={() => fetchMenuByDay(day)}
-                className={`day-btn ${isSelected ? 'selected-day' : ''} ${isToday && !isSelected ? 'today-outline' : ''}`}
+                className={`day-btn ${isToday ? 'today-outline' : ''}`}
               >
                 {day}
               </button>

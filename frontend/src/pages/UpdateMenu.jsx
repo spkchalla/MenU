@@ -117,7 +117,7 @@ export const UpdateMenu = () => {
   };
 
   return (
-    <div className="auth-container" style={{ alignItems: 'flex-start', paddingTop: '40px' }}>
+    <div className="auth-container update-menu-container" style={{ alignItems: 'flex-start', paddingTop: '40px' }}>
       <div className="auth-card" style={{ maxWidth: '900px', width: '100%' }}>
         <h2>Update Weekly Menu</h2>
         <p className="auth-subtitle">Manually update the menu for a specific week</p>
