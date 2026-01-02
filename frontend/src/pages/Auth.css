@@ -52,6 +52,17 @@
     .auth-form {
         gap: 16px;
     }
+
+    .form-group input {
+        padding: 10px 14px;
+        font-size: 0.9rem;
+    }
+
+    .submit-btn {
+        padding: 12px;
+        font-size: 0.9rem;
+        margin-top: 8px;
+    }
 }
 
 .auth-card h2 {

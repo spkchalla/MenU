@@ -17,12 +17,12 @@
     }
 
     h2 {
-        font-size: 1.3rem;
+        font-size: 1.2rem;
         margin-bottom: 12px;
     }
 
     h3 {
-        font-size: 1rem;
+        font-size: 0.9rem;
         margin-bottom: 8px;
     }
 }
@@ -36,14 +36,14 @@ h3 {
 }
 
 h2 {
-    font-size: 1.5rem;
+    font-size: 1.4rem;
     border-bottom: 2px solid var(--card-border);
     padding-bottom: 8px;
     margin-bottom: 16px;
 }
 
 h3 {
-    font-size: 1.1rem;
+    font-size: 1rem;
 }
 
 /* Card Styles */
@@ -66,7 +66,7 @@ h3 {
     }
 
     .meal-title {
-        font-size: 1.1rem;
+        font-size: 1rem;
         margin-bottom: 8px;
     }
 }
@@ -78,7 +78,7 @@ h3 {
 }
 
 .meal-title {
-    font-size: 1.25rem;
+    font-size: 1.15rem;
     color: var(--accent-color);
     margin-bottom: 12px;
     font-weight: 600;
@@ -196,6 +196,18 @@ h3 {
     justify-content: center;
 }
 
+/* Mobile styles for days container */
+@media (max-width: 480px) {
+    .days-container {
+        gap: 8px;
+        margin-top: 16px;
+    }
+
+    .days-row {
+        gap: 8px;
+    }
+}
+
 /* Day Buttons */
 .day-btn {
     background: transparent;
@@ -203,7 +215,7 @@ h3 {
     color: var(--text-secondary);
     padding: 10px 16px;
     border-radius: 8px;
-    font-size: 0.9rem;
+    font-size: 0.85rem;
     transition: all 0.2s;
     font-weight: 500;
 }
@@ -212,7 +224,7 @@ h3 {
 @media (max-width: 480px) {
     .day-btn {
         padding: 8px 12px;
-        font-size: 0.8rem;
+        font-size: 0.75rem;
         border-radius: 6px;
     }
 }
@@ -221,15 +233,6 @@ h3 {
     border-color: var(--accent-color);
     color: var(--text-primary);
     background: rgba(255, 255, 255, 0.05);
-}
-
-/* Highlight Selected Day */
-.day-btn.selected-day {
-    background: var(--accent-gradient);
-    border: none;
-    color: white;
-    box-shadow: 0 4px 12px rgba(56, 189, 248, 0.3);
-    font-weight: 600;
 }
 
 /* Outline Today (when not selected) */
@@ -256,7 +259,7 @@ h3 {
 
 .calendar-section h3 {
     margin-bottom: 16px;
-    font-size: 1.1rem;
+    font-size: 1rem;
 }
 
 /* Mobile styles for calendar */
@@ -268,7 +271,7 @@ h3 {
     }
 
     .calendar-section h3 {
-        font-size: 1rem;
+        font-size: 0.9rem;
         margin-bottom: 12px;
     }
 }
@@ -280,7 +283,7 @@ h3 {
     background: rgba(0, 0, 0, 0.2);
     color: var(--text-primary);
     font-family: var(--font-main);
-    font-size: 1rem;
+    font-size: 0.9rem;
     cursor: pointer;
     outline: none;
 }
@@ -308,14 +311,14 @@ h3 {
     align-items: center;
     gap: 8px;
     transition: all 0.2s;
-    font-size: 0.9rem;
+    font-size: 0.85rem;
 }
 
 /* Mobile styles for back button */
 @media (max-width: 480px) {
     .back-btn {
         padding: 6px 12px;
-        font-size: 0.8rem;
+        font-size: 0.75rem;
         margin-bottom: 12px;
         border-radius: 6px;
     }
