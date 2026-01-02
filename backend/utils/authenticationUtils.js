@@ -8,7 +8,8 @@ export const createUserAccount = async(registrationData) =>{
         const{name, email, password} = registrationData;
     if(!name|| !email|| !password) throw new Error("All input fields are required");
 
-    const existingUser = await UserModel.findOne({email});
+    const normalizedEmail = email.toLowerCase().trim();
+    const existingUser = await UserModel.findOne({email: normalizedEmail});
     if(existingUser){
         throw new Error("User with this email Id already exists");
     }
@@ -17,9 +18,8 @@ export const createUserAccount = async(registrationData) =>{
 
     const newUser = new UserModel({
         name,
-        email,
+        email: normalizedEmail,
         password: hashedPassword,
-
     });
     await newUser.save();
 
@@ -54,8 +54,7 @@ export const authenticateUser = async(loginInput) =>{
         user,
         token,
     };
-    }catch(err){
-        throw new Error("Error fetching User");
+    } catch (err) {
+        throw err;
     }
-
 };
