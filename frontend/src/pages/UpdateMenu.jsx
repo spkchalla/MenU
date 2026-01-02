@@ -1,10 +1,10 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import './Auth.css';
 
 // axios instance
 const api = axios.create({
-  baseURL: import.meta.env.VITE_API_BASE_URL,
+  baseURL: import.meta.env.VITE_API_BASE_URL || 'http://localhost:5000/api',
 });
 
 api.interceptors.request.use((config) => {
@@ -32,6 +32,13 @@ export const UpdateMenu = () => {
   const days = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"];
   const meals = ["breakfast", "lunch", "snacks", "dinner"];
 
+  // Auto-fetch menu when date changes
+  useEffect(() => {
+    if (weekStartDate) {
+      handleFetchMenu(true);
+    }
+  }, [weekStartDate]);
+
   const handleInputChange = (day, meal, value) => {
     setFormData(prev => ({
       ...prev,
@@ -42,14 +49,14 @@ export const UpdateMenu = () => {
     }));
   };
 
-  const handleFetchMenu = async () => {
+  const handleFetchMenu = async (isAuto = false) => {
     if (!weekStartDate) {
-      alert("Please select a date first.");
+      if (!isAuto) alert("Please select a date first.");
       return;
     }
     setLoading(true);
     try {
-      // Calculate selected day name to set it as active
+      // Calculate selected day name to set it as active if it's the first time
       const selectedDate = new Date(weekStartDate);
       const dayName = selectedDate.toLocaleDateString('en-US', { weekday: 'long' });
       setActiveDay(dayName);
@@ -58,30 +65,50 @@ export const UpdateMenu = () => {
       if (res.data && res.data.weeklyMenu) {
         const weeklyMenu = res.data.weeklyMenu;
 
-        // Sync weekStartDate with the actual Monday from backend
+        // Sync weekStartDate with the actual Monday from backend WITHOUT triggering a new fetch
+        // (useEffect will see the same string and won't re-run if it's identical)
         if (weeklyMenu.weekStartDate) {
-          setWeekStartDate(weeklyMenu.weekStartDate.split('T')[0]);
+          const syncedDate = weeklyMenu.weekStartDate.split('T')[0];
+          setWeekStartDate(syncedDate);
         }
 
-        const newFormData = { ...formData };
+        // Create a fresh state object to avoid mutations
+        const newFormData = {};
+        days.forEach(d => {
+          newFormData[d] = { breakfast: '', lunch: '', snacks: '', dinner: '' };
+        });
 
         weeklyMenu.days.forEach(dayData => {
-          const dayName = dayData.day;
-          meals.forEach(meal => {
-            if (dayData[meal] && dayData[meal].items) {
-              newFormData[dayName][meal] = dayData[meal].items.join(', ');
-            } else {
-              newFormData[dayName][meal] = '';
-            }
-          });
+          const dName = dayData.day;
+          if (newFormData[dName]) {
+            meals.forEach(meal => {
+              if (dayData[meal] && dayData[meal].items) {
+                newFormData[dName][meal] = dayData[meal].items.join(', ');
+              }
+            });
+          }
         });
 
         setFormData(newFormData);
-        alert("Menu data loaded for the week!");
+        if (!isAuto) alert("Menu data loaded for the week!");
+      } else {
+        // If no menu found, reset the form for that week
+        const resetData = {};
+        days.forEach(d => {
+          resetData[d] = { breakfast: '', lunch: '', snacks: '', dinner: '' };
+        });
+        setFormData(resetData);
       }
     } catch (err) {
       console.error("Error fetching menu:", err);
-      alert("Failed to load menu data. " + (err.response?.data?.message || err.message));
+      if (!isAuto) alert("Failed to load menu data. " + (err.response?.data?.message || err.message));
+
+      // Optionally reset form on error (e.g. 404 menu not found)
+      const resetData = {};
+      days.forEach(d => {
+        resetData[d] = { breakfast: '', lunch: '', snacks: '', dinner: '' };
+      });
+      setFormData(resetData);
     } finally {
       setLoading(false);
     }
