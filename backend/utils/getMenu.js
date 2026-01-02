@@ -1,6 +1,6 @@
 import WeeklyMenu from "../model/menuModel.js";
 import { getWeeklyMenuByDate } from "../utils/getWeeklyMenuByDate.js";
-import { getISTDate } from "./dateUtils.js";
+import { getISTDate, formatDateToDDMMYYYY } from "./dateUtils.js";
 
 // export const getWeeklyMenuByStartDate = async(weekStartDate)=>{
 //     try{
@@ -38,7 +38,7 @@ export const getTodayMenu = async () => {
     }
     // return it
     return {
-      date: todayDate.toISOString().split("T")[0],
+      date: formatDateToDDMMYYYY(todayDate),
       ...todayMenu.toObject(),
     };
   } catch (err) {
@@ -65,7 +65,7 @@ export const getMenuBySpecificDate = async (inputDate) => {
     }
     // return it
     return {
-      date: specificDate.toISOString().split("T")[0],
+      date: formatDateToDDMMYYYY(specificDate),
       ...specificDayMenu.toObject(),
     };
   } catch (err) {

@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import "./Menu.css"; // Import the new CSS
+import { formatDateToDDMMYYYY } from "../utils/dateUtils";
 
 // axios instance with env-based base URL
 const api = axios.create({
@@ -164,7 +165,7 @@ export const Menu = () => {
       {/* Other Meals */}
       {otherMealsList.length > 0 && (
         <div className="other-meals-section">
-          <h2>{currentMeal ? "Other Meals" : `Menu for ${selectedDate || selectedDay || "the Day"}`}</h2>
+          <h2>{currentMeal ? "Other Meals" : `Menu for ${selectedDate ? formatDateToDDMMYYYY(selectedDate) : selectedDay || "the Day"}`}</h2>
           <div className="other-meals-grid">
             {otherMealsList.map((meal, index) => (
               <div key={index} className="meal-card">

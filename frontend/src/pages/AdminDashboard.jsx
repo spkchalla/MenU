@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import './AdminDashboard.css';
+import { formatDateToDDMMYYYY } from '../utils/dateUtils';
 
 // axios instance
 const api = axios.create({
@@ -143,7 +144,7 @@ export const AdminDashboard = () => {
 
                 {selectedDate && (
                     <div className="week-info" style={{ width: '100%', marginBottom: '10px', color: 'var(--accent-color)' }}>
-                        Week of: {selectedDate} (Monday)
+                        Week of: {formatDateToDDMMYYYY(selectedDate)} (Monday)
                     </div>
                 )}
 
@@ -206,7 +207,7 @@ export const AdminDashboard = () => {
                     {menus.length > 0 ? (
                         menus.map((menu, idx) => (
                             <div key={idx} className="meal-card" style={{ padding: '20px' }}>
-                                <div className="meal-title" style={{ fontSize: '1rem' }}>Week of {new Date(menu.weekStartDate).toISOString().split('T')[0]}</div>
+                                <div className="meal-title" style={{ fontSize: '1rem' }}>Week of {formatDateToDDMMYYYY(menu.weekStartDate)}</div>
                                 <div style={{ display: 'flex', gap: '10px' }}>
                                     <button className="link-btn" style={{ fontSize: '0.8rem', padding: '4px 8px' }} onClick={() => {
                                         setSelectedDate(new Date(menu.weekStartDate).toISOString().split('T')[0]);
