@@ -2,8 +2,7 @@ import mongoose from "mongoose";
 
 const voteSchema = new mongoose.Schema({
     foodId: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "Menu",
+        type: String,
         required: true,
     },
     voteType: {
@@ -16,6 +15,10 @@ const voteSchema = new mongoose.Schema({
         default: Date.now,
     },
 });
+
+// Indexes to optimize lookups by foodId and createdAt
+voteSchema.index({ foodId: 1 });
+voteSchema.index({ createdAt: 1 });
 
 const Vote = mongoose.model("Vote", voteSchema);
 export default Vote;
