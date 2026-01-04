@@ -11,4 +11,4 @@ jobs:
     steps:
       - name: Ping Render service
         run: |
-          curl -s https://men-u-7es9.vercel.app/ > /dev/null
+        curl -s https://api-1.onrender.com/ > /dev/null
