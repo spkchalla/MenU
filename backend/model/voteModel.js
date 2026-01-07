@@ -4,7 +4,7 @@ const voteSchema = new mongoose.Schema(
     {
         menuId: {
             type: mongoose.Schema.Types.ObjectId,
-            ref: "Menu",
+            ref: "WeeklyMenu",
             required: true,
         },
         voteType: {
