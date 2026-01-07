@@ -1,24 +1,21 @@
 import mongoose from "mongoose";
 
-const voteSchema = new mongoose.Schema({
-    foodId: {
-        type: String,
-        required: true,
+const voteSchema = new mongoose.Schema(
+    {
+        menuId: {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: "Menu",
+            required: true,
+        },
+        voteType: {
+            type: String,
+            enum: ["like", "dislike"],
+            required: true,
+        },
     },
-    voteType: {
-        type: String,
-        enum: ["like", "dislike"],
-        required: true,
-    },
-    createdAt: {
-        type: Date,
-        default: Date.now,
-    },
-});
-
-// Indexes to optimize lookups by foodId and createdAt
-voteSchema.index({ foodId: 1 });
-voteSchema.index({ createdAt: 1 });
+    { timestamps: true }
+);
 
 const Vote = mongoose.model("Vote", voteSchema);
+
 export default Vote;
