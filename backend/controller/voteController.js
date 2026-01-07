@@ -11,14 +11,7 @@ export const castVote = async (req, res) => {
     } catch (error) {
         console.error("Vote Error:", error.message);
 
-        let statusCode = 500;
-
-        if (
-            error.message.includes("Invalid") ||
-            error.message.includes("missing")
-        ) {
-            statusCode = 400;
-        }
+        const statusCode = error.status || 500;
 
         res.status(statusCode).json({ success: false, message: error.message });
     }
