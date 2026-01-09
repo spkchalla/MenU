@@ -17,6 +17,7 @@ export const Menu = () => {
   const [error, setError] = useState(null);
   const [selectedDay, setSelectedDay] = useState(null); // Track selected day name
   const [selectedDate, setSelectedDate] = useState(""); // Track selected calendar date
+  const [selectedDayDate, setSelectedDayDate] = useState(null); // Track date for selected day button
 
   // -----------------------------
   // API FUNCTIONS
@@ -50,6 +51,10 @@ export const Menu = () => {
       setSelectedDay(day);
       setSelectedDate(""); // Clear date selection if day button is clicked
 
+      // Calculate the date for the selected day
+      const dayDate = getDateForDayInCurrentWeek(day);
+      setSelectedDayDate(dayDate);
+
       const res = await api.get(`/menu/dayOfPresentWeek/${day}`);
       setCurrentMeal(null);
       setOtherMeals(res.data.mealOfThisDay);
@@ -66,6 +71,7 @@ export const Menu = () => {
       setIsLoading(true);
       setSelectedDate(date);
       setSelectedDay(null); // Clear day button selection if date is picked
+      setSelectedDayDate(null); // Clear day date
 
       const res = await api.get(`/menu/specificDay/${date}`);
       setCurrentMeal(null);
@@ -117,6 +123,41 @@ export const Menu = () => {
     return arr;
   };
 
+  // Helper function to format date from YYYY-MM-DD to DD/MM/YYYY
+  const formatDateToDDMMYYYY = (dateString) => {
+    const [year, month, day] = dateString.split('-');
+    return `${day}/${month}/${year}`;
+  };
+
+  // Helper function to get day name from date string
+  const getDayNameFromDate = (dateString) => {
+    const date = new Date(dateString + 'T00:00:00'); // Add time to avoid timezone issues
+    return date.toLocaleDateString('en-US', { weekday: 'long' });
+  };
+
+  // Helper function to get the date for a specific day in the current week
+  const getDateForDayInCurrentWeek = (dayName) => {
+    const daysOfWeek = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+    const targetDayIndex = daysOfWeek.indexOf(dayName);
+
+    const today = new Date();
+    const currentDayIndex = today.getDay();
+
+    // Calculate the difference in days
+    const dayDifference = targetDayIndex - currentDayIndex;
+
+    // Create a new date object for the target day
+    const targetDate = new Date(today);
+    targetDate.setDate(today.getDate() + dayDifference);
+
+    // Format as YYYY-MM-DD
+    const year = targetDate.getFullYear();
+    const month = String(targetDate.getMonth() + 1).padStart(2, '0');
+    const day = String(targetDate.getDate()).padStart(2, '0');
+
+    return `${year}-${month}-${day}`;
+  };
+
   const otherMealsList = getOtherMealsArray();
   const todayName = new Date().toLocaleDateString('en-US', { weekday: 'long' });
 
@@ -127,6 +168,7 @@ export const Menu = () => {
   const resetToToday = async () => {
     setSelectedDay(null);
     setSelectedDate("");
+    setSelectedDayDate(null);
     setIsLoading(true);
     await Promise.all([fetchCurrentMeal(), fetchOtherMeals()]);
     setIsLoading(false);
@@ -164,7 +206,18 @@ export const Menu = () => {
       {/* Other Meals */}
       {otherMealsList.length > 0 && (
         <div className="other-meals-section">
-          <h2>{currentMeal ? "Other Meals" : `Menu for ${selectedDate || selectedDay || "the Day"}`}</h2>
+          <h2>
+            {currentMeal
+              ? "Other Meals"
+              : selectedDate
+                ? `Menu for ${getDayNameFromDate(selectedDate)} (${formatDateToDDMMYYYY(selectedDate)})`
+                : selectedDay && selectedDayDate
+                  ? `Menu for ${selectedDay} (${formatDateToDDMMYYYY(selectedDayDate)})`
+                  : selectedDay
+                    ? `Menu for ${selectedDay}`
+                    : "Menu for the Day"
+            }
+          </h2>
           <div className="other-meals-grid">
             {otherMealsList.map((meal, index) => (
               <div key={index} className="meal-card">
