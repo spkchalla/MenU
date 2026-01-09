@@ -33,17 +33,17 @@ export const Login = () => {
       // Decode token to get role
       const payload = JSON.parse(atob(token.split('.')[1]));
 
-      if (payload.role !== 'admin') {
-        setError('This is only for admins. Wait until you are promoted or email the admin at cspk1694@protonmail.com');
-        setLoading(false);
-        return;
-      }
-
-      // Store token and role in localStorage only for admins
+      // Store token, role, and userId in localStorage
       localStorage.setItem('menu_token', token);
       localStorage.setItem('menu_user_role', payload.role);
+      localStorage.setItem('menu_user_id', payload.userId);
 
-      navigate('/admin/dashboard');
+      if (payload.role === 'admin') {
+        navigate('/admin/dashboard');
+      } else {
+        navigate('/user/dashboard');
+      }
+
     } catch (err) {
       console.error("Login error:", err);
       setError(err.response?.data?.message || 'Login failed. Please check your credentials.');

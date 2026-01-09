@@ -1,24 +1,48 @@
 import React, { useState, useEffect } from 'react';
+import axios from 'axios';
 import './Auth.css';
 
+const api = axios.create({
+  baseURL: import.meta.env.VITE_API_BASE_URL,
+});
+
 export const ApproveAdmin = () => {
-  // Mock data - replace with API call
-  const [pendingUsers, setPendingUsers] = useState([
-    { id: 1, username: 'john_doe', email: 'john@example.com' },
-    { id: 2, username: 'jane_smith', email: 'jane@example.com' }
-  ]);
+  const [pendingUsers, setPendingUsers] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState('');
 
-  const handleApprove = (id) => {
-    console.log('Approve user:', id);
-    // Add API call logic here
-    setPendingUsers(pendingUsers.filter(user => user.id !== id));
+  useEffect(() => {
+    fetchPendingApprovals();
+  }, []);
+
+  const fetchPendingApprovals = async () => {
+    try {
+      const token = localStorage.getItem('menu_token');
+      const res = await api.get('/user/approvals', {
+        headers: { Authorization: `Bearer ${token}` }
+      });
+      setPendingUsers(res.data);
+    } catch (err) {
+      setError('Failed to fetch pending approvals');
+      console.error(err);
+    } finally {
+      setLoading(false);
+    }
   };
 
-  const handleReject = (id) => {
-    console.log('Reject user:', id);
-    // Add API call logic here
-    setPendingUsers(pendingUsers.filter(user => user.id !== id));
+  const handleDecision = async (approvalId, action) => {
+    try {
+      const token = localStorage.getItem('menu_token');
+      await api.post('/user/handle-approval', { approvalId, action }, {
+        headers: { Authorization: `Bearer ${token}` }
+      });
+      setPendingUsers(pendingUsers.filter(req => req._id !== approvalId));
+    } catch (err) {
+      alert(err.response?.data?.message || 'Action failed');
+    }
   };
+
+  if (loading) return <div className="auth-container">Loading...</div>;
 
   return (
     <div className="auth-container">
@@ -26,12 +50,14 @@ export const ApproveAdmin = () => {
         <h2>Approve Admins</h2>
         <p className="auth-subtitle">Review pending admin access requests</p>
 
+        {error && <p style={{ color: '#ef4444', marginBottom: '16px' }}>{error}</p>}
+
         <div className="pending-list" style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
           {pendingUsers.length === 0 ? (
             <p style={{ color: 'var(--text-secondary)' }}>No pending requests.</p>
           ) : (
-            pendingUsers.map(user => (
-              <div key={user.id} style={{
+            pendingUsers.map(request => (
+              <div key={request._id} style={{
                 background: 'rgba(0,0,0,0.2)',
                 padding: '16px',
                 borderRadius: '12px',
@@ -41,12 +67,15 @@ export const ApproveAdmin = () => {
                 border: '1px solid var(--card-border)'
               }}>
                 <div style={{ textAlign: 'left' }}>
-                  <div style={{ fontWeight: '600', color: 'var(--text-primary)' }}>{user.username}</div>
-                  <div style={{ fontSize: '0.85rem', color: 'var(--text-secondary)' }}>{user.email}</div>
+                  <div style={{ fontWeight: '600', color: 'var(--text-primary)' }}>{request.user?.name}</div>
+                  <div style={{ fontSize: '0.85rem', color: 'var(--text-secondary)' }}>{request.user?.email}</div>
+                  <div style={{ fontSize: '0.75rem', color: 'var(--text-secondary)', marginTop: '4px' }}>
+                    Requested: {new Date(request.createdAt).toLocaleDateString()}
+                  </div>
                 </div>
                 <div style={{ display: 'flex', gap: '8px' }}>
                   <button
-                    onClick={() => handleApprove(user.id)}
+                    onClick={() => handleDecision(request._id, 'approve')}
                     style={{
                       background: 'var(--accent-color)',
                       color: 'white',
@@ -60,7 +89,7 @@ export const ApproveAdmin = () => {
                     Approve
                   </button>
                   <button
-                    onClick={() => handleReject(user.id)}
+                    onClick={() => handleDecision(request._id, 'reject')}
                     style={{
                       background: 'rgba(239, 68, 68, 0.2)',
                       color: '#ef4444',

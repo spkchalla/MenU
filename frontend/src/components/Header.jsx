@@ -36,11 +36,18 @@ const Header = () => {
         <a href="/" className="logo">MenU</a>
 
         <div className="header-actions">
-          {isAdmin && (
-            <Link to="/admin/dashboard" className="nav-link admin-link" style={{ display: 'inline-block' }}>
-              Dashboard
-            </Link>
+          {isAuthenticated && (
+            isAdmin ? (
+              <Link to="/admin/dashboard" className="nav-link admin-link" style={{ display: 'inline-block' }}>
+                Dashboard
+              </Link>
+            ) : (
+              <Link to="/user/dashboard" className="nav-link" style={{ display: 'inline-block' }}>
+                Admin Request
+              </Link>
+            )
           )}
+
 
           <button className="theme-toggle" onClick={toggleTheme} aria-label="Toggle Theme">
             {theme === 'dark' ? '☀️' : '🌙'}

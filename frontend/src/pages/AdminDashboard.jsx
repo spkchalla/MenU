@@ -231,7 +231,9 @@ export const AdminDashboard = () => {
                 <div className="admin-links">
                     <button onClick={() => navigate('/admin/create-menu')} className="link-btn">Go to Create Menu Form</button>
                     <button onClick={() => navigate('/admin/update-menu')} className="link-btn">Go to Update Menu Form</button>
+                    <button onClick={() => navigate('/admin/approve')} className="link-btn">Approve Admins</button>
                 </div>
+
             </div>
         </div>
     );
