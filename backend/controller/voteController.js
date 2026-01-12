@@ -1,18 +1,21 @@
-import { castVoteLogic } from "../utils/voteUtils/castVoteUtil.js";
+import { castVoteUtil } from "../utils/voteUtils/castVoteUtil.js";
 
 // @desc    Cast a vote
-// @route   POST /api/votes/castVote
+// @route   POST /api/votes
 // @access  Public
 export const castVote = async (req, res) => {
     try {
-        const newVote = await castVoteLogic(req.body);
+        const { foodId, voteType } = req.body;
+
+        const newVote = await castVoteUtil(foodId, voteType);
 
         res.status(201).json({ success: true, data: newVote });
     } catch (error) {
-        console.error("Vote Error:", error.message);
-
         const statusCode = error.status || 500;
 
-        res.status(statusCode).json({ success: false, message: error.message });
+        res.status(statusCode).json({
+            success: false,
+            message: error.message || "Server Error",
+        });
     }
 };
