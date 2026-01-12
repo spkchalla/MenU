@@ -9,7 +9,9 @@ import { CreateMenu } from "./pages/CreateMenu";
 import { UpdateMenu } from "./pages/UpdateMenu";
 import { ApproveAdmin } from "./pages/ApproveAdmin";
 import { AdminDashboard } from "./pages/AdminDashboard";
+import { UserDashboard } from "./pages/UserDashboard";
 import { ThemeProvider } from "./context/ThemeContext";
+
 import "./App.css";
 
 const Layout = ({ children }) => {
@@ -34,7 +36,9 @@ const App = () => {
           <Route path="/admin/create-menu" element={<CreateMenu />} />
           <Route path="/admin/update-menu" element={<UpdateMenu />} />
           <Route path="/admin/approve" element={<ApproveAdmin />} />
+          <Route path="/user/dashboard" element={<UserDashboard />} />
         </Routes>
+
       </Layout>
     </ThemeProvider>
   );

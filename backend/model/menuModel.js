@@ -1,4 +1,7 @@
 import mongoose from "mongoose";
+import FoodRegister from "./foodRegisterModel.js";
+import { toFoodId } from "../utils/generateFoodIdUtils.js";
+
 
 const mealSchema = new mongoose.Schema({
     items:{
@@ -52,6 +55,59 @@ const weekMenuSchema = new mongoose.Schema({
         }
     }
 });
+
+weekMenuSchema.pre("save", async function () {
+  if (!this.isModified("days")) return;
+
+  const allFoodItems = [];
+
+  for (const day of this.days) {
+    allFoodItems.push(
+      ...(day.breakfast?.items || []),
+      ...(day.lunch?.items || []),
+      ...(day.snacks?.items || []),
+      ...(day.dinner?.items || [])
+    );
+  }
+
+  const uniqueFoodItems = [
+    ...new Set(
+      allFoodItems
+        .filter(item => typeof item === "string")
+        .map(item => item.trim())
+        .filter(Boolean)
+    ),
+  ];
+
+  const bulkOperations = [];
+
+  for (const foodName of uniqueFoodItems) {
+    let foodId;
+    try {
+      foodId = toFoodId(foodName);
+    } catch {
+      continue;
+    }
+
+    bulkOperations.push({
+      updateOne: {
+        filter: { foodId },
+        update: {
+          $setOnInsert: {
+            foodId,
+            displayName: foodName.trim(),
+          },
+        },
+        upsert: true,
+      },
+    });
+  }
+
+  if (bulkOperations.length > 0) {
+    await FoodRegister.bulkWrite(bulkOperations, { ordered: false });
+  }
+});
+
 
 const WeeklyMenu = mongoose.model('WeeklyMenu', weekMenuSchema);
 export default WeeklyMenu;
