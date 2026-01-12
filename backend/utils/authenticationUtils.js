@@ -1,6 +1,9 @@
 import UserModel from "../model/userModel.js";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
+import { generateVotingId } from "./votingUtils/generateVotingIdUtils.js";
+import voteIdentityModel from "../model/voteIdentityModel.js";
+import userPreferenceModel from "../model/userPreferenceModel.js";
 
 export const createUserAccount = async(registrationData) =>{
 
@@ -22,6 +25,19 @@ export const createUserAccount = async(registrationData) =>{
         password: hashedPassword,
     });
     await newUser.save();
+
+    const votingId = generateVotingId();
+
+    await voteIdentityModel.create({
+        userId: newUser._id,
+        votingId,
+    });
+
+    await userPreferenceModel.create({
+        userId: newUser._id,
+    });
+
+    return newUser;
 
     }catch(err){
         throw new Error("Error registering User:" + err.message);
