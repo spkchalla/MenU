@@ -39,6 +39,7 @@ export const getTodayMenu = async () => {
     // return it
     return {
       date: todayDate.toISOString().split("T")[0],
+      menuId: weeklyMenu._id,
       ...todayMenu.toObject(),
     };
   } catch (err) {
@@ -66,6 +67,7 @@ export const getMenuBySpecificDate = async (inputDate) => {
     // return it
     return {
       date: specificDate.toISOString().split("T")[0],
+      menuId: weeklyMenu._id,
       ...specificDayMenu.toObject(),
     };
   } catch (err) {
@@ -82,19 +84,19 @@ export const getCurrentMealByTime = async () => {
     const todayMenu = await getTodayMenu();
     // if time b/n 0:00 and 10:30 show breakfast
     if (currentHour < 10 || (currentHour === 10 && currentMinutes <= 30)) {
-      return { ...todayMenu.breakfast, type: "Breakfast" };
+      return { ...todayMenu.breakfast, type: "Breakfast", menuId: todayMenu.menuId };
     }
     // if time b/n 10:31 and 15:00 show lunch
     else if (currentHour < 15 || (currentHour === 15 && currentMinutes === 0)) {
-      return { ...todayMenu.lunch, type: "Lunch" };
+      return { ...todayMenu.lunch, type: "Lunch", menuId: todayMenu.menuId };
     }
     // if time b/n 15:01 and 18:30 show snacks
     else if (currentHour < 18 || (currentHour === 18 && currentMinutes <= 30)) {
-      return { ...todayMenu.snacks, type: "Snacks" };
+      return { ...todayMenu.snacks, type: "Snacks", menuId: todayMenu.menuId };
     }
     // else show dinner.
     else {
-      return { ...todayMenu.dinner, type: "Dinner" };
+      return { ...todayMenu.dinner, type: "Dinner", menuId: todayMenu.menuId };
     }
   } catch (err) {
     throw new Error("Error in fetching Current meal: " + err.message);
@@ -149,7 +151,10 @@ export const getspecificDayMenu = async (inputDay) => {
     if(!specificDayMeal){
         throw new Error("Day not found in this week's menu");
     }
-    return specificDayMeal;
+    return {
+        menuId: weeklyMenu._id,
+        ...specificDayMeal.toObject(),
+    };
   } catch (err) {
     throw new Error(
       `Failed to fetch the menu for the day ${inputDay} ` + err.message

@@ -1,7 +1,9 @@
 import Vote from "../../model/voteModel.js";
 import mongoose from "mongoose";
 import VoteIdentity from "../../model/voteIdentityModel.js";
-import { getISTDateString } from "../dateUtils.js";
+import WeeklyMenu from "../../model/menuModel.js";
+import { getISTDate, getISTDateString } from "../dateUtils.js";
+import { toFoodId } from "../generateFoodIdUtils.js";
 
 
 export const castVoteUtil = async({userId, foodId, menuId, voteType}) =>{
@@ -18,7 +20,33 @@ export const castVoteUtil = async({userId, foodId, menuId, voteType}) =>{
 
     if(!identity) throw new Error("Voting Identity not found");
 
+    // Rigorous Check: Does the menu exist?
+    const menu = await WeeklyMenu.findById(menuId);
+    if(!menu) throw new Error("Target menu not found in database");
+
+    const todayIST = getISTDate();
     const voteDate = getISTDateString();
+    
+    // Rigorous Check: Is the foodId served today in this menu?
+    const dayName = todayIST.toLocaleDateString("en-US", {
+        weekday: "long",
+        timeZone: "UTC",
+    });
+
+    const dayData = menu.days.find(d => d.day === dayName);
+    if(!dayData) throw new Error(`Today (${dayName}) is not registered in this menu`);
+
+    const allItemsToday = [
+        ...(dayData.breakfast?.items || []),
+        ...(dayData.lunch?.items || []),
+        ...(dayData.snacks?.items || []),
+        ...(dayData.dinner?.items || []),
+    ].map(item => toFoodId(item));
+
+    if(!allItemsToday.includes(foodId)) {
+        throw new Error(`Food '${foodId}' is not found in today's menu (${dayName})`);
+    }
+
     const votingId = identity.votingId;
     
     const existingVote = await Vote.findOne({votingId, foodId, menuId, voteDate});
