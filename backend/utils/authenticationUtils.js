@@ -26,7 +26,7 @@ export const createUserAccount = async(registrationData) =>{
     });
     await newUser.save();
 
-    const votingId = generateVotingId();
+    const votingId = await generateVotingId();
 
     await voteIdentityModel.create({
         userId: newUser._id,
@@ -35,9 +35,11 @@ export const createUserAccount = async(registrationData) =>{
 
     await userPreferenceModel.create({
         userId: newUser._id,
+        allowPersonalization: false
+
     });
 
-    return newUser;
+    //return newUser;
 
     }catch(err){
         throw new Error("Error registering User:" + err.message);

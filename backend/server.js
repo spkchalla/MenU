@@ -19,7 +19,7 @@ app.use(express.json());
 app.use("/api/gemini", geminiRouter);
 app.use("/api/menu", menuRouter);
 app.use("/api/user", userRouter);
-app.use("api/vote", voteRouter);
+app.use("/api/vote", voteRouter);
 
 // Global Error Handler Middleware
 app.use((err, req, res, next) => {

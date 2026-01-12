@@ -1,5 +1,5 @@
 import UserModel from "../model/userModel.js";
-import {userPreference} from "../model/userPreferenceModel.js";
+import UserPreference from "../model/userPreferenceModel.js";
 import { changeRole } from "../utils/approveAdminUtils.js";
 import { authenticateUser, createUserAccount } from "../utils/authenticationUtils.js";
 import { changePassword } from "../utils/changePasswordUtils.js";
@@ -13,6 +13,7 @@ export const register = async(req, res) =>{
 
         res.status(201).json({message: "User Created Successfully"});
     }catch(err){
+    console.log(err)
         res.status(500).json({message: "Server Error", error: err.message});
     }
 };

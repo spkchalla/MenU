@@ -15,4 +15,5 @@ const userPreferenceSchema = new mongoose.Schema({
 
 userPreferenceSchema.index({userId: 1}, {unique: 1});
 
-export default mongoose.model("UserPreference", userPreferenceSchema);
+const UserPreference = mongoose.model("UserPreference", userPreferenceSchema);
+export default UserPreference;
