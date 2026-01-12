@@ -1,4 +1,4 @@
-import { castVoteUtil } from "../utils/voteUtils/castVoteUtil.js";
+import { castVoteLogic } from "../utils/voteUtils/castVoteUtil.js";
 
 // @desc    Cast a vote
 // @route   POST /api/votes
@@ -7,7 +7,7 @@ export const castVote = async (req, res) => {
     try {
         const { foodId, voteType } = req.body;
 
-        const newVote = await castVoteUtil(foodId, voteType);
+        const newVote = await castVoteLogic(req.body);
 
         res.status(201).json({ success: true, data: newVote });
     } catch (error) {
