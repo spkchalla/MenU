@@ -4,9 +4,9 @@ export const castVote = async(req, res) =>{
 
     try{
         const userId = req.user.userId; // do not trust the userId from frontend, get from backend
-        const {foodId, menuId, voteType} = req.body;
+        const {foodName, voteType} = req.body;
   
-        const vote = await castVoteUtil({userId, foodId, menuId, voteType});
+        const vote = await castVoteUtil({userId, foodName, voteType});
 
         res.status(200).json({success: true, data: vote, message: "Vote cast Successfully"});
     }catch(err){

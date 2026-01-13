@@ -4,17 +4,22 @@ import VoteIdentity from "../../model/voteIdentityModel.js";
 import WeeklyMenu from "../../model/menuModel.js";
 import { getISTDate, getISTDateString } from "../dateUtils.js";
 import { toFoodId } from "../generateFoodIdUtils.js";
+import { getTodayMenu } from "../getMenu.js";
 
 
-export const castVoteUtil = async({userId, foodId, menuId, voteType}) =>{
+export const castVoteUtil = async({userId, foodName, voteType}) =>{
 
     if(!mongoose.Types.ObjectId.isValid(userId)) throw new Error("userId is invalid");
 
-    if(typeof foodId !== 'string' || !foodId.trim()) throw new Error("Invalid food Id");
+    if(typeof foodName !== 'string') throw new Error("Invalid food name");
+
+    const menuId = (await getTodayMenu()).menuId;       
 
     if(!mongoose.Types.ObjectId.isValid(menuId)) throw new Error("menuId is invalid");
 
     if(!['like', 'dislike'].includes(voteType)) throw new Error("vote must be either 'like' or 'dislike' ");
+
+    const foodId = toFoodId(foodName);
 
     const identity = await VoteIdentity.findOne({userId});
 
