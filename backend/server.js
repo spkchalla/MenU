@@ -12,6 +12,7 @@ import "./config/db.js";
 import menuRouter from "./routes/menuRoutes.js";
 import userRouter from "./routes/userRoutes.js";
 import voteRouter from "./routes/voteRoutes.js";
+import statsRouter from "./routes/statsRouter.js";
 const app = express();
 app.use(cors());
 app.use(express.json());
@@ -20,6 +21,7 @@ app.use("/api/gemini", geminiRouter);
 app.use("/api/menu", menuRouter);
 app.use("/api/user", userRouter);
 app.use("/api/vote", voteRouter);
+app.use("/api/stats", statsRouter)
 
 // Global Error Handler Middleware
 app.use((err, req, res, next) => {
