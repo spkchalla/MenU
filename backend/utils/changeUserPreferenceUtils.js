@@ -4,7 +4,7 @@ export const changeUserPreference = async(userId, newUserPreference) =>{
     try{
         if(!userId) throw new Error("user id is required");
 
-        if(typeof newPreference !== "boolean") throw new Error("newPreference should be boolean");
+        if(typeof newUserPreference !== "boolean") throw new Error("newUserPreference should be boolean");
 
     const updatedPreference = await userPreferenceModel.findOneAndUpdate(
         {userId},
