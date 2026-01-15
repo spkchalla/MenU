@@ -1,0 +1,20 @@
+import userPreferenceModel from "../model/userPreferenceModel.js";
+
+export const changeUserPreference = async(userId, newUserPreference) =>{
+    try{
+        if(!userId) throw new Error("user id is required");
+
+        if(typeof newUserPreference !== "boolean") throw new Error("newUserPreference should be boolean");
+
+    const updatedPreference = await userPreferenceModel.findOneAndUpdate(
+        {userId},
+        {newUserPreference},
+        {new: true, }
+    );
+
+    return updatedPreference;
+    
+    }catch(err){
+        throw new Error("Error in updatng User Preference" + err.message);
+    }
+};

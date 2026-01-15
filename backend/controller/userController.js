@@ -1,6 +1,9 @@
+import UserModel from "../model/userModel.js";
+import UserPreference from "../model/userPreferenceModel.js";
 import { changeRole } from "../utils/approveAdminUtils.js";
 import { authenticateUser, createUserAccount } from "../utils/authenticationUtils.js";
 import { changePassword } from "../utils/changePasswordUtils.js";
+import { changeUserPreference } from "../utils/changeUserPreferenceUtils.js";
 
 export const register = async(req, res) =>{
 
@@ -10,6 +13,7 @@ export const register = async(req, res) =>{
 
         res.status(201).json({message: "User Created Successfully"});
     }catch(err){
+    console.log(err)
         res.status(500).json({message: "Server Error", error: err.message});
     }
 };
@@ -58,6 +62,19 @@ export const updatePassword = async(req, res) =>{
     }catch(err){
         console.log(err);
         res.status(500).json({message: "Error in updating your Password"});
+    }
+
+};
+
+export const updateUserPreference = async(req, res) =>{
+
+    try{
+        const userId = req.user.userId;
+        const {allowPersonalization} = req.body;
+        const newPref = await changeUserPreference(userId, allowPersonalization);
+        res.status(200).json({message: `Updated the user preference for personalization to ${newPref}`});
+    }catch(err){
+        res.status(400).json({message: err.message});
     }
 
 };

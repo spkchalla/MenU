@@ -1,8 +1,14 @@
 import UserModel from "../model/userModel.js";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
+import mongoose from "mongoose";
+import { generateVotingId } from "./votingUtils/generateVotingIdUtils.js";
+import voteIdentityModel from "../model/voteIdentityModel.js";
+import userPreferenceModel from "../model/userPreferenceModel.js";
 
 export const createUserAccount = async(registrationData) =>{
+    const session = await mongoose.startSession();
+    session.startTransaction();
 
     try{
         const{name, email, password} = registrationData;
@@ -21,10 +27,29 @@ export const createUserAccount = async(registrationData) =>{
         email: normalizedEmail,
         password: hashedPassword,
     });
-    await newUser.save();
+    await newUser.save({ session });
+
+    const votingId = await generateVotingId();
+
+    await voteIdentityModel.create([{
+        userId: newUser._id,
+        votingId,
+    }], { session });
+
+    await userPreferenceModel.create([{
+        userId: newUser._id,
+        allowPersonalization: false
+
+    }], { session });
+
+    await session.commitTransaction();
+    return newUser;
 
     }catch(err){
+        await session.abortTransaction();
         throw new Error("Error registering User:" + err.message);
+    } finally {
+        session.endSession();
     }
 };
 

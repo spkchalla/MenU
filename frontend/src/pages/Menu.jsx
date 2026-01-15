@@ -1,23 +1,43 @@
 import React, { useEffect, useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
-import "./Menu.css"; // Import the new CSS
+import "./Menu.css";
 
 // axios instance with env-based base URL
 const api = axios.create({
   baseURL: import.meta.env.VITE_API_BASE_URL || 'http://localhost:5000/api',
 });
 
-// Log the base URL for debugging
-console.log('API Base URL:', api.defaults.baseURL);
+// Helper for Auth Headers
+const getAuthConfig = () => {
+  const token = localStorage.getItem('menu_token');
+  return token ? { headers: { Authorization: `Bearer ${token}` } } : null;
+};
+
+// Simple Eye SVG Icon
+const EyeIcon = ({ outlined = true }) => (
+  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+    <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" />
+    <circle cx="12" cy="12" r="3" />
+  </svg>
+);
 
 export const Menu = () => {
+  const navigate = useNavigate();
   const [currentMeal, setCurrentMeal] = useState(null);
   const [otherMeals, setOtherMeals] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
-  const [selectedDay, setSelectedDay] = useState(null); // Track selected day name
-  const [selectedDate, setSelectedDate] = useState(""); // Track selected calendar date
-  const [selectedDayDate, setSelectedDayDate] = useState(null); // Track date for selected day button
+  const [selectedDay, setSelectedDay] = useState(null);
+  const [selectedDate, setSelectedDate] = useState("");
+  const [selectedDayDate, setSelectedDayDate] = useState(null);
+
+  // New States for Voting & Expansion
+  const [isExpanded, setIsExpanded] = useState(false);
+  const [firstInOrder, setFirstInOrder] = useState(0); // Which card index to move to top when expanding
+  const [userVotes, setUserVotes] = useState({}); // { "foodName": "like"/"dislike" }
+
+  const isToday = !selectedDay && !selectedDate;
 
   // -----------------------------
   // API FUNCTIONS
@@ -45,13 +65,53 @@ export const Menu = () => {
     }
   };
 
+  const fetchUserVotes = async () => {
+    const config = getAuthConfig();
+    if (!config) return;
+    try {
+      const res = await api.get("/vote/myTodayVotes", config);
+      const votesMap = {};
+      res.data.votes.forEach(v => {
+        // Note: backend might return foodId, but we need to match it to foodName in UI
+        // Actually, since we don't have foodId easily in UI list, we'll just store and match 
+        // Or if we want to be exact, we should fetch foodId mapping.
+        // For now, let's store them as foodId and we'll normalize UI names to check.
+        votesMap[v.foodId] = v.voteType;
+      });
+      setUserVotes(votesMap);
+    } catch (err) {
+      console.error("Error fetching user votes:", err);
+    }
+  };
+
+  const handleVote = async (foodName, voteType) => {
+    const config = getAuthConfig();
+    if (!config) {
+      alert("Please login to vote!");
+      navigate("/login");
+      return;
+    }
+
+    try {
+      const res = await api.post("/vote/castVote", { foodName, voteType }, config);
+      if (res.data.success) {
+        // Update local state
+        const votedVote = res.data.data;
+        setUserVotes(prev => ({
+          ...prev,
+          [votedVote.foodId]: votedVote.voteType
+        }));
+      }
+    } catch (err) {
+      alert(err.response?.data?.message || "Error casting vote");
+    }
+  };
+
   const fetchMenuByDay = async (day) => {
     try {
       setIsLoading(true);
       setSelectedDay(day);
-      setSelectedDate(""); // Clear date selection if day button is clicked
-
-      // Calculate the date for the selected day
+      setSelectedDate("");
       const dayDate = getDateForDayInCurrentWeek(day);
       setSelectedDayDate(dayDate);
 
@@ -70,15 +130,14 @@ export const Menu = () => {
     try {
       setIsLoading(true);
       setSelectedDate(date);
-      setSelectedDay(null); // Clear day button selection if date is picked
-      setSelectedDayDate(null); // Clear day date
+      setSelectedDay(null);
+      setSelectedDayDate(null);
 
       const res = await api.get(`/menu/specificDay/${date}`);
       setCurrentMeal(null);
-      setOtherMeals(res.data.menu); // Backend returns { menu: ... }
+      setOtherMeals(res.data.menu);
       setError(null);
     } catch (err) {
-      console.error("Error fetching menu by date:", err);
       setError("Failed to fetch menu for this date");
     } finally {
       setIsLoading(false);
@@ -93,7 +152,7 @@ export const Menu = () => {
     const loadInitialMenu = async () => {
       try {
         setIsLoading(true);
-        await Promise.all([fetchCurrentMeal(), fetchOtherMeals()]);
+        await Promise.all([fetchCurrentMeal(), fetchOtherMeals(), fetchUserVotes()]);
       } catch (err) {
         console.error("Error loading initial menu:", err);
       } finally {
@@ -108,6 +167,15 @@ export const Menu = () => {
   // HELPERS
   // -----------------------------
 
+  const toFoodIdLocal = (name) => {
+    return name.toLowerCase().trim()
+      .replace(/[,&/()]/g, " ")
+      .replace(/[^a-z0-9\s]/g, "")
+      .split(/\s+/)
+      .map((word, index) => index === 0 ? word : word.charAt(0).toUpperCase() + word.slice(1))
+      .join("");
+  };
+
   const getOtherMealsArray = () => {
     if (!otherMeals) return [];
     const order = ["breakfast", "lunch", "snacks", "dinner"];
@@ -120,57 +188,92 @@ export const Menu = () => {
         });
       }
     });
+
+    if (isExpanded && firstInOrder !== null) {
+      const result = [...arr];
+      const selected = result.splice(firstInOrder, 1)[0];
+      result.unshift(selected);
+      return result;
+    }
+
     return arr;
   };
 
-  // Helper function to format date from YYYY-MM-DD to DD/MM/YYYY
   const formatDateToDDMMYYYY = (dateString) => {
     const [year, month, day] = dateString.split('-');
     return `${day}/${month}/${year}`;
   };
 
-  // Helper function to get day name from date string
   const getDayNameFromDate = (dateString) => {
-    const date = new Date(dateString + 'T00:00:00'); // Add time to avoid timezone issues
+    const date = new Date(dateString + 'T00:00:00');
     return date.toLocaleDateString('en-US', { weekday: 'long' });
   };
 
-  // Helper function to get the date for a specific day in the current week
   const getDateForDayInCurrentWeek = (dayName) => {
     const daysOfWeek = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
     const targetDayIndex = daysOfWeek.indexOf(dayName);
-
     const today = new Date();
     const currentDayIndex = today.getDay();
-
-    // Calculate the difference in days
     const dayDifference = targetDayIndex - currentDayIndex;
-
-    // Create a new date object for the target day
     const targetDate = new Date(today);
     targetDate.setDate(today.getDate() + dayDifference);
-
-    // Format as YYYY-MM-DD
     const year = targetDate.getFullYear();
     const month = String(targetDate.getMonth() + 1).padStart(2, '0');
     const day = String(targetDate.getDate()).padStart(2, '0');
-
     return `${year}-${month}-${day}`;
+  };
+
+  const toggleExpand = (index) => {
+    if (isExpanded && firstInOrder === index) {
+      setIsExpanded(false);
+    } else {
+      setFirstInOrder(index);
+      setIsExpanded(true);
+    }
   };
 
   const otherMealsList = getOtherMealsArray();
   const todayName = new Date().toLocaleDateString('en-US', { weekday: 'long' });
 
   // -----------------------------
-  // JSX
+  // JSX COMPONENTS
   // -----------------------------
+
+  const MealItem = ({ item, showVotes }) => {
+    const foodId = toFoodIdLocal(item);
+    const currentVote = userVotes[foodId];
+
+    return (
+      <li key={item}>
+        <div className="item-content">{item}</div>
+        {showVotes && (
+          <div className="vote-actions">
+            <button
+              className={`vote-btn like ${currentVote === 'like' ? 'active' : ''}`}
+              onClick={() => handleVote(item, 'like')}
+              title="Like"
+            >
+              👍
+            </button>
+            <button
+              className={`vote-btn dislike ${currentVote === 'dislike' ? 'active' : ''}`}
+              onClick={() => handleVote(item, 'dislike')}
+              title="Dislike"
+            >
+              👎
+            </button>
+          </div>
+        )}
+      </li>
+    );
+  };
 
   const resetToToday = async () => {
     setSelectedDay(null);
     setSelectedDate("");
     setSelectedDayDate(null);
     setIsLoading(true);
-    await Promise.all([fetchCurrentMeal(), fetchOtherMeals()]);
+    await Promise.all([fetchCurrentMeal(), fetchOtherMeals(), fetchUserVotes()]);
     setIsLoading(false);
   };
 
@@ -179,31 +282,31 @@ export const Menu = () => {
 
   return (
     <div className="menu-container">
-      {/* Back to Today Button */}
-      {(selectedDay || selectedDate) && (
-        <button onClick={resetToToday} className="back-btn">
-          &larr; Back to Today's Menu
-        </button>
-      )}
+      <div className="menu-top-actions">
+        {(selectedDay || selectedDate) && (
+          <button onClick={resetToToday} className="back-btn">
+            &larr; Back to Today's Menu
+          </button>
+        )}
+        <Link to="/stats" className="highlights-btn">
+          📈 Trends
+        </Link>
+      </div>
 
-      {/* Current / Next Meal */}
       {currentMeal && (
         <div className="current-meal-section">
           <h2>Current / Next Meal</h2>
           <div className="meal-card current-meal-card">
-            <div className="meal-title">
-              {currentMeal.type || "Meal"}
-            </div>
+            <div className="meal-title">{currentMeal.type || "Meal"}</div>
             <ul className="meal-items">
               {currentMeal.items.map((item, index) => (
-                <li key={index}>{item}</li>
+                <MealItem key={index} item={item} showVotes={isToday} />
               ))}
             </ul>
           </div>
         </div>
       )}
 
-      {/* Other Meals */}
       {otherMealsList.length > 0 && (
         <div className="other-meals-section">
           <h2>
@@ -218,49 +321,66 @@ export const Menu = () => {
                     : "Menu for the Day"
             }
           </h2>
-          <div className="other-meals-grid">
-            {otherMealsList.map((meal, index) => (
-              <div key={index} className="meal-card">
-                <div className="meal-title">{meal.type}</div>
-                <ul className="meal-items">
-                  {meal.items.map((item, i) => (
-                    <li key={i}>{item}</li>
-                  ))}
-                </ul>
-              </div>
-            ))}
+          <div className={`other-meals-grid ${isExpanded ? 'expanded' : ''}`}>
+            {otherMealsList.map((meal, index) => {
+              // Hide eye icon for the 3rd card if it's visually already expanded (spanning 2 columns)
+              const isSpanningCard = !isExpanded && otherMealsList.length === 3 && index === 2;
+
+              return (
+                <div key={index} className="meal-card">
+                  <div className="card-header">
+                    <div className="meal-title">{meal.type}</div>
+                    {!isSpanningCard && (
+                      <button
+                        className="expand-toggle"
+                        onClick={() => toggleExpand(index)}
+                        title={isExpanded ? "Collapse" : "Expand"}
+                      >
+                        <EyeIcon />
+                      </button>
+                    )}
+                  </div>
+                  <ul className="meal-items">
+                    {meal.items.map((item, i) => (
+                      <MealItem
+                        key={i}
+                        item={item}
+                        showVotes={isToday && (isExpanded || isSpanningCard)}
+                      />
+                    ))}
+                  </ul>
+                </div>
+              );
+            })}
           </div>
         </div>
       )}
 
-      {/* Days of the week */}
       <div className="days-container">
         <div className="days-row">
           {["Monday", "Tuesday", "Wednesday", "Thursday"].map((day) => {
-            const isToday = todayName === day;
+            const isTodayBtn = todayName === day;
             const isSelected = selectedDay === day;
-
             return (
               <button
                 key={day}
                 onClick={() => fetchMenuByDay(day)}
-                className={`day-btn ${isSelected ? 'selected-day' : ''} ${isToday && !isSelected ? 'today-outline' : ''}`}
+                className={`day-btn ${isSelected ? 'selected-day' : ''} ${isTodayBtn && !isSelected ? 'today-outline' : ''}`}
               >
                 {day}
               </button>
             );
           })}
         </div>
-
         <div className="days-row">
           {["Friday", "Saturday", "Sunday"].map((day) => {
-            const isToday = todayName === day;
+            const isTodayBtn = todayName === day;
             const isSelected = selectedDay === day;
             return (
               <button
                 key={day}
                 onClick={() => fetchMenuByDay(day)}
-                className={`day-btn ${isSelected ? 'selected-day' : ''} ${isToday && !isSelected ? 'today-outline' : ''}`}
+                className={`day-btn ${isSelected ? 'selected-day' : ''} ${isTodayBtn && !isSelected ? 'today-outline' : ''}`}
               >
                 {day}
               </button>
@@ -269,7 +389,6 @@ export const Menu = () => {
         </div>
       </div>
 
-      {/* Calendar */}
       <div className="calendar-section">
         <h3>Check Specific Date</h3>
         <input
@@ -282,3 +401,4 @@ export const Menu = () => {
     </div>
   );
 };
+

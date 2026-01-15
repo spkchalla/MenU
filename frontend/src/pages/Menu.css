@@ -53,7 +53,7 @@ h3 {
     -webkit-backdrop-filter: blur(12px);
     border: 1px solid var(--card-border);
     border-radius: 16px;
-    padding: 20px;
+    padding: 16px;
     box-shadow: var(--glass-shadow);
     transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
@@ -96,9 +96,17 @@ h3 {
 .meal-items li {
     font-size: 1rem;
     color: var(--text-secondary);
-    padding-left: 12px;
+    line-height: 1.2;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 6px 0 6px 12px;
     border-left: 2px solid var(--accent-color);
-    line-height: 1.4;
+    margin-bottom: 4px;
+}
+
+.meal-items li:last-child {
+    margin-bottom: 0;
 }
 
 /* Current Meal - Horizontal Layout */
@@ -127,14 +135,12 @@ h3 {
         flex-direction: row;
         /* Horizontal list if space permits, or wrap */
         flex-wrap: wrap;
-        gap: 12px 24px;
+        gap: 8px 16px;
     }
 
     .current-meal-card .meal-items li {
-        border-left: none;
-        border-bottom: 2px solid var(--accent-color);
-        padding-left: 0;
-        padding-bottom: 4px;
+        border-bottom: none;
+        padding-bottom: 6px;
     }
 }
 
@@ -324,4 +330,140 @@ h3 {
 .back-btn:hover {
     background: var(--accent-color);
     color: white;
+}
+
+.menu-top-actions {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    margin-bottom: 24px;
+}
+
+@media (max-width: 480px) {
+    .menu-top-actions {
+        flex-direction: column;
+        gap: 12px;
+        align-items: stretch;
+    }
+}
+
+.highlights-btn {
+    background: rgba(56, 189, 248, 0.08);
+    border: 1px solid rgba(56, 189, 248, 0.4);
+    color: var(--accent-color);
+    padding: 8px 14px;
+    border-radius: 10px;
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 0.9rem;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    transition: all 0.2s ease;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    margin-left: auto;
+}
+
+.highlights-btn:hover {
+    background: rgba(56, 189, 248, 0.15);
+    border-color: var(--accent-color);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(56, 189, 248, 0.2);
+}
+
+.highlights-btn:active {
+    transform: translateY(0);
+}
+
+/* Expansion & Voting Styles */
+
+.other-meals-grid.expanded {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.meal-card {
+    position: relative;
+    overflow: hidden;
+}
+
+.card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 8px;
+}
+
+.card-header .meal-title {
+    margin-bottom: 0;
+}
+
+.expand-toggle {
+    background: transparent;
+    border: none;
+    color: var(--text-secondary);
+    cursor: pointer;
+    padding: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s;
+    border-radius: 50%;
+}
+
+.expand-toggle:hover {
+    background: rgba(255, 255, 255, 0.1);
+    color: var(--accent-color);
+}
+
+.item-content {
+    flex: 1;
+    margin-right: 8px;
+    /* Give space between text and gadgets */
+}
+
+.vote-actions {
+    display: flex;
+    gap: 4px;
+    align-items: center;
+}
+
+.vote-btn {
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    font-size: 1rem;
+    padding: 2px 4px;
+    border-radius: 6px;
+    transition: all 0.2s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    filter: grayscale(1) opacity(0.5);
+}
+
+.vote-btn:hover {
+    background: rgba(255, 255, 255, 0.1);
+    transform: scale(1.1);
+}
+
+.vote-btn.active {
+    filter: none;
+    opacity: 1;
+    background: rgba(255, 255, 255, 0.05);
+    box-shadow: 0 0 10px rgba(56, 189, 248, 0.2);
+}
+
+/* Specific to Current Meal Card */
+.current-meal-card .meal-items li {
+    padding: 6px 0 6px 12px;
+}
+
+@media (max-width: 480px) {
+    .vote-btn {
+        font-size: 0.95rem;
+        padding: 2px;
+    }
 }
