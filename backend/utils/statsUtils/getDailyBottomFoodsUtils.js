@@ -46,17 +46,18 @@ export const bottomThreeFoods = async() =>{
                             100,
                         ],
                     },
+                    score: { $subtract: ["$likes", "$dislikes"] },
                 },
             },
 
-    //         // 4️⃣ Ignore low-sample foods
+            // 4️⃣ Ignore low-sample foods
     //   {
     //     $match: { totalVotes: { $gte: 5 } },
     //   },
 
-      // Sort by LIKE % (worst first)
+      // Sort by score (worst first) and then like %
       {
-        $sort: { likePercentage: 1 },
+        $sort: { score: 1, likePercentage: 1 },
       },
 
       // Take bottom 3
@@ -90,6 +91,7 @@ export const bottomThreeFoods = async() =>{
           likes: 1,
           dislikes: 1,
           totalVotes: 1,
+          score: 1,
           likePercentage: { $round: ["$likePercentage", 1] },
         },
       },

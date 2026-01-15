@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 import axios from "axios";
 import "./Menu.css"; // Import the new CSS
 
@@ -179,12 +180,18 @@ export const Menu = () => {
 
   return (
     <div className="menu-container">
-      {/* Back to Today Button */}
-      {(selectedDay || selectedDate) && (
-        <button onClick={resetToToday} className="back-btn">
-          &larr; Back to Today's Menu
-        </button>
-      )}
+      <div className="menu-top-actions">
+        {/* Back to Today Button */}
+        {(selectedDay || selectedDate) && (
+          <button onClick={resetToToday} className="back-btn">
+            &larr; Back to Today's Menu
+          </button>
+        )}
+
+        <Link to="/stats" className="highlights-btn">
+          📈 Trends
+        </Link>
+      </div>
 
       {/* Current / Next Meal */}
       {currentMeal && (

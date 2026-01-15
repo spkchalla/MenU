@@ -41,14 +41,14 @@ export const topFiveFoods = async () => {
           score: { $subtract: ["$likes", "$dislikes"] },
         },
       },
-      // // 4️⃣ Optional: ignore low-sample foods
-      //   {
-      //     $match: { totalVotes: { $gte: 5 } },
-      //   },
-
-        //  Sort by LIKE %
+      // 4️⃣ Optional: ignore low-sample foods
         {
-          $sort: { likePercentage: -1 },
+          $match: { totalVotes: { $gte: 5 } },
+        },
+
+        //  Sort by score (likes - dislikes) and then like %
+        {
+          $sort: { score: -1, likePercentage: -1 },
         },
 
         // Limit to top 5
@@ -80,8 +80,8 @@ export const topFiveFoods = async () => {
           likes: 1,
           dislikes: 1,
           totalVotes: 1,
-          likePercentage: { $round: ["$likePercentage", 1] },
           score: 1,
+          likePercentage: { $round: ["$likePercentage", 1] },
         },
       },
     ]);
