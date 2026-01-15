@@ -21,9 +21,16 @@ export const castVoteUtil = async({userId, foodName, voteType}) =>{
 
     const foodId = toFoodId(foodName);
 
-    const identity = await VoteIdentity.findOne({userId});
+    let identity = await VoteIdentity.findOne({userId});
 
-    if(!identity) throw new Error("Voting Identity not found");
+    if(!identity) {
+        const { generateVotingId } = await import("./generateVotingIdUtils.js");
+        const votingId = await generateVotingId();
+        identity = await VoteIdentity.create({
+            userId,
+            votingId,
+        });
+    }
 
     // Rigorous Check: Does the menu exist?
     const menu = await WeeklyMenu.findById(menuId);
