@@ -39,7 +39,7 @@ export const createUserAccount = async(registrationData) =>{
 
     });
 
-    //return newUser;
+    return newUser;
 
     }catch(err){
         throw new Error("Error registering User:" + err.message);
