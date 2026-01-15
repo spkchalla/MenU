@@ -51,9 +51,9 @@ export const bottomThreeFoods = async() =>{
             },
 
             // 4️⃣ Ignore low-sample foods
-    //   {
-    //     $match: { totalVotes: { $gte: 5 } },
-    //   },
+       {
+         $match: { totalVotes: { $gte: 5 } },
+       },
 
       // Sort by score (worst first) and then like %
       {
