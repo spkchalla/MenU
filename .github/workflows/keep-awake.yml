@@ -1,21 +1,14 @@
-name: Keep APIs Awake
+name: Keep Render App Awake
 
 on:
   schedule:
-    - cron: "* * * * *"   # every 1 minute
-  workflow_dispatch:
+    - cron: "*/10 * * * *"   # every 10 minutes
+  workflow_dispatch:        # allows manual runs
 
 jobs:
   ping:
     runs-on: ubuntu-latest
-    timeout-minutes: 2
-
     steps:
-      - name: Ping multiple APIs
+      - name: Ping Render service
         run: |
-          echo "Pinging APIs at $(date)"
-          
-          curl -s https://api-1.onrender.com/ > /dev/null
-          curl -s https://api-2.onrender.com/ > /dev/null
-          curl -s https://api-3.onrender.com/ > /dev/null
-          # curl -s https://api-4.onrender.com/ > /dev/null
+          curl -s https://api-1.onrender.com/api/menu/otherMeals > /dev/null
