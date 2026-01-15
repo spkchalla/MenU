@@ -69,7 +69,7 @@ export const updatePassword = async(req, res) =>{
 export const updateUserPreference = async(req, res) =>{
 
     try{
-        const userId = req.user.id;
+        const userId = req.user.userId;
         const {allowPersonalization} = req.body;
         const newPref = await changeUserPreference(userId, allowPersonalization);
         res.status(200).json({message: `Updated the user preference for personalization to ${newPref}`});
