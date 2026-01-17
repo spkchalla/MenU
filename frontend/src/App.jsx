@@ -14,6 +14,7 @@ import { ThemeProvider } from "./context/ThemeContext";
 
 import "./App.css";
 import { Stats } from "./pages/Stats";
+import { InstallGuide } from "./pages/InstallGuide";
 
 const Layout = ({ children }) => {
   return (
@@ -38,7 +39,8 @@ const App = () => {
           <Route path="/admin/update-menu" element={<UpdateMenu />} />
           <Route path="/admin/approve" element={<ApproveAdmin />} />
           <Route path="/user/dashboard" element={<UserDashboard />} />
-          <Route path="/stats" element={<Stats/>}></Route>
+          <Route path="/stats" element={<Stats />}></Route>
+          <Route path="/install" element={<InstallGuide />} />
         </Routes>
 
       </Layout>
