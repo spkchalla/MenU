@@ -289,7 +289,10 @@ export const Menu = () => {
           </button>
         )}
         <Link to="/stats" className="highlights-btn">
-          📈 Trends
+          Trends
+        </Link>
+        <Link to="/install" className="install-btn">
+          📲 How to install the app
         </Link>
       </div>
 

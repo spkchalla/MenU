@@ -33,7 +33,7 @@ const Header = () => {
   return (
     <header className="app-header">
       <div className="header-content">
-        <a href="/" className="logo">MenU</a>
+        <Link to="/" className="logo">MenU</Link>
 
         <div className="header-actions">
           {isAuthenticated && (
