@@ -27,7 +27,7 @@ const Footer = () => {
         </div>
 
         <div className="disclaimer">
-          for MU, but using no MU resources
+          for MU, by student of MU
         </div>
       </div>
     </footer>
