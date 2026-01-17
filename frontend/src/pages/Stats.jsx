@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 import axios from "axios";
 import "./Stats.css";
 
@@ -58,6 +59,9 @@ export const Stats = () => {
 
     return (
         <div className="stats-container">
+            <Link to="/" className="stats-back-btn">
+                &larr; Back
+            </Link>
             <header>
                 <h1 className="stats-header">Daily Highlights</h1>
                 <p className="stats-subtitle">What's trending in the mess today</p>
