@@ -54,6 +54,9 @@ export const Login = () => {
 
   return (
     <div className="auth-container">
+      <Link to="/" className="auth-back-btn">
+        &larr; Back
+      </Link>
       <div className="auth-card">
         <h2>Welcome Back</h2>
         <p className="auth-subtitle">Sign in to manage your menu</p>
