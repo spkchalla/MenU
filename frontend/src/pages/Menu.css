@@ -557,3 +557,19 @@ h3 {
     order: -1;
     /* Ensure it comes first visually if needed, though DOM order should handle it */
 }
+/* Full Width Back to Today Button */
+.full-width-back-btn {
+    width: 100%;
+    margin-bottom: 24px;
+    /* Space between this and the content below */
+    justify-content: center;
+    padding: 12px;
+    font-size: 1rem;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid var(--accent-color);
+}
+
+.full-width-back-btn:hover {
+    background: var(--accent-color);
+    color: white;
+}

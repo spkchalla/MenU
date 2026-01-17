@@ -283,17 +283,20 @@ export const Menu = () => {
   return (
     <div className="menu-container">
       <div className="menu-top-actions">
-        {(selectedDay || selectedDate) && (
-          <button onClick={resetToToday} className="back-btn">
+        {selectedDay || selectedDate ? (
+          <button onClick={resetToToday} className="back-btn full-width-back-btn">
             &larr; Back to Today's Menu
           </button>
+        ) : (
+          <>
+            <Link to="/stats" className="highlights-btn">
+              Trends
+            </Link>
+            <Link to="/install" className="install-btn">
+              📲 How to install the app
+            </Link>
+          </>
         )}
-        <Link to="/stats" className="highlights-btn">
-          Trends
-        </Link>
-        <Link to="/install" className="install-btn">
-          📲 How to install the app
-        </Link>
       </div>
 
       {currentMeal && (
