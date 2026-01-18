@@ -42,8 +42,8 @@ const Header = () => {
                 Dashboard
               </Link>
             ) : (
-              <Link to="/user/dashboard" className="nav-link" style={{ display: 'inline-block' }}>
-                Admin Request
+              <Link to="/user/dashboard" className="nav-link admin-link" style={{ display: 'inline-block' }}>
+                User Dashboard
               </Link>
             )
           )}
