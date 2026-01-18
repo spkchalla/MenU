@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import axios from 'axios';
 import './Auth.css';
 
@@ -57,6 +57,9 @@ export const UserDashboard = () => {
 
     return (
         <div className="auth-container">
+            <Link to="/" className="auth-back-btn" style={{ position: 'absolute', top: '2rem', left: '2rem' }}>
+                &larr; Back
+            </Link>
             <div className="auth-card" style={{ maxWidth: '500px' }}>
                 <h2>User Dashboard</h2>
                 <p className="auth-subtitle">Manage your account and privileges</p>
