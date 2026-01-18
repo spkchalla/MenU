@@ -236,6 +236,40 @@ export const Menu = () => {
   const todayName = new Date().toLocaleDateString('en-US', { weekday: 'long' });
 
   // -----------------------------
+  // SHARE FUNCTIONALITY
+  // -----------------------------
+
+  const handleShare = async () => {
+    const shareData = {
+      title: 'Check out this menu!',
+      text: 'See what is on the menu today at IIIT Kottayam',
+      url: window.location.href,
+    };
+
+    try {
+      if (navigator.share) {
+        await navigator.share(shareData);
+      } else {
+        // Fallback for browsers/devices that don't support navigator.share
+        await navigator.clipboard.writeText(window.location.href);
+        alert("Link copied to clipboard! Share it with your friends.");
+      }
+    } catch (err) {
+      if (err.name !== 'AbortError') {
+        // Ignore user abortion, alert on other errors
+        console.error("Error sharing:", err);
+        alert("Unable to share at the moment. Link copied to clipboard instead.");
+        try {
+          await navigator.clipboard.writeText(window.location.href);
+        } catch (clipboardErr) {
+          // If even clipboard fails, just do nothing or log
+          console.error("Clipboard failed too", clipboardErr);
+        }
+      }
+    }
+  };
+
+  // -----------------------------
   // JSX COMPONENTS
   // -----------------------------
 
@@ -292,8 +326,13 @@ export const Menu = () => {
             <Link to="/stats" className="highlights-btn">
               Trends
             </Link>
+
+            <button onClick={handleShare} className="share-btn">
+              Share 📤
+            </button>
+
             <Link to="/install" className="install-btn">
-              📲 How to install the app
+              📲 Install App
             </Link>
           </>
         )}

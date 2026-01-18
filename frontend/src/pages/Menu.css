@@ -539,24 +539,78 @@ h3 {
         padding: 8px 10px;
         font-size: 0.9rem;
     }
-}/* Refined Layout for Menu Top Actions */
+}
+
+/* Refined Layout for Menu Top Actions */
+/* Refined Layout for Menu Top Actions - 3 items */
 .menu-top-actions {
     justify-content: space-between !important;
-    /* Force spread */
-    gap: 16px;
+    gap: 8px;
 }
 
 .install-btn {
-    /* Make it long but not edge-to-edge on desktop */
-    min-width: 250px;
-    max-width: 400px;
+    min-width: 0;
+    width: auto;
+    font-size: 0.9rem;
+    padding: 8px 12px;
+    flex: 1;
+    white-space: nowrap;
 }
 
-/* Ensure trends is on left */
 .highlights-btn {
+    font-size: 0.9rem;
+    padding: 8px 12px;
+    white-space: nowrap;
     order: -1;
-    /* Ensure it comes first visually if needed, though DOM order should handle it */
 }
+
+.share-btn {
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    color: var(--text-primary);
+    padding: 8px 14px;
+    border-radius: 10px;
+    font-weight: 600;
+    font-size: 0.9rem;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    transition: all 0.2s ease;
+    white-space: nowrap;
+}
+
+.share-btn:hover {
+    background: rgba(255, 255, 255, 0.2);
+    transform: translateY(-1px);
+}
+
+.share-btn:active {
+    transform: translateY(0);
+}
+
+@media (max-width: 480px) {
+    .menu-top-actions {
+        flex-wrap: nowrap;
+        gap: 6px;
+    }
+
+    .install-btn {
+        padding: 8px 10px;
+        font-size: 0.8rem;
+    }
+
+    .share-btn {
+        padding: 8px 10px;
+        font-size: 0.8rem;
+    }
+
+    .highlights-btn {
+        padding: 8px 10px;
+        font-size: 0.8rem;
+    }
+}
+
 /* Full Width Back to Today Button */
 .full-width-back-btn {
     width: 100%;
