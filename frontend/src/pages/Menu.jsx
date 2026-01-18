@@ -242,7 +242,7 @@ export const Menu = () => {
   const handleShare = async () => {
     const shareData = {
       title: 'Check out this menu!',
-      text: 'See what is on the menu today at IIIT Kottayam',
+      text: 'See what is on the menu today at Mahindra University',
       url: window.location.href,
     };
 
