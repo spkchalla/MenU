@@ -15,6 +15,7 @@ import { ThemeProvider } from "./context/ThemeContext";
 import "./App.css";
 import { Stats } from "./pages/Stats";
 import { InstallGuide } from "./pages/InstallGuide";
+import { About } from "./pages/About";
 
 const Layout = ({ children }) => {
   return (
@@ -41,6 +42,7 @@ const App = () => {
           <Route path="/user/dashboard" element={<UserDashboard />} />
           <Route path="/stats" element={<Stats />}></Route>
           <Route path="/install" element={<InstallGuide />} />
+          <Route path="/about" element={<About />} />
         </Routes>
 
       </Layout>

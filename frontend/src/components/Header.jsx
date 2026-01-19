@@ -49,9 +49,12 @@ const Header = () => {
           )}
 
 
+          <Link to="/about" className="nav-link admin-link" style={{ marginRight: '1rem', display: 'inline-block' }}>About</Link>
+
           <button className="theme-toggle" onClick={toggleTheme} aria-label="Toggle Theme">
             {theme === 'dark' ? '☀️' : '🌙'}
           </button>
+
 
           {isAuthenticated ? (
             <button className="auth-btn" onClick={handleLogout}>Sign Out</button>
