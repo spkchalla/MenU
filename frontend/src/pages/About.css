@@ -1,0 +1,173 @@
+.about-container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 2rem 1.5rem;
+    color: var(--text-color);
+    font-family: 'Inter', system-ui, -apple-system, sans-serif;
+    animation: fadeIn 0.5s ease-in-out;
+}
+
+.about-header {
+    text-align: center;
+    margin-bottom: 3rem;
+}
+
+.about-title {
+    font-size: 2.5rem;
+    font-weight: 800;
+    margin-bottom: 1rem;
+    background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    display: inline-block;
+}
+
+.intro-section {
+    background: var(--card-bg);
+    padding: 2rem;
+    border-radius: 16px;
+    box-shadow: 0 4px 20px var(--shadow-color);
+    margin-bottom: 2.5rem;
+    border: 1px solid var(--border-color);
+    line-height: 1.7;
+}
+
+.intro-section p {
+    margin-bottom: 1rem;
+    font-size: 1.05rem;
+}
+
+.intro-section p:last-child {
+    margin-bottom: 0;
+}
+
+/* Accordion Styles */
+.accordion-container {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.accordion-item {
+    background: var(--card-bg);
+    border-radius: 12px;
+    overflow: hidden;
+    border: 1px solid var(--border-color);
+    transition: all 0.3s ease;
+}
+
+.accordion-item:hover {
+    border-color: var(--primary-color);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px var(--shadow-color);
+}
+
+.accordion-header {
+    width: 100%;
+    padding: 1.25rem 1.5rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: none;
+    border: none;
+    cursor: pointer;
+    text-align: left;
+    color: var(--text-color);
+    font-size: 1.1rem;
+    font-weight: 600;
+    transition: background-color 0.2s ease;
+}
+
+.accordion-header:hover {
+    background-color: rgba(var(--primary-rgb), 0.05);
+    /* Assuming primary-rgb exists, if not relying on fallback or opacity */
+    background-color: var(--hover-bg, #f5f5f5);
+    /* Fallback */
+}
+
+/* Dark mode adjustment if needed, assuming variables handle it, but adding a safe check */
+[data-theme='dark'] .accordion-header:hover {
+    background-color: rgba(255, 255, 255, 0.05);
+}
+
+
+.accordion-icon {
+    transition: transform 0.3s ease;
+    font-size: 1.2rem;
+    color: var(--primary-color);
+}
+
+.accordion-item.expanded .accordion-icon {
+    transform: rotate(180deg);
+}
+
+.accordion-content {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.4s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.4s ease;
+    opacity: 0;
+}
+
+.accordion-item.expanded .accordion-content {
+    max-height: 1000px;
+    /* Arbitrary large height for animation */
+    opacity: 1;
+}
+
+.accordion-body {
+    padding: 0 1.5rem 1.5rem 1.5rem;
+    line-height: 1.6;
+    color: var(--text-secondary);
+}
+
+.accordion-body p {
+    margin-bottom: 1rem;
+}
+
+.accordion-body ul {
+    list-style-type: disc;
+    padding-left: 1.5rem;
+    margin-bottom: 1rem;
+}
+
+.accordion-body li {
+    margin-bottom: 0.5rem;
+}
+
+.highlight-text {
+    color: var(--primary-color);
+    font-weight: 600;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Responsive */
+@media (max-width: 600px) {
+    .about-container {
+        padding: 1rem;
+    }
+
+    .about-title {
+        font-size: 2rem;
+    }
+
+    .intro-section {
+        padding: 1.5rem;
+    }
+
+    .accordion-header {
+        padding: 1rem 1.25rem;
+        font-size: 1rem;
+    }
+}
