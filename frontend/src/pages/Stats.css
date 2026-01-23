@@ -151,9 +151,22 @@
 
 .vote-pill {
     background: rgba(255, 255, 255, 0.05);
-    padding: 2px 8px;
-    border-radius: 6px;
+    padding: 4px 10px;
+    border-radius: 8px;
     font-weight: 500;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.like-count {
+    color: #10b981;
+    background: rgba(16, 185, 129, 0.1);
+}
+
+.dislike-count {
+    color: #ef4444;
+    background: rgba(239, 68, 68, 0.1);
 }
 
 .like-percentage {
