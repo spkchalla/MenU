@@ -20,7 +20,12 @@ export const Stats = () => {
                 ...food,
                 score: food.likes - food.dislikes,
                 likePercentage: food.totalVotes > 0 ? Math.round((food.likes / food.totalVotes) * 100) : 0
-            }));
+            })).sort((a, b) => {
+                if (b.totalVotes !== a.totalVotes) {
+                    return b.totalVotes - a.totalVotes;
+                }
+                return b.likes - a.likes;
+            });
             setTrends(trendsData);
         } catch (err) {
             console.error("Error in fetching trends: ", err);
@@ -71,17 +76,12 @@ export const Stats = () => {
                         <div className="ranked-list">
                             {trends.map((food, index) => (
                                 <div key={food.foodId} className="ranked-item">
-                                    <div className="rank">{index + 1}</div>
                                     <div className="food-info">
                                         <div className="food-name">{food.displayName.toLowerCase()}</div>
                                         <div className="food-meta">
-                                            {food.score < 0 ? (
-                                                <span className="like-percentage negative">👎 {Math.round((food.dislikes / food.totalVotes) * 100)}%</span>
-                                            ) : (
-                                                <span className="like-percentage">👍 {food.likePercentage}%</span>
-                                            )}
                                             <span className="vote-pill">{food.totalVotes} votes</span>
-                                            <span className="vote-pill">Score: {food.score}</span>
+                                            <span className="vote-pill like-count">👍 {food.likes}</span>
+                                            <span className="vote-pill dislike-count">👎 {food.dislikes}</span>
                                         </div>
                                     </div>
                                 </div>

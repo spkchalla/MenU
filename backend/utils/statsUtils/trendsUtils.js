@@ -33,7 +33,7 @@ export const mostParticipatedFoods = async () => {
             // sort by participation
 
             {
-                $sort: { totalVotes: -1 },
+                $sort: { totalVotes: -1, likes: -1 },
             },
 
             // limit the results
