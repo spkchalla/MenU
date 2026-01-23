@@ -34,6 +34,13 @@
     gap: 24px;
 }
 
+.stats-grid.single-col {
+    grid-template-columns: 1fr;
+    max-width: 600px;
+    margin: 0 auto;
+    width: 100%;
+}
+
 @media (max-width: 768px) {
     .stats-grid {
         grid-template-columns: 1fr;
@@ -155,6 +162,10 @@
 }
 
 .stats-section.least-liked .like-percentage {
+    color: #ef4444;
+}
+
+.like-percentage.negative {
     color: #ef4444;
 }
 

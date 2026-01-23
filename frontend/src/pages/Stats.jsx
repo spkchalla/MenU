@@ -8,28 +8,23 @@ const api = axios.create({
 });
 
 export const Stats = () => {
-    const [topFoods, setTopFoods] = useState([]);
-    const [bottomFoods, setBottomFoods] = useState([]);
+    const [trends, setTrends] = useState([]);
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState(null);
 
-    const fetchTopFoods = async () => {
+    const fetchTrends = async () => {
         try {
-            const res = await api.get("/stats/topFoods");
-            setTopFoods(res.data.data.foods);
+            const res = await api.get("/stats/trends");
+            // Process data to add calculated fields if needed
+            const trendsData = res.data.data.foods.map(food => ({
+                ...food,
+                score: food.likes - food.dislikes,
+                likePercentage: food.totalVotes > 0 ? Math.round((food.likes / food.totalVotes) * 100) : 0
+            }));
+            setTrends(trendsData);
         } catch (err) {
-            console.error("Error in fetching top foods: ", err);
-            throw new Error("Top foods fetch failed");
-        }
-    }
-
-    const fetchBottomFoods = async () => {
-        try {
-            const res = await api.get("/stats/bottomFoods");
-            setBottomFoods(res.data.data.foods);
-        } catch (err) {
-            console.error("Error in fetching bottom foods: ", err);
-            throw new Error("Bottom foods fetch failed");
+            console.error("Error in fetching trends: ", err);
+            throw new Error("Trends fetch failed");
         }
     }
 
@@ -38,7 +33,7 @@ export const Stats = () => {
             try {
                 setIsLoading(true);
                 setError(null);
-                await Promise.all([fetchTopFoods(), fetchBottomFoods()]);
+                await fetchTrends();
             } catch (err) {
                 setError("Failed to load today's highlights");
             } finally {
@@ -50,7 +45,7 @@ export const Stats = () => {
     }, []);
 
     if (isLoading) {
-        return <h2 className="loading-text">Analyzing today's votes...</h2>;
+        return <h2 className="loading-text">Analyzing today's trends...</h2>;
     }
 
     if (error) {
@@ -63,49 +58,28 @@ export const Stats = () => {
                 &larr; Back
             </Link>
             <header>
-                <h1 className="stats-header">Daily Highlights</h1>
-                <p className="stats-subtitle">What's trending in the mess today</p>
+                <h1 className="stats-header">Daily Trends</h1>
+                <p className="stats-subtitle">Most participated foods in the mess today</p>
             </header>
 
-            <div className="stats-grid">
-                {/* Most Loved Section */}
+            <div className="stats-grid single-col">
                 <div className="stats-section">
-                    <h2>🔥 Most Loved</h2>
-                    {topFoods.length === 0 ? (
-                        <p className="empty-text">No favorites yet! Start voting.</p>
+                    <h2>📈 Trending Now</h2>
+                    {trends.length === 0 ? (
+                        <p className="empty-text">No votes yet! Start voting to see trends.</p>
                     ) : (
                         <div className="ranked-list">
-                            {topFoods.map((food, index) => (
+                            {trends.map((food, index) => (
                                 <div key={food.foodId} className="ranked-item">
                                     <div className="rank">{index + 1}</div>
                                     <div className="food-info">
                                         <div className="food-name">{food.displayName.toLowerCase()}</div>
                                         <div className="food-meta">
-                                            <span className="like-percentage">👍 {food.likePercentage}%</span>
-                                            <span className="vote-pill">{food.totalVotes} votes</span>
-                                            <span className="vote-pill">Score: {food.score}</span>
-                                        </div>
-                                    </div>
-                                </div>
-                            ))}
-                        </div>
-                    )}
-                </div>
-
-                {/* Least Liked Section */}
-                <div className="stats-section least-liked">
-                    <h2>💔 Least Liked</h2>
-                    {bottomFoods.length === 0 ? (
-                        <p className="empty-text">Everyone seems happy today!</p>
-                    ) : (
-                        <div className="ranked-list">
-                            {bottomFoods.map((food, index) => (
-                                <div key={food.foodId} className="ranked-item">
-                                    <div className="rank">{index + 1}</div>
-                                    <div className="food-info">
-                                        <div className="food-name">{food.displayName.toLowerCase()}</div>
-                                        <div className="food-meta">
-                                            <span className="like-percentage">👍 {food.likePercentage}%</span>
+                                            {food.score < 0 ? (
+                                                <span className="like-percentage negative">👎 {Math.round((food.dislikes / food.totalVotes) * 100)}%</span>
+                                            ) : (
+                                                <span className="like-percentage">👍 {food.likePercentage}%</span>
+                                            )}
                                             <span className="vote-pill">{food.totalVotes} votes</span>
                                             <span className="vote-pill">Score: {food.score}</span>
                                         </div>
