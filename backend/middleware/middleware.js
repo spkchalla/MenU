@@ -4,6 +4,10 @@ import UserModel from "../model/userModel.js"
 export const protectUser = async (req, res, next) => {
     let token;
 
+    // Debug Logs
+    // console.log("Middleware Check - Cookies:", req.cookies);
+    // console.log("Middleware Check - Headers:", req.headers.authorization);
+
     if (req.cookies.token) {
         token = req.cookies.token;
     } else if (req.headers.authorization && req.headers.authorization.startsWith("Bearer ")) {

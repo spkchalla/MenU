@@ -14,6 +14,27 @@ const Header = () => {
 
   useEffect(() => {
     const checkAuth = async () => {
+      // 1. Check URL params (Oauth callback fallback)
+      const params = new URLSearchParams(location.search);
+      const urlToken = params.get('token');
+
+      if (urlToken) {
+        const urlRole = params.get('role');
+        const urlId = params.get('id');
+
+        console.log("Oauth Login Detected from URL");
+        localStorage.setItem('menu_token', urlToken);
+        localStorage.setItem('menu_user_role', urlRole);
+        localStorage.setItem('menu_user_id', urlId);
+
+        // Clear URL params to clean up
+        window.history.replaceState({}, document.title, location.pathname);
+
+        setIsAuthenticated(true);
+        setIsAdmin(urlRole === 'admin');
+        return;
+      }
+
       const token = localStorage.getItem('menu_token');
       const role = localStorage.getItem('menu_user_role');
 
@@ -27,6 +48,7 @@ const Header = () => {
         try {
           const res = await api.get('/user/me');
           if (res.data.user) {
+            console.log("Cookie Login Successful");
             setIsAuthenticated(true);
             setIsAdmin(res.data.user.role === 'admin');
             // Sync basic info to localStorage for other components (legacy support)
@@ -34,6 +56,7 @@ const Header = () => {
             localStorage.setItem('menu_user_id', res.data.user._id);
           }
         } catch (err) {
+          console.error("Cookie Auth Check Failed:", err.response ? err.response.data : err.message);
           setIsAuthenticated(false);
           setIsAdmin(false);
         }

@@ -59,10 +59,12 @@ export const googleCallback = async (req, res) => {
       secure: process.env.NODE_ENV === "production",
       sameSite: "lax",
       maxAge: 7 * 24 * 60 * 60 * 1000,
+      path: "/"
     });
 
     const frontendUrl = process.env.FRONTEND_URL || "http://localhost:5173";
-    return res.redirect(frontendUrl);
+    // Pass token as fallback for environments where third-party cookies are blocked or cross-port issues exist
+    return res.redirect(`${frontendUrl}?token=${token}&role=${user.role}&id=${user._id}`);
   } catch (err) {
     return res.status(500).json({
       error: "Google Oauth callback failed",
