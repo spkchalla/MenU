@@ -328,6 +328,12 @@ export const Menu = () => {
         )}
       </div>
 
+      {!isLoading && !error && !currentMeal && otherMealsList.length === 0 && (
+        <div className="no-menu-message">
+          <h2>{isToday ? "Didn't receive the Menu from food sutra" : "No menu found for the asked date"}</h2>
+        </div>
+      )}
+
       {currentMeal && (
         <div className="current-meal-section">
           <h2>Current / Next Meal</h2>

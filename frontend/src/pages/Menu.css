@@ -627,3 +627,13 @@ h3 {
     background: var(--accent-color);
     color: white;
 }
+
+.no-menu-message {
+    text-align: center;
+    padding: 40px 20px;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 16px;
+    border: 1px dashed var(--text-secondary);
+    color: var(--text-secondary);
+    margin-top: 20px;
+}
