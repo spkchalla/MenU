@@ -114,9 +114,33 @@ export const AdminDashboard = () => {
         setIsEditing(false);
     };
 
-    const handleDelete = () => {
-        if (window.confirm("Are you sure you want to delete this menu?")) {
-            alert("Delete functionality placeholder");
+    const handleDelete = async (dateToDelete) => {
+        // If dateToDelete is an event (from direct onClick binding) or undefined, use selectedDate
+        const targetDate = (typeof dateToDelete === 'string' && dateToDelete) ? dateToDelete : selectedDate;
+
+        if (!targetDate) {
+            alert("No menu selected to delete.");
+            return;
+        }
+
+        if (window.confirm(`Are you sure you want to delete the menu for the week of ${targetDate}?`)) {
+            try {
+                await api.delete(`/menu/deleteMenu/${targetDate}`);
+                alert("Menu deleted successfully");
+
+                // Refresh the list
+                const res = await api.get('/menu/allMenus');
+                setMenus(res.data.menus || []);
+
+                // If we deleted the currently selected menu, clear selection and exit edit mode
+                if (selectedDate === targetDate) {
+                    setSelectedDate('');
+                    setIsEditing(false);
+                }
+            } catch (err) {
+                console.error("Error deleting menu:", err);
+                alert("Failed to delete menu: " + (err.response?.data?.message || err.message));
+            }
         }
     };
 
