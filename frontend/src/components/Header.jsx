@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { useTheme } from '../context/ThemeContext';
+import api from '../utils/api';
 import './Header.css';
 
 const Header = () => {
@@ -12,19 +13,44 @@ const Header = () => {
   const [isAdmin, setIsAdmin] = useState(false);
 
   useEffect(() => {
-    const token = localStorage.getItem('menu_token');
-    const role = localStorage.getItem('menu_user_role');
+    const checkAuth = async () => {
+      const token = localStorage.getItem('menu_token');
+      const role = localStorage.getItem('menu_user_role');
 
-    console.log("Header Auth Check - Token:", !!token, "Role:", role);
+      console.log("Header Auth Check - Token:", !!token, "Role:", role);
 
-    setIsAuthenticated(!!token);
-    // Check for 'admin' case-insensitive and handle potential null/undefined
-    setIsAdmin(role && role.toLowerCase() === 'admin');
+      if (token) {
+        setIsAuthenticated(!!token);
+        setIsAdmin(role && role.toLowerCase() === 'admin');
+      } else {
+        // Check with Cookie
+        try {
+          const res = await api.get('/user/me');
+          if (res.data.user) {
+            setIsAuthenticated(true);
+            setIsAdmin(res.data.user.role === 'admin');
+            // Sync basic info to localStorage for other components (legacy support)
+            localStorage.setItem('menu_user_role', res.data.user.role);
+            localStorage.setItem('menu_user_id', res.data.user._id);
+          }
+        } catch (err) {
+          setIsAuthenticated(false);
+          setIsAdmin(false);
+        }
+      }
+    };
+    checkAuth();
   }, [location]);
 
-  const handleLogout = () => {
+  const handleLogout = async () => {
+    try {
+      await api.post('/user/logout');
+    } catch (e) {
+      console.error("Logout error", e);
+    }
     localStorage.removeItem('menu_token');
     localStorage.removeItem('menu_user_role');
+    localStorage.removeItem('menu_user_id');
     setIsAuthenticated(false);
     setIsAdmin(false);
     navigate('/login');

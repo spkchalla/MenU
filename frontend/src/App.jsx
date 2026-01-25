@@ -3,7 +3,7 @@ import { Routes, Route } from "react-router-dom";
 import Header from "./components/Header";
 import Footer from "./components/Footer";
 import { Menu } from "./pages/Menu";
-import { Login } from "./pages/Login";
+import { SignIn } from "./pages/SignIn";
 import { Register } from "./pages/Register";
 import { CreateMenu } from "./pages/CreateMenu";
 import { UpdateMenu } from "./pages/UpdateMenu";
@@ -33,7 +33,7 @@ const App = () => {
       <Layout>
         <Routes>
           <Route path="/" element={<Menu />} />
-          <Route path="/login" element={<Login />} />
+          <Route path="/login" element={<SignIn />} />
           <Route path="/register" element={<Register />} />
           <Route path="/admin/dashboard" element={<AdminDashboard />} />
           <Route path="/admin/create-menu" element={<CreateMenu />} />

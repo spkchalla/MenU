@@ -2,6 +2,7 @@ import express from "express";
 import cors from "cors";
 import mongoose from "mongoose";
 import dotenv from "dotenv";
+import cookieParser from "cookie-parser";
 
 dotenv.config();
 
@@ -13,11 +14,25 @@ import menuRouter from "./routes/menuRoutes.js";
 import userRouter from "./routes/userRoutes.js";
 import voteRouter from "./routes/voteRoutes.js";
 import statsRouter from "./routes/statsRouter.js";
+import authRoutes from "./routes/authRoutes.js";
 import https from "https";
 
 const app = express();
-app.use(cors());
+const allowedOrigins = [
+  "http://localhost:5173",
+  "http://localhost:5174",
+  "https://men-u-7es9.vercel.app",
+  process.env.FRONTEND_URL
+].filter(Boolean);
+
+app.use(cors({
+  origin: allowedOrigins,
+  credentials: true
+}));
+
+console.log("CORS enabled for origins:", allowedOrigins);
 app.use(express.json());
+app.use(cookieParser());
 
 // Root route to handle pings and basic health checks
 app.get("/", (req, res) => {
@@ -29,6 +44,7 @@ app.use("/api/menu", menuRouter);
 app.use("/api/user", userRouter);
 app.use("/api/vote", voteRouter);
 app.use("/api/stats", statsRouter);
+app.use("/api/auth", authRoutes);
 
 // Self-pinging logic to keep the Render instance from spinning down
 const RENDER_URL = "https://menu-4p83.onrender.com";
@@ -65,8 +81,8 @@ process.on('unhandledRejection', (err) => {
 
 const PORT = process.env.PORT || 5000;
 
-app.listen(PORT, ()=>{
-    console.log("Server running on port 5000");
+app.listen(PORT, () => {
+  console.log("Server running on port 5000");
 });
 
 export default app;

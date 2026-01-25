@@ -1,41 +1,46 @@
 import jwt from "jsonwebtoken"
 import UserModel from "../model/userModel.js"
 
-export const protectUser = async(req, res, next) =>{
-    const authHeader = req.headers.authorization;
+export const protectUser = async (req, res, next) => {
+    let token;
 
-    if(!authHeader || !authHeader.startsWith("Bearer ")){
-        return res.status(401).json({message: "No token provided"});
+    if (req.cookies.token) {
+        token = req.cookies.token;
+    } else if (req.headers.authorization && req.headers.authorization.startsWith("Bearer ")) {
+        token = req.headers.authorization.split(" ")[1];
     }
 
-    const token = authHeader.split(" ")[1];
-
-    try{
+    try {
         const decoded = jwt.verify(token, process.env.JWT_SECRET);
         req.user = decoded;
         next();
-    }catch(err){
-       return res.status(401).json({message: "Unauthorized"}); 
+    } catch (err) {
+        return res.status(401).json({ message: "Unauthorized" });
     }
 };
 
-export const protectAdmin = async(req, res, next) =>{
-    const authHeader = req.headers.authorization;
+export const protectAdmin = async (req, res, next) => {
+    let token;
 
-    if(!authHeader || !authHeader.startsWith("Bearer ")){
-        return res.status(401).json({message: "No token provided"});
+    if (req.cookies.token) {
+        token = req.cookies.token;
+    } else if (req.headers.authorization && req.headers.authorization.startsWith("Bearer ")) {
+        token = req.headers.authorization.split(" ")[1];
     }
-    const token = authHeader.split(" ")[1];
 
-    try{
-        
+    if (!token) {
+        return res.status(401).json({ message: "No token provided" });
+    }
+
+    try {
+
         const decoded = jwt.verify(token, process.env.JWT_SECRET);
-        if(decoded.role !== "admin"){
-            return res.status(403).json({message: "Admin Access required"});
+        if (decoded.role !== "admin") {
+            return res.status(403).json({ message: "Admin Access required" });
         }
         req.user = decoded;
         next();
-    }catch(err){
-        return res.status(403).json({messsage: "Invalid or expired token"});
+    } catch (err) {
+        return res.status(403).json({ messsage: "Invalid or expired token" });
     }
 };

@@ -4,15 +4,9 @@ import axios from "axios";
 import "./Menu.css";
 
 // axios instance with env-based base URL
-const api = axios.create({
-  baseURL: import.meta.env.VITE_API_BASE_URL || 'http://localhost:5000/api',
-});
+import api from "../utils/api";
 
-// Helper for Auth Headers
-const getAuthConfig = () => {
-  const token = localStorage.getItem('menu_token');
-  return token ? { headers: { Authorization: `Bearer ${token}` } } : null;
-};
+
 
 // Simple Eye SVG Icon
 const EyeIcon = ({ outlined = true }) => (
@@ -66,10 +60,8 @@ export const Menu = () => {
   };
 
   const fetchUserVotes = async () => {
-    const config = getAuthConfig();
-    if (!config) return;
     try {
-      const res = await api.get("/vote/myTodayVotes", config);
+      const res = await api.get("/vote/myTodayVotes");
       const votesMap = {};
       res.data.votes.forEach(v => {
         // Note: backend might return foodId, but we need to match it to foodName in UI
@@ -85,15 +77,8 @@ export const Menu = () => {
   };
 
   const handleVote = async (foodName, voteType) => {
-    const config = getAuthConfig();
-    if (!config) {
-      alert("Please login to vote!");
-      navigate("/login");
-      return;
-    }
-
     try {
-      const res = await api.post("/vote/castVote", { foodName, voteType }, config);
+      const res = await api.post("/vote/castVote", { foodName, voteType });
       if (res.data.success) {
         // Update local state
         const votedVote = res.data.data;
@@ -103,7 +88,12 @@ export const Menu = () => {
         }));
       }
     } catch (err) {
-      alert(err.response?.data?.message || "Error casting vote");
+      if (err.response && err.response.status === 401) {
+        alert("Please login to vote!");
+        navigate("/login");
+      } else {
+        alert(err.response?.data?.message || "Error casting vote");
+      }
     }
   };
 
