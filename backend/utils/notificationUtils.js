@@ -35,7 +35,7 @@ export const updateNotificationUtil = async (notificationId, updates) => {
         const updatedNotification = await notificationModel.findByIdAndUpdate(
             notificationId,
             updateFields,
-            { new: true }
+            { new: true, runValidators: true }
         );
 
         if (!updatedNotification) {
