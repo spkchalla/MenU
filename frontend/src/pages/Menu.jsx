@@ -43,6 +43,10 @@ export const Menu = () => {
       setCurrentMeal(res.data.meal);
       setError(null);
     } catch (err) {
+      if (err.response && err.response.status === 404) {
+        setCurrentMeal(null);
+        return;
+      }
       console.error("Error fetching current meal:", err);
       setError("Failed to fetch current meal");
     }
@@ -54,6 +58,10 @@ export const Menu = () => {
       setOtherMeals(res.data.otherMeal);
       setError(null);
     } catch (err) {
+      if (err.response && err.response.status === 404) {
+        setOtherMeals(null);
+        return;
+      }
       console.error("Error fetching other meals:", err);
       setError("Failed to fetch other meals");
     }
@@ -110,6 +118,11 @@ export const Menu = () => {
       setOtherMeals(res.data.mealOfThisDay);
       setError(null);
     } catch (err) {
+      if (err.response && err.response.status === 404) {
+        setOtherMeals(null);
+        setError(null);
+        return;
+      }
       setError("Failed to fetch day menu");
     } finally {
       setIsLoading(false);
@@ -128,6 +141,11 @@ export const Menu = () => {
       setOtherMeals(res.data.menu);
       setError(null);
     } catch (err) {
+      if (err.response && err.response.status === 404) {
+        setOtherMeals(null);
+        setError(null);
+        return;
+      }
       setError("Failed to fetch menu for this date");
     } finally {
       setIsLoading(false);

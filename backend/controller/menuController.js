@@ -46,6 +46,9 @@ export const getSpecificMenu = async (req, res) => {
         menu: specificDayMenu,
       });
   } catch (err) {
+    if (err.message.includes("not found")) {
+      return res.status(404).json({ message: "Menu not found for this date" });
+    }
     res.status(500).json({ message: "Failed to fetch menu, Server Error" });
   }
 };
@@ -72,6 +75,9 @@ export const currentMeal = async (req, res) => {
       meal,
     });
   } catch (err) {
+    if (err.message.includes("not found")) {
+      return res.status(404).json({ message: "Current meal not found" });
+    }
     res.status(500).json({
       message: "Couldn't fetch current meal: Server error",
       error: err.message,
@@ -88,6 +94,9 @@ export const otherMeals = async (req, res) => {
       otherMeal,
     });
   } catch (err) {
+    if (err.message.includes("not found")) {
+      return res.status(404).json({ message: "Other meals not found" });
+    }
     res.status(500).json({
       message: "Couldn't fetch other meals: Server error",
       error: err.message,
@@ -110,6 +119,9 @@ export const specificDayMenu = async (req, res) => {
       mealOfThisDay,
     });
   } catch (err) {
+    if (err.message.includes("not found")) {
+      return res.status(404).json({ message: "Menu not found for this day" });
+    }
     res.status(500).json({
       message: "Failed to fetch the menu :" + err.message,
     });
@@ -122,14 +134,14 @@ export const updateWeeklyMenu = async (req, res) => {
     const eniterNewMenu = req.body;
 
     const updatedMenu = await WeeklyMenu.findOneAndUpdate(
-      {weekStartDate: weekStartDate},
-        eniterNewMenu,
+      { weekStartDate: weekStartDate },
+      eniterNewMenu,
       { new: true }
     );
-    if(!updatedMenu) throw new Error("Menu not found");
-    res.status(200).json({ message: "Menu updated Successfully." , menu: updatedMenu});
+    if (!updatedMenu) throw new Error("Menu not found");
+    res.status(200).json({ message: "Menu updated Successfully.", menu: updatedMenu });
   } catch (err) {
-    res.status(500).json({ message: "Failed to update the Menu"  + err.message });
+    res.status(500).json({ message: "Failed to update the Menu" + err.message });
   }
 };
 
@@ -152,8 +164,8 @@ export const deleteWeeklyMenu = async (req, res) => {
     const deleteMenu = await WeeklyMenu.findOneAndDelete({
       weekStartDate: weekStartDate,
     });
-    if(!deleteMenu) throw new Error("Menu not found to delete");
-    res.status(200).json({ message: "Menu deletd Successfully"});
+    if (!deleteMenu) throw new Error("Menu not found to delete");
+    res.status(200).json({ message: "Menu deletd Successfully" });
   } catch (err) {
     res.status(500).json({ message: "Failed to delete Menu" + err.message });
   }
