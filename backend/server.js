@@ -15,6 +15,7 @@ import userRouter from "./routes/userRoutes.js";
 import voteRouter from "./routes/voteRoutes.js";
 import statsRouter from "./routes/statsRouter.js";
 import authRoutes from "./routes/authRoutes.js";
+import notificationRouter from "./routes/notificationRoutes.js";
 import https from "https";
 
 const app = express();
@@ -45,7 +46,7 @@ app.use("/api/user", userRouter);
 app.use("/api/vote", voteRouter);
 app.use("/api/stats", statsRouter);
 app.use("/api/auth", authRoutes);
-
+app.use("/api/noti", notificationRouter);
 // Self-pinging logic to keep the Render instance from spinning down
 const RENDER_URL = "https://menu-4p83.onrender.com";
 setInterval(() => {
