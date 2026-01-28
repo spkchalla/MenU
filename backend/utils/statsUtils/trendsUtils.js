@@ -38,9 +38,9 @@ export const mostParticipatedFoods = async () => {
 
             // limit the results
 
-            {
-                $limit: 10,
-            },
+            // {
+            //     $limit: 10,
+            // },
 
             // join food meta data
 
