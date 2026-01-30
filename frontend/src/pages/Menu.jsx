@@ -90,10 +90,21 @@ export const Menu = () => {
       if (res.data.success) {
         // Update local state
         const votedVote = res.data.data;
-        setUserVotes(prev => ({
-          ...prev,
-          [votedVote.foodId]: votedVote.voteType
-        }));
+        const fallbackFoodId = toFoodIdLocal(foodName);
+        const foodIdKey = votedVote?.foodId || fallbackFoodId;
+
+        setUserVotes(prev => {
+          const next = { ...prev };
+
+          if (votedVote?.voteType === null) {
+            
+            delete next[foodIdKey];
+            return next;
+          }
+
+          next[foodIdKey] = votedVote?.voteType;
+          return next;
+        });
       }
     } catch (err) {
       if (err.response && err.response.status === 401) {

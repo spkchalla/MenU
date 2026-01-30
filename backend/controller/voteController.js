@@ -8,8 +8,8 @@ export const castVote = async(req, res) =>{
         const {foodName, voteType} = req.body;
   
         const vote = await castVoteUtil({userId, foodName, voteType});
-
-        res.status(200).json({success: true, data: vote, message: "Vote cast Successfully"});
+const message = vote.voteType === null ? "Vote removed successfully" : "Vote cast successfully";
+res.status(200).json({success: true, data: vote, message});
     }catch(err){
         res.status(400).json({success: false, message: "Error in casting vote: " + err.message});
     }

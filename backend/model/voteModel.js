@@ -19,7 +19,7 @@ const voteSchema = new mongoose.Schema({
         },
         voteType: {
             type: String,
-            enum: ["like", "dislike"],
+           enum: ["like", "dislike", null],
             required: true,
         },
         voteDate: {
