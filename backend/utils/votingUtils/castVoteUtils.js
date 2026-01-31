@@ -61,17 +61,19 @@ export const castVoteUtil = async({userId, foodName, voteType}) =>{
 
     const votingId = identity.votingId;
     
-    const existingVote = await Vote.findOne({votingId, foodId, menuId, voteDate});
-    if(existingVote){
-        if(existingVote.voteType === voteType){
-            return existingVote; // this is already the same thing he voted previously
-        }else{
-            existingVote.voteType = voteType; // Here I am toggling the vote
-
-            await existingVote.save();
-            return existingVote;
-        }
+   const existingVote = await Vote.findOne({votingId, foodId, menuId, voteDate});
+if(existingVote){
+    if(existingVote.voteType === voteType){
+        
+        await Vote.deleteOne({_id: existingVote._id});
+        return { voteType: null, message: "Vote removed" };
+    }else{
+        
+        existingVote.voteType = voteType;
+        await existingVote.save();
+        return existingVote;
     }
+}
     const vote = await Vote.create({
         votingId,
         foodId,
