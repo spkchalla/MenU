@@ -40,7 +40,7 @@ export const Stats = () => {
                 setError(null);
                 await fetchTrends();
             } catch (err) {
-                setError("Failed to load today's highlights");
+                setError("Failed to load highlights");
             } finally {
                 setIsLoading(false);
             }
@@ -50,7 +50,7 @@ export const Stats = () => {
     }, []);
 
     if (isLoading) {
-        return <h2 className="loading-text">Analyzing today's trends...</h2>;
+        return <h2 className="loading-text">Analyzing weekly trends...</h2>;
     }
 
     if (error) {
@@ -63,8 +63,8 @@ export const Stats = () => {
                 &larr; Back
             </Link>
             <header>
-                <h1 className="stats-header">Daily Trends</h1>
-                <p className="stats-subtitle">Most participated foods in the mess today</p>
+                <h1 className="stats-header">Weekly Trends</h1>
+                <p className="stats-subtitle">Most participated foods in the mess this week</p>
             </header>
 
             <div className="stats-grid single-col">

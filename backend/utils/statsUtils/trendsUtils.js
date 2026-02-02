@@ -5,11 +5,14 @@ import WeeklyMenu from "../../model/menuModel.js";
 
 export const mostParticipatedFoods = async () => {
     try {
-         const menuId = await WeeklyMenu.findOne({ startDate: { $lte: getISTDateString() }, endDate: { $gte: getISTDateString() } }, { _id: 1 });
+        const weekStart = getCurrentWeekStartDate();
+        const menu = await WeeklyMenu.findOne({ weekStartDate: weekStart }, { _id: 1 });
+
+        if (!menu) return [];
+
         const stats = await Vote.aggregate([
             {
-                $match: { menuId: menuId._id },
-                $match: { voteDate },
+                $match: { menuId: menu._id },
             },
 
             // group by food Id
