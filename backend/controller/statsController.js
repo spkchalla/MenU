@@ -85,7 +85,7 @@ export const getTrends = async (req, res) => {
         if (trends.length === 0) {
             return res.status(200).json({
                 success: true,
-                message: "No votes recorded today.",
+                message: "No votes recorded this week.",
                 data: {
                     foods: [],
                     count: 0,

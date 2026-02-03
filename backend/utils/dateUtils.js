@@ -11,3 +11,15 @@ export const getISTDateString = () =>{
 
     return `${year}-${month}-${day}`; // YYYY-MM-DD
 }
+
+export const getCurrentWeekStartDate = () => {
+    const istDate = getISTDate();
+    const dayOfWeek = istDate.getUTCDay(); // this is to get the day number of the day
+    const daysFromMonday = dayOfWeek === 0 ? 6 : dayOfWeek - 1; // basically this is to mention monday as day1
+    
+    const weekStart = new Date(istDate);
+    weekStart.setUTCDate(istDate.getUTCDate() - daysFromMonday);
+    weekStart.setUTCHours(0, 0, 0, 0); // Set to start of day
+    
+    return weekStart;
+};

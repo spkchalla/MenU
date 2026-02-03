@@ -1,12 +1,18 @@
-import { getISTDateString } from "../dateUtils.js";
+import { getISTDateString, getCurrentWeekStartDate } from "../dateUtils.js";
 import Vote from "../../model/voteModel.js";
+import WeeklyMenu from "../../model/menuModel.js";
+
 
 export const mostParticipatedFoods = async () => {
     try {
-        const voteDate = getISTDateString();
+        const weekStart = getCurrentWeekStartDate();
+        const menu = await WeeklyMenu.findOne({ weekStartDate: weekStart }, { _id: 1 });
+
+        if (!menu) return [];
+
         const stats = await Vote.aggregate([
             {
-                $match: { voteDate },
+                $match: { menuId: menu._id },
             },
 
             // group by food Id
