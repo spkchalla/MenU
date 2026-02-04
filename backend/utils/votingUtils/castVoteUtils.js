@@ -33,6 +33,9 @@ export const castVoteUtil = async ({ userId, foodName, voteType }) => {
     }
 
     const voteDate = getISTDateString();
+    if (!voteDate) {
+        throw new Error("Vote date is invalid");
+    }
 
     const allItemsToday = [
         ...(todayMenuData.breakfast?.items || []),
