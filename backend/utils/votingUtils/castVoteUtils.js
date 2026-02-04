@@ -11,7 +11,9 @@ export const castVoteUtil = async ({ userId, foodName, voteType }) => {
 
     if (!mongoose.Types.ObjectId.isValid(userId)) throw new Error("userId is invalid");
 
-    if (typeof foodName !== 'string') throw new Error("Invalid food name");
+    if (typeof foodName !== 'string' || !foodName.trim())
+        throw new Error("Invalid food name");
+
     const todayMenuData = await getTodayMenu();
     const menuId = todayMenuData.menuId;
 
