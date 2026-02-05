@@ -85,28 +85,46 @@ export const Menu = () => {
   };
 
   const handleVote = async (foodName, voteType) => {
+    const foodId = toFoodIdLocal(foodName);
+    const previousVote = userVotes[foodId];
+
+    // 1. Determine optimistic outcome
+    const newVote = previousVote === voteType ? null : voteType;
+
+    // 2. Update state immediately
+    setUserVotes(prev => {
+      const next = { ...prev };
+      if (newVote === null) delete next[foodId];
+      else next[foodId] = newVote;
+      return next;
+    });
+
     try {
       const res = await api.post("/vote/castVote", { foodName, voteType });
       if (res.data.success) {
-        // Update local state
         const votedVote = res.data.data;
-        const fallbackFoodId = toFoodIdLocal(foodName);
-        const foodIdKey = votedVote?.foodId || fallbackFoodId;
+        const foodIdKey = votedVote?.foodId || foodId;
 
+        // 3. Sync state with server response
         setUserVotes(prev => {
           const next = { ...prev };
-
           if (votedVote?.voteType === null) {
-            
             delete next[foodIdKey];
-            return next;
+          } else {
+            next[foodIdKey] = votedVote?.voteType;
           }
-
-          next[foodIdKey] = votedVote?.voteType;
           return next;
         });
       }
     } catch (err) {
+      // 4. Rollback on failure
+      setUserVotes(prev => {
+        const next = { ...prev };
+        if (previousVote) next[foodId] = previousVote;
+        else delete next[foodId];
+        return next;
+      });
+
       if (err.response && err.response.status === 401) {
         alert("Please login to vote!");
         navigate("/login");
