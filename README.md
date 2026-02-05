@@ -86,6 +86,7 @@ Managing and communicating recurring menus (e.g., for mess halls, cafeterias, or
 For more detailed guides, please refer to:
 *   [Admin Documentation](docs/admin.md)
 *   [User Documentation](docs/users.md)
+*   [Contributor Guide](CONTRIBUTIONS.md)
 
 ## Contributing
 
