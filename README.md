@@ -38,7 +38,7 @@ Managing and communicating recurring menus (e.g., for mess halls, cafeterias, or
 *   **Framework:** Express.js 5
 *   **Database:** MongoDB (Mongoose 9)
 *   **Authentication:** JWT (JSON Web Tokens) & Bcrypt
-*   **AI & OCR:** Google Gemini API, Tesseract.js, PDF.js
+*   **AI:** Google Gemini API
 
 ## Repository Structure
 
