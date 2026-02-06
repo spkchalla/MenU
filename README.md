@@ -67,7 +67,8 @@ The system requires specific environment variables to function. Ensure `GOOGLE_A
     ```
 
 ## Documentation
-
+*   [Overview](docs/overview.md)
+*   [Decisions & Trade-offs](docs/decisons_and_tradeoffs.md)
 *   [Admin Documentation](docs/admin.md)
 *   [User Documentation](docs/users.md)
 *   [Contribution Guidelines](CONTRIBUTIONS.md)
