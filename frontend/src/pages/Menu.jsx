@@ -85,6 +85,13 @@ export const Menu = () => {
   };
 
   const handleVote = async (foodName, voteType) => {
+    const token = localStorage.getItem("menu_token");
+    if (!token) {
+      alert("Please login to vote!");
+      navigate("/login");
+      return;
+    }
+
     const foodId = toFoodIdLocal(foodName);
     const previousVote = userVotes[foodId];
 
@@ -105,7 +112,7 @@ export const Menu = () => {
         const votedVote = res.data.data;
         const foodIdKey = votedVote?.foodId || foodId;
 
-        // 3. Sync state with server response
+        // the below functions syncs the state of the ui which was previously updated 
         setUserVotes(prev => {
           const next = { ...prev };
           if (votedVote?.voteType === null) {
@@ -117,7 +124,7 @@ export const Menu = () => {
         });
       }
     } catch (err) {
-      // 4. Rollback on failure
+      // if sync fails then the previous vote is restored
       setUserVotes(prev => {
         const next = { ...prev };
         if (previousVote) next[foodId] = previousVote;
