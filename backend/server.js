@@ -19,6 +19,9 @@ import notificationRouter from "./routes/notificationRoutes.js";
 import https from "https";
 
 const app = express();
+
+
+
 const allowedOrigins = [
   "http://localhost:5173",
   "http://localhost:5174",
@@ -45,6 +48,14 @@ app.use(cookieParser());
 app.get("/", (req, res) => {
   res.send("MenU Backend is active!");
 });
+
+// Morgan logger middlware to logg http requests on developemnt
+// Terminal output example: GET /tiny 200 2 - 0.188 ms
+
+if (process.env.NODE_ENV === 'development') {
+  app.use(morgan('tiny'));
+}
+
 
 app.use("/api/gemini", geminiRouter);
 app.use("/api/menu", menuRouter);
