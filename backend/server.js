@@ -23,6 +23,8 @@ const allowedOrigins = [
   "http://localhost:5173",
   "http://localhost:5174",
   "https://men-u-7es9.vercel.app",
+  "https://menu-eight-sable.vercel.app/",
+  "https://men-u-f6ez.vercel.app/",
   process.env.FRONTEND_URL
 ].filter(Boolean);
 
