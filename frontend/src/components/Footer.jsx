@@ -1,4 +1,4 @@
-import React from 'react';
+import { Link } from 'react-router-dom';
 import './Footer.css';
 
 const Footer = () => {
@@ -9,20 +9,26 @@ const Footer = () => {
   return (
     <footer className="app-footer">
       <div className="footer-content">
+        <div className="footer-branding">
+          <h3>MenU</h3>
+          <p>Authentication handled via Google OAuth</p>
+        </div>
+
         <div className="footer-links">
-          <a href="mailto:cspk1694@protonmail.com" className="footer-link">Contact Email</a>
+          <Link to="/privacy" className="footer-link">Privacy Policy</Link>
+          <Link to="/terms" className="footer-link">Terms & Conditions</Link>
+          <a href="mailto:cspk1694@protonmail.com" className="footer-link">Contact Support</a>
           <a href="https://github.com/spkchalla/MenU" target="_blank" rel="noopener noreferrer" className="footer-link">GitHub</a>
           <a href="https://buymeachai.ezee.li/spkumar_buymeachai" target="_blank" rel="noopener noreferrer" className="footer-link">Buy me a Chai</a>
         </div>
 
         <div className="footer-info">
           <p>Developed by <a href="https://github.com/spkchalla" target="_blank" rel="noopener noreferrer" className="footer-link-inline">SPKUMAR CHALLA</a></p>
-          <p className="contributors">
-            Contributors:<a href="https://github.com/garvita-d" target="_blank" rel="noopener noreferrer" className="footer-link-inline">Garvita</a>
-          </p>
-          <p className="contributors">
-            Guidance: <a href="https://github.com/Likhith025" target="_blank" rel="noopener noreferrer" className="footer-link-inline">Likhith</a>
-          </p>
+          <div className="contributors-list">
+            <span>Contributors: <a href="https://github.com/garvita-d" target="_blank" rel="noopener noreferrer" className="footer-link-inline">Garvita</a>, <a href="https://github.com/gouthamx67" target="_blank" rel="noopener noreferrer" className="footer-link-inline">Goutham Reddy</a></span>
+            <span className="separator">•</span>
+            <span>Guidance: <a href="https://github.com/Likhith025" target="_blank" rel="noopener noreferrer" className="footer-link-inline">Likhith</a></span>
+          </div>
           <button className="text-btn" onClick={handleAdminRequest}>Request Admin Access</button>
         </div>
 

@@ -15,13 +15,8 @@ export const UserDashboard = () => {
     const [submitting, setSubmitting] = useState(false);
 
     useEffect(() => {
-        const role = localStorage.getItem('menu_user_role');
-        if (role === 'admin') {
-            navigate('/admin/dashboard');
-            return;
-        }
         fetchStatus();
-    }, [navigate]);
+    }, []);
 
     const fetchStatus = async () => {
         try {

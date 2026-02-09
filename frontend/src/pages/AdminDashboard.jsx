@@ -39,7 +39,7 @@ export const AdminDashboard = () => {
             const role = localStorage.getItem('menu_user_role');
 
             if (!token || role !== 'admin') {
-                navigate('/login'); // Redirect if not admin
+                setLoading(false);
                 return;
             }
             setIsAdmin(true);

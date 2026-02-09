@@ -16,6 +16,8 @@ import "./App.css";
 import { Stats } from "./pages/Stats";
 import { InstallGuide } from "./pages/InstallGuide";
 import { About } from "./pages/About";
+import { PrivacyPolicy } from "./pages/PrivacyPolicy";
+import { TermsComponent } from "./pages/Terms";
 
 const Layout = ({ children }) => {
   return (
@@ -28,8 +30,15 @@ const Layout = ({ children }) => {
 };
 
 const App = () => {
+  const isPreview = process.env.VERCEL_ENV === "preview" || window.location.hostname.includes("-git-");
+
   return (
     <ThemeProvider>
+      {isPreview && (
+        <div style={{ background: '#f59e0b', color: '#000', padding: '8px', textAlign: 'center', fontWeight: 'bold' }}>
+          ⚠️ You are viewing a Preview Build. Authentication is disabled.
+        </div>
+      )}
       <Layout>
         <Routes>
           <Route path="/" element={<Menu />} />
@@ -43,6 +52,8 @@ const App = () => {
           <Route path="/stats" element={<Stats />}></Route>
           <Route path="/install" element={<InstallGuide />} />
           <Route path="/about" element={<About />} />
+          <Route path="/privacy" element={<PrivacyPolicy />} />
+          <Route path="/terms" element={<TermsComponent />} />
         </Routes>
 
       </Layout>
