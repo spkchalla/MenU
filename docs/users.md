@@ -1,15 +1,15 @@
 # MenU – User Guide
 
-MenU is a dietary menu management platform built to help users easily view daily and weekly meal plans with zero friction.
+MenU is a dietary menu management platform built to help users easily view daily and weekly meal plans.
 
-This guide explains everything a **regular user (diner)** can do on the platform.
+This guide explains everything a **regular user** can do on the platform.
 
 ---
 
 ## Accessing MenU
 
-MenU is publicly accessible.
-No login or registration is required to view menus.
+*   **Public Access:** Anyone can view the daily and weekly menus without logging in.
+*   **Registered Access:** Creating an account unlocks interactive features like voting and the user dashboard.
 
 ---
 
@@ -18,49 +18,41 @@ No login or registration is required to view menus.
 The Home page acts as the central dashboard for all menu information.
 
 ### Dynamic Meal Detection
-MenU automatically detects the **current system time** and highlights the most relevant meal:
+MenU automatically detects the **current system time** and highlights the most relevant upcoming meal (Breakfast, Lunch, Snacks, or Dinner), ensuring you see what matters right now.
 
-- Breakfast
-- Lunch
-- Snacks
-- Dinner
-
-This ensures users always see what’s being served *right now* without manual selection.
+### Weekly & Date-Based Views
+*   **Weekly View:** Browse the full menu for the current week using the day buttons (Monday → Sunday).
+*   **Date Picker:** Use the calendar to check menus for specific past or future dates.
 
 ---
 
-## Weekly Menu View
+## Interactive Features (Registered Users)
 
-- Buttons labeled **Monday → Sunday** allow users to browse the full menu of the current week.
-- Clicking a day instantly updates the menu view.
-- No page reloads required.
+### Voting
+Express your opinion on specific meal items:
+*   **Like (👍):** Upvote items you enjoy.
+*   **Dislike (👎):** Downvote items you didn't like.
+
+### Statistics
+Visit the **Stats** page to view "Weekly Trends," highlighting the most popular and controversial items based on community votes.
+
+### User Dashboard
+Registered users have access to a personal dashboard where they can:
+*   View account status.
+*   **Request Admin Privileges:** Submit a request to become a menu administrator.
 
 ---
 
-## Date-Based Menu Search
+## What Users *Cannot* Do
 
-- A calendar picker at the bottom of the page lets users:
-  - View past menus
-  - Preview future menus
-- Useful for planning meals in advance or checking history.
+*   Directly modify menu items.
+*   Delete meal entries.
+*   Access admin management tools (unless approved as an admin).
 
----
-
-## 🔍 What Users *Cannot* Do
-
-- Modify menus
-- Add or delete meals
-- Access admin controls
-
-MenU is **read-only by design** for users to ensure data integrity.
+MenU is **read-only** for standard users to ensure data reliability.
 
 ---
 
 ## Summary
 
-MenU prioritizes:
-- Simplicity
-- Speed
-- Zero learning curve
-
-Just open the site and check what’s cooking.
+MenU prioritizes simplicity and speed. Open the site, check what's cooking, and let your voice be heard through voting.

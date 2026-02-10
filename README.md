@@ -1,46 +1,74 @@
-# MenU – Systematic Menu Management
+# MenU
 
-MenU is a full-stack platform designed for managing and viewing dietary menus with ease.
+MenU is a system designed to streamline the lifecycle of institutional dietary schedules. It enforces structural integrity on menu data, transforming human-readable inputs into a persistent, actionable schema for consumption and analysis.
 
-It provides:
-- A clean, public interface for diners
-- A secure admin system for managing menus
-- A scalable backend for future expansion
+## Problem Statement
 
----
+Institutional menu management is typically high-friction, relying on manual data entry and fragmented updates. This results in:
+*   **Operational Inefficiency:** Administrators spend excessive time formatting and broadcasting updates.
+*   **Data rigidness:** Static schedules are difficult to query or analyze for trends.
+*   **Disconnect:** Validating user preferences against served meals is often anecdotal rather than data-driven.
 
-## Features
+MenU resolves this by treating the menu not as a text list, but as a structured data asset, managed by an intelligent ingestion layer.
 
-- Dynamic meal detection based on current time
-- Weekly menu browsing (Monday–Sunday)
-- Date-based menu lookup
-- Admin-controlled menu management
-- React + Vite frontend
-- Express + MongoDB backend
+## System Architecture
 
----
+The project is organized into three control planes:
 
-## Documentation
+### 1. Data Ingestion & Normalization
+The system prioritizes ease of management by offloading improved data structuring to AI.
+*   **Input:** Natural language or simplified menu descriptions.
+*   **Processing:** The **Google Gemini API** acts as the normalization engine, parsing intent and converting raw input into a strict JSON schema.
+*   **Persistence:** Structured data is stored, ensuring consistent query capabilities across dates and meal types.
 
-- User Guide: `docs/user.md`
-- Admin Guide: `docs/admin.md`
-- Contribution Guidelines: `CONTRIBUTING.md`
+### 2. Administrative Control
+*   **Role-Based Access:** Strict separation between unprivileged users and menu administrators.
+*   **Ingestion Oversight:** Administrators review and commit the AI-normalized schedules to the database.
 
----
+### 3. Distribution & Intelligence
+*   **Public Access:** Frictionless, read-only views for end-users.
+*   **Feedback Loop:** Voting signals are aggregated to provide statistical trends on menu performance.
 
-## Installation and Setup
+## Technology Stack
+
+*   **Ingestion / Intelligence:** Google Gemini API
+*   **Persistence:** MongoDB (Mongoose 9)
+*   **Logic:** Node.js / Express.js 5
+*   **Interface:** React 19 (Vite)
+
+## Repository Structure
+
+*   `backend/` - Core business logic and schema definitions.
+*   `frontend/` - Client-side presentation and interaction layer.
+*   `docs/` - Role-specific operational guides.
+
+## Getting Started
 
 ### Prerequisites
+*   Node.js (LTS)
+*   MongoDB instance
+*   **Google Gemini API Key** (Required for menu processing)
 
-Ensure the following are installed on your system:
+### Environment Configuration
+The system requires specific environment variables to function. Ensure `GOOGLE_API_KEY`, `MONGO_URI`, and `JWT_SECRET` are correctly provisioned in the backend `.env` file before startup.
 
-- Node.js (latest stable version)
-- npm (comes with Node.js)
-- MongoDB (local installation or MongoDB Atlas)
+### Installation
+1.  **Backend:**
+    ```bash
+    cd backend
+    npm install
+    npm run dev
+    ```
+2.  **Frontend:**
+    ```bash
+    cd frontend
+    npm install
+    npm run dev
+    ```
 
-Verify installations:
-
-```bash
-node -v
-npm -v
-mongod --version
+## Documentation
+*   [Overview](docs/overview.md)
+*   [Decisions & Trade-offs](docs/decisions_and_tradeoffs.md)
+*   [Admin Documentation](docs/admin.md)
+*   [User Documentation](docs/users.md)
+*   [Contribution Guidelines](CONTRIBUTIONS.md)

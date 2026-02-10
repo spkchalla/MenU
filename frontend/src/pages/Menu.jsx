@@ -380,7 +380,7 @@ export const Menu = () => {
             </button>
 
             <Link to="/install" className="install-btn">
-              📲 Install App
+              📲 Add to Home Screen
             </Link>
           </>
         )}

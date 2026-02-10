@@ -13,12 +13,24 @@ export const InstallGuide = () => {
             </div>
 
             <div className="scroll-hint">
-                <p>Scroll down for instructions 👇</p>
+                <p>Scroll down for iOS / Safari users 👇</p>
             </div>
 
             <div className="video-container">
                 <video
                     src="/installation-guide.mp4"
+                    autoPlay
+                    loop
+                    muted
+                    playsInline
+                    className="install-video"
+                />
+            </div>
+
+            <div className="video-container">
+                <h3 style={{ textAlign: 'center', margin: '20px 0 10px' }}>For ios & safari users</h3>
+                <video
+                    src="/IOS%20add%20to%20home%20screen.mp4"
                     autoPlay
                     loop
                     muted
