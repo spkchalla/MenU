@@ -7,6 +7,7 @@
   --text-primary: #f8fafc;
   --text-secondary: #94a3b8;
   --accent-color: #38bdf8;
+  --accent-color-rgb: 56, 189, 248;
   --accent-gradient: linear-gradient(135deg, #38bdf8 0%, #818cf8 100%);
   --glass-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
   --font-main: 'Outfit', sans-serif;

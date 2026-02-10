@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
+import { isPreviewEnv } from "../utils/env";
 import './Auth.css';
 
 export const Register = () => {
@@ -21,7 +22,10 @@ export const Register = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (process.env.VERCEL_ENV === "preview" || window.location.hostname.includes("-git-")) {
+
+
+    // ... inside component ...
+    if (isPreviewEnv()) {
       setError("Registration is disabled on preview builds. Please use the production site.");
       return;
     }

@@ -5,6 +5,7 @@ import "./Menu.css";
 
 // axios instance with env-based base URL
 import api from "../utils/api";
+import { isPreviewEnv } from "../utils/env";
 
 
 
@@ -82,8 +83,9 @@ export const Menu = () => {
     }
   };
 
+
   const handleGoogleAuth = () => {
-    if (import.meta.env.VITE_VERCEL_ENV === "preview" || window.location.hostname.includes("-git-")) {
+    if (isPreviewEnv()) {
       alert("Authentication is disabled on preview builds. Please use the production site.");
       return;
     }

@@ -1,6 +1,6 @@
 export const isPreviewEnv = () => {
     // Check for VERCEL_ENV environment variable set during build
-    if (typeof process !== 'undefined' && process.env && process.env.VERCEL_ENV === 'preview') {
+    if (import.meta.env.VITE_VERCEL_ENV === 'preview') {
         return true;
     }
 

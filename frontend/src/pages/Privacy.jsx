@@ -9,7 +9,10 @@ export const Privacy = () => {
             color: 'var(--text-primary)', // Assuming these variables exist given other css files
             lineHeight: '1.6'
         }}>
-            <h1 style={{ marginBottom: '24px', borderBottom: '1px solid #ccc', paddingBottom: '16px' }}>Privacy Policy</h1>
+            <h1 style={{ marginBottom: '8px' }}>Privacy Policy</h1>
+            <p style={{ marginBottom: '24px', fontSize: '0.9rem', color: 'var(--text-secondary)', borderBottom: '1px solid #ccc', paddingBottom: '16px' }}>
+                Effective Date: {new Date().toLocaleDateString()}
+            </p>
 
             <p style={{ marginBottom: '16px' }}>We collect the following information:</p>
             <ul style={{ marginLeft: '20px', marginBottom: '24px' }}>
