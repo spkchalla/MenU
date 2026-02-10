@@ -64,16 +64,12 @@ export const googleCallback = async (req, res) => {
 
     const frontendUrl = process.env.FRONTEND_URL || "http://localhost:5173";
     const redirectUrl = `${frontendUrl}?token=${token}&role=${user.role}&id=${user._id}`;
-    console.log("=== OAUTH REDIRECT DEBUG ===");
-    console.log("Process.env.FRONTEND_URL:", process.env.FRONTEND_URL);
-    console.log("Final Redirect URL:", redirectUrl);
-    console.log("============================");
-
     // Pass token as fallback for environments where third-party cookies are blocked or cross-port issues exist
     return res.redirect(redirectUrl);
   } catch (err) {
     return res.status(500).json({
       error: "Google Oauth callback failed",
+      details: err.response?.data || err.message
     });
   }
 };

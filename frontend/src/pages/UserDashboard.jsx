@@ -15,6 +15,20 @@ export const UserDashboard = () => {
     const [submitting, setSubmitting] = useState(false);
 
     useEffect(() => {
+        // Check for token in URL first (OAuth callback scenario)
+        const params = new URLSearchParams(window.location.search);
+        const urlToken = params.get('token');
+        const urlRole = params.get('role');
+        const urlId = params.get('id');
+
+        if (urlToken) {
+            localStorage.setItem('menu_token', urlToken);
+            localStorage.setItem('menu_user_role', urlRole);
+            localStorage.setItem('menu_user_id', urlId);
+            // Clean URL
+            window.history.replaceState({}, document.title, window.location.pathname);
+        }
+
         fetchStatus();
     }, []);
 
