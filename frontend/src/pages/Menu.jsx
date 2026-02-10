@@ -5,7 +5,7 @@ import "./Menu.css";
 
 // axios instance with env-based base URL
 import api from "../utils/api";
-import { isPreviewEnv } from "../utils/env";
+import { isPreviewEnv, isVercelDomain } from "../utils/env";
 
 
 
@@ -85,8 +85,8 @@ export const Menu = () => {
 
 
   const handleGoogleAuth = () => {
-    if (isPreviewEnv()) {
-      alert("Authentication is disabled on preview builds. Please use the production site.");
+    if (isPreviewEnv() || isVercelDomain()) {
+      alert("Authentication is disabled on this domain. Please use mu-menu.in.");
       return;
     }
     window.location.href = `${import.meta.env.VITE_API_BASE_URL || 'http://localhost:5000/api'}/auth/google`;
