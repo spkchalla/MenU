@@ -9,7 +9,7 @@ export const isPreviewEnv = () => {
     // Production URLs are usually project-name.vercel.app or custom domains
     if (typeof window !== 'undefined') {
         const hostname = window.location.hostname;
-        return hostname.includes('-git-') || (hostname.includes('.vercel.app') && !hostname.includes('menu-production')); // Adjust 'menu-production' if known
+        return hostname.includes('-git-');
     }
 
     return false;
@@ -17,5 +17,5 @@ export const isPreviewEnv = () => {
 
 export const getProductionUrl = () => {
     // Replace with your actual production URL
-    return 'https://menu-app.vercel.app';
+    return 'https://mu-menu.in';
 };
