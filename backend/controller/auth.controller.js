@@ -63,11 +63,13 @@ export const googleCallback = async (req, res) => {
     });
 
     const frontendUrl = process.env.FRONTEND_URL || "http://localhost:5173";
+    const redirectUrl = `${frontendUrl}?token=${token}&role=${user.role}&id=${user._id}`;
     // Pass token as fallback for environments where third-party cookies are blocked or cross-port issues exist
-    return res.redirect(`${frontendUrl}?token=${token}&role=${user.role}&id=${user._id}`);
+    return res.redirect(redirectUrl);
   } catch (err) {
     return res.status(500).json({
       error: "Google Oauth callback failed",
+      details: err.response?.data || err.message
     });
   }
 };

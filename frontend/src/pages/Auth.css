@@ -232,3 +232,36 @@
     padding: 0 10px;
     opacity: 0.8;
 }
+
+.auth-section-title {
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--text-primary);
+    margin-bottom: 12px;
+    text-align: left;
+    opacity: 0.9;
+}
+
+.auth-info-box {
+    margin-top: 24px;
+    padding-top: 20px;
+    border-top: 1px solid var(--card-border);
+    text-align: left;
+}
+
+.auth-info-text {
+    font-size: 0.75rem;
+    color: var(--text-secondary);
+    line-height: 1.4;
+    margin-bottom: 8px;
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+    opacity: 0.8;
+}
+
+.auth-info-text::before {
+    content: "•";
+    color: var(--accent-color);
+    font-weight: bold;
+}

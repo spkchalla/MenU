@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
+import { isPreviewEnv } from "../utils/env";
 import './Auth.css';
 
 export const Register = () => {
@@ -21,6 +22,13 @@ export const Register = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+
+    // ... inside component ...
+    if (isPreviewEnv()) {
+      setError("Registration is disabled on preview builds. Please use the production site.");
+      return;
+    }
     setError('');
     setLoading(true);
 
@@ -113,6 +121,9 @@ export const Register = () => {
               placeholder="Create a password"
               required
             />
+            <small style={{ fontSize: '0.75rem', color: 'var(--text-secondary)', marginTop: '4px', display: 'block' }}>
+              Passwords are securely hashed and never stored in plaintext.
+            </small>
           </div>
 
           <div className="form-group">

@@ -39,7 +39,7 @@ export const AdminDashboard = () => {
             const role = localStorage.getItem('menu_user_role');
 
             if (!token || role !== 'admin') {
-                navigate('/login'); // Redirect if not admin
+                setLoading(false);
                 return;
             }
             setIsAdmin(true);
@@ -145,7 +145,20 @@ export const AdminDashboard = () => {
     };
 
     if (loading) return <div className="loading-text">Verifying Access...</div>;
-    if (!isAdmin) return <div className="error-text">Admin Access Required</div>;
+    if (!isAdmin) {
+        return (
+            <div className="error-text" style={{ textAlign: 'center', marginTop: '50px' }}>
+                <h2>Admin Access Required</h2>
+                <p>You do not have permission to view this page.</p>
+                <button onClick={() => navigate('/login')} className="action-btn" style={{ marginTop: '20px' }}>
+                    Go to Login
+                </button>
+                <button onClick={() => navigate('/')} className="link-btn" style={{ marginTop: '10px', display: 'block', margin: '10px auto' }}>
+                    Back to Home
+                </button>
+            </div>
+        );
+    }
 
     return (
         <div className="admin-container">
