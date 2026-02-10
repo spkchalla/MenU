@@ -15,14 +15,6 @@ export const isPreviewEnv = () => {
     return false;
 };
 
-export const isVercelDomain = () => {
-    if (typeof window !== 'undefined') {
-        const hostname = window.location.hostname;
-        return hostname.includes('vercel.app');
-    }
-    return false;
-};
-
 export const getProductionUrl = () => {
     // Replace with your actual production URL
     return 'https://mu-menu.in';

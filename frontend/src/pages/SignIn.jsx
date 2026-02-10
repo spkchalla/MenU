@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import api from '../utils/api';
 import './Auth.css';
-import { isPreviewEnv, isVercelDomain } from "../utils/env";
 
 export const SignIn = () => {
     const navigate = useNavigate();
@@ -17,14 +16,11 @@ export const SignIn = () => {
         setFormData({ ...formData, [e.target.name]: e.target.value });
     };
 
-
-
-    const isPreview = isPreviewEnv();
-    const isVercel = isVercelDomain();
+    const isPreview = process.env.VERCEL_ENV === "preview" || window.location.hostname.includes("-git-");
 
     const handleGoogleLogin = () => {
-        if (isPreview || isVercel) {
-            alert("Authentication is disabled on this domain. Please use mu-menu.in.");
+        if (isPreview) {
+            alert("Authentication is disabled on preview builds. Please use the production site.");
             return;
         }
         // Redirect to backend Google Auth endpoint
@@ -33,8 +29,8 @@ export const SignIn = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        if (isPreview || isVercel) {
-            setError("Authentication is disabled on this domain. Please use mu-menu.in.");
+        if (isPreview) {
+            setError("Authentication is disabled on preview builds. Please use the production site.");
             return;
         }
         setError('');

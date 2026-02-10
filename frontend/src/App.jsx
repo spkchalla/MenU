@@ -18,7 +18,6 @@ import { InstallGuide } from "./pages/InstallGuide";
 import { About } from "./pages/About";
 import { Privacy } from "./pages/Privacy";
 import { TermsComponent } from "./pages/Terms";
-import { isPreviewEnv, isVercelDomain } from "./utils/env";
 
 const Layout = ({ children }) => {
   return (
@@ -30,21 +29,14 @@ const Layout = ({ children }) => {
   );
 };
 
-
-
 const App = () => {
-  const isPreview = isPreviewEnv();
+  const isPreview = process.env.VERCEL_ENV === "preview" || window.location.hostname.includes("-git-");
 
   return (
     <ThemeProvider>
       {isPreview && (
         <div style={{ background: '#f59e0b', color: '#000', padding: '8px', textAlign: 'center', fontWeight: 'bold' }}>
           ⚠️ You are viewing a Preview Build. Authentication is disabled.
-        </div>
-      )}
-      {isVercelDomain() && (
-        <div style={{ background: '#ef4444', color: '#fff', padding: '12px', textAlign: 'center', fontWeight: 'bold' }}>
-          ⚠️ This site has moved. Please use <a href="https://mu-menu.in" style={{ color: '#fff', textDecoration: 'underline' }}>mu-menu.in</a> for the latest version. Authentication is disabled here.
         </div>
       )}
       <Layout>
