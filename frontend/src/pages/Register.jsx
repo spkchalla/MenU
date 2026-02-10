@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
-import { isPreviewEnv } from "../utils/env";
+import { isPreviewEnv, isVercelDomain } from "../utils/env";
 import './Auth.css';
 
 export const Register = () => {
@@ -25,8 +25,8 @@ export const Register = () => {
 
 
     // ... inside component ...
-    if (isPreviewEnv()) {
-      setError("Registration is disabled on preview builds. Please use the production site.");
+    if (isPreviewEnv() || isVercelDomain()) {
+      setError("Registration is disabled on this domain. Please use mu-menu.in.");
       return;
     }
     setError('');
