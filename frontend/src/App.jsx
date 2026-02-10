@@ -16,7 +16,7 @@ import "./App.css";
 import { Stats } from "./pages/Stats";
 import { InstallGuide } from "./pages/InstallGuide";
 import { About } from "./pages/About";
-import { PrivacyPolicy } from "./pages/PrivacyPolicy";
+import { Privacy } from "./pages/Privacy";
 import { TermsComponent } from "./pages/Terms";
 
 const Layout = ({ children }) => {
@@ -52,7 +52,7 @@ const App = () => {
           <Route path="/stats" element={<Stats />}></Route>
           <Route path="/install" element={<InstallGuide />} />
           <Route path="/about" element={<About />} />
-          <Route path="/privacy" element={<PrivacyPolicy />} />
+          <Route path="/privacy" element={<Privacy />} />
           <Route path="/terms" element={<TermsComponent />} />
         </Routes>
 

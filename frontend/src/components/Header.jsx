@@ -22,6 +22,12 @@ const Header = () => {
         const urlRole = params.get('role');
         const urlId = params.get('id');
 
+        console.log("=== HEADER AUTH DEBUG ===");
+        console.log("Full Location:", window.location.href);
+        console.log("Search Params:", location.search);
+        console.log("Token from URL:", urlToken);
+        console.log("=========================");
+
         console.log("Oauth Login Detected from URL");
         localStorage.setItem('menu_token', urlToken);
         localStorage.setItem('menu_user_role', urlRole);
