@@ -26,6 +26,10 @@ const suggestionsSchema =new mongoose.Schema({
     wantToContribute:{
         type:Boolean,
         default: false
+    },
+    isArchived:{
+        type: Boolean,
+        default: false
     }
 
 },{
