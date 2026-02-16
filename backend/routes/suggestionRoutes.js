@@ -26,7 +26,7 @@ suggestionRouter.get("/allSuggestions", getAllSuggestions);
 
 suggestionRouter.get("/getSuggestion", getSuggestion);
 
-suggestionRouter.patch("/banUser/id", banUser);
+suggestionRouter.patch("/banUser/:id", banUser);
 
 suggestionRouter.patch("/archiveSuggestion/:id", archiveSuggestion);
 

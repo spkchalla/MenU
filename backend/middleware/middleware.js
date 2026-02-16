@@ -1,5 +1,4 @@
 import jwt from "jsonwebtoken";
-import UserModel from "../model/userModel.js";
 
 export const protectUser = async (req, res, next) => {
   let token;
@@ -38,7 +37,6 @@ export const protectAdmin = async (req, res, next) => {
 
   try {
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
-    console.log(decoded);
     if (decoded.role !== "admin") {
       return res.status(403).json({ message: "Admin Access required" });
     }

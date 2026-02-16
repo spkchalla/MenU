@@ -1,3 +1,4 @@
+import { bannUserUtil } from "../utils/suggestionUtils/bannUserUtils.js";
 import { createSuggestionUtil } from "../utils/suggestionUtils/createSuggestionUtils.js";
 import { getAllSuggestionsUtil } from "../utils/suggestionUtils/getAllSuggestionsUtils.js";
 
@@ -51,6 +52,26 @@ export const getAllSuggestions = async (req, res) => {
 
 export const getSuggestion = async (req, res) => {};
 
-export const banUser = async (req, res) => {};
+export const banUser = async (req, res) => {
+  try {
+    const userId = req.params.id;
+
+    const bannedUser = await bannUserUtil(userId);
+
+    res.status(200).json({
+      status: "success",
+      data: {
+        user: bannedUser,
+      },
+    });
+  } catch (err) {
+    res.status(400).json({
+      status: "failed",
+      err: {
+        errMsg: err.message,
+      },
+    });
+  }
+};
 
 export const archiveSuggestion = async (req, res) => {};
