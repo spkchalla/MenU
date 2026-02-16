@@ -1,23 +1,26 @@
 import { SuggestionModel } from "../../model/suggestionModel.js";
 
-export const createSuggestionUtil = async (
-  suggestion,
-  type,
-  wantToContribute,
-) => {
+export const createSuggestionUtil = async ({ userId, isBanned, suggestion, type, wantToContribute }) => {
   try {
-    if (!suggestion || !type || ![false, true].includes(wantToContribute)) {
-      throw new Error("Suggestion ,type and want to continue cannot be empty");
+    if (!suggestion || !type) {
+      throw new Error("Suggestion and type cannot be empty");
     }
 
+    if (isBanned) {
+      throw new Error("Action denied: User is banned from making suggestions");
+    }
+
+    let canContribute = ["bug", "feature request"].includes(type) ? wantToContribute : false;
+
     const newSuggestion = await SuggestionModel.create({
+      userId,
       suggestion,
       type,
-      wantToContribute,
+      wantToContribute: canContribute,
     });
 
     return newSuggestion;
   } catch (err) {
-    throw new Error("Could not create suggestion: " + err.message);
+    throw new Error(err.message);
   }
 };
