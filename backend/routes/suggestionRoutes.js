@@ -1,29 +1,34 @@
-const express = require('express');
-import {protectAdmin, protectUser} from "../middleware/middleware.js";
+import express from "express";
+const app = express();
+
+import { protectAdmin, protectUser } from "../middleware/middleware.js";
+
+import {
+  createSuggestion,
+  getAllSuggestions,
+  getSuggestion,
+  banUser,
+  archiveSuggestion,
+} from "../controller/suggestionController.js";
 
 const suggestionRouter = express.Router();
 
-
-
-app.use(protectUser)
+app.use(protectUser);
 
 /** USER ROUTES **/
 
-suggestionRouter.post('/createSuggestion', createSuggestion)
-
+suggestionRouter.post("/createSuggestion", createSuggestion);
 
 /*** ADMIN ROUTES **/
 
-app.use(protectAdmin)
+app.use(protectAdmin);
 
-suggestionRouter.get('/allSuggestions', getAllSuggestions);
+suggestionRouter.get("/allSuggestions", getAllSuggestions);
 
-suggestionRouter.get('/getSuggestion', getSuggestion);
+suggestionRouter.get("/getSuggestion", getSuggestion);
 
-suggestionRouter.patch('/banUser/id', banUser);
+suggestionRouter.patch("/banUser/id", banUser);
 
-suggestionRouter.patch('/archiveSuggestion/:id', archiveSuggestion);
-
-
+suggestionRouter.patch("/archiveSuggestion/:id", archiveSuggestion);
 
 export default suggestionRouter;
