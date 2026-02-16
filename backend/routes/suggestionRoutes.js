@@ -1,5 +1,4 @@
 import express from "express";
-const app = express();
 
 import { protectAdmin, protectUser } from "../middleware/middleware.js";
 
@@ -13,15 +12,15 @@ import {
 
 const suggestionRouter = express.Router();
 
-app.use(protectUser);
+suggestionRouter.use(protectUser);
 
 /** USER ROUTES **/
 
-suggestionRouter.post("/createSuggestion", createSuggestion);
+suggestionRouter.post("/createSuggestion", protectUser, createSuggestion);
 
 /*** ADMIN ROUTES **/
 
-app.use(protectAdmin);
+suggestionRouter.use(protectAdmin);
 
 suggestionRouter.get("/allSuggestions", getAllSuggestions);
 

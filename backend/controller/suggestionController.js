@@ -3,7 +3,6 @@ import { createSuggestionUtil } from "../utils/suggestionUtils/createSuggestionU
 export const createSuggestion = async (req, res) => {
   try {
     const { suggestion, type, wantToContribute } = req.body;
-
     const newSuggestion = await createSuggestionUtil(
       suggestion,
       type,
