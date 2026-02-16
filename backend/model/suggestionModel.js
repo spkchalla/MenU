@@ -41,10 +41,4 @@ const suggestionsSchema = new mongoose.Schema(
 // Useful for admin sorting
 suggestionsSchema.index({ createdAt: -1 });
 
-export const SuggestionModel = mongoose.model(
-  "SuggestionModel",
-  suggestionsSchema,
-);
-
-// module.exports = SuggestionModel;
-// module.exports = SuggestionModel;
+export const SuggestionModel = mongoose.model("SuggestionModel", suggestionsSchema);
