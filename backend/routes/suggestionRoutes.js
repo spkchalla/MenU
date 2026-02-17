@@ -5,7 +5,6 @@ import { protectAdmin, protectUser } from "../middleware/middleware.js";
 import {
   createSuggestion,
   getAllSuggestions,
-  getSuggestion,
   banUser,
   archiveSuggestion,
 } from "../controller/suggestionController.js";
