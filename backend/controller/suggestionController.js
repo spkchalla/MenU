@@ -33,7 +33,7 @@ export const createSuggestion = async (req, res) => {
 
 export const getAllSuggestions = async (req, res) => {
   try {
-    const suggestions = await getAllSuggestionsUtil();
+    const suggestions = await getAllSuggestionsUtil(req.query);
 
     res.status(200).json({
       status: "success",
