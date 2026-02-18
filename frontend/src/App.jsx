@@ -19,6 +19,7 @@ import { About } from "./pages/About";
 import { Privacy } from "./pages/Privacy";
 import { TermsComponent } from "./pages/Terms";
 import { Suggestions } from "./pages/Suggestions";
+import { AdminSuggestionDashboard } from "./pages/AdminSuggestionDashboard";
 
 const Layout = ({ children }) => {
   return (
@@ -57,6 +58,7 @@ const App = () => {
           <Route path="/admin/create-menu" element={<CreateMenu />} />
           <Route path="/admin/update-menu" element={<UpdateMenu />} />
           <Route path="/admin/approve" element={<ApproveAdmin />} />
+          <Route path="/admin/suggestions" element={<AdminSuggestionDashboard />} />
           <Route path="/user/dashboard" element={<UserDashboard />} />
           <Route path="/stats" element={<Stats />}></Route>
           <Route path="/install" element={<InstallGuide />} />
