@@ -10,7 +10,7 @@ export const getAllSuggestionsUtil = async (filters) => {
     }
 
     if (filters.userId) {
-      query.userId = filters.userId;
+      query.userId = filters.userId; // may be overridden below; handled via $and
     }
 
     // name & email does not exist in suggestion collection hence we've
@@ -30,7 +30,13 @@ export const getAllSuggestionsUtil = async (filters) => {
       const users = await UserModel.find(userQuery).select("_id");
       const userIds = users.map((user) => user._id);
 
-      query.userId = { $in: userIds };
+      // Intersect: if a direct userId filter was already set, keep only that user if it's in the set
+      if (query.userId) {
+        query.$and = [{ userId: query.userId }, { userId: { $in: userIds } }];
+        delete query.userId;
+      } else {
+        query.userId = { $in: userIds };
+      }
     }
 
     const suggestions = await SuggestionModel.find(query).populate("userId", "_id name email").select("-__v");
