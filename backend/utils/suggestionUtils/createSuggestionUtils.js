@@ -35,6 +35,8 @@ export const createSuggestionUtil = async ({ userId, suggestion, type, wantToCon
 
     return newSuggestion;
   } catch (err) {
-    throw new Error(err.message);
+    const error = new Error(err.message);
+    error.statusCode = err.statusCode || 500;
+    throw error;
   }
 };
