@@ -2,6 +2,7 @@ import React from "react";
 import { Routes, Route } from "react-router-dom";
 import Header from "./components/Header";
 import Footer from "./components/Footer";
+import ProtectedRoute from "./components/ProtectedRoute";
 import { Menu } from "./pages/Menu";
 import { SignIn } from "./pages/SignIn";
 import { Register } from "./pages/Register";
@@ -54,11 +55,46 @@ const App = () => {
           <Route path="/" element={<Menu />} />
           <Route path="/login" element={<SignIn />} />
           <Route path="/register" element={<Register />} />
-          <Route path="/admin/dashboard" element={<AdminDashboard />} />
-          <Route path="/admin/create-menu" element={<CreateMenu />} />
-          <Route path="/admin/update-menu" element={<UpdateMenu />} />
-          <Route path="/admin/approve" element={<ApproveAdmin />} />
-          <Route path="/admin/suggestions" element={<AdminSuggestionDashboard />} />
+          <Route
+            path="/admin/dashboard"
+            element={
+              <ProtectedRoute>
+                <AdminDashboard />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/admin/create-menu"
+            element={
+              <ProtectedRoute>
+                <CreateMenu />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/admin/update-menu"
+            element={
+              <ProtectedRoute>
+                <UpdateMenu />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/admin/approve"
+            element={
+              <ProtectedRoute>
+                <ApproveAdmin />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/admin/suggestions"
+            element={
+              <ProtectedRoute>
+                <AdminSuggestionDashboard />
+              </ProtectedRoute>
+            }
+          />
           <Route path="/user/dashboard" element={<UserDashboard />} />
           <Route path="/stats" element={<Stats />}></Route>
           <Route path="/install" element={<InstallGuide />} />
