@@ -37,8 +37,14 @@ const allowedOrigins = [
 app.use(
   cors({
     origin: function (origin, callback) {
-      // allow requests with no origin (like mobile apps or curl/postman)
-      if (!origin) return callback(null, true);
+      // In non-production, allow requests with no origin (like mobile apps or curl/postman)
+      // In production, require a valid origin from the allowedOrigins list
+      if (!origin) {
+        if (process.env.NODE_ENV !== "production") {
+          return callback(null, true);
+        }
+        return callback(new Error("CORS blocked: Origin header required in production"), false);
+      }
       if (allowedOrigins.indexOf(origin) === -1) {
         return callback(new Error("CORS blocked"), false);
       }
