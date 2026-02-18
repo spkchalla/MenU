@@ -18,6 +18,7 @@ import { InstallGuide } from "./pages/InstallGuide";
 import { About } from "./pages/About";
 import { Privacy } from "./pages/Privacy";
 import { TermsComponent } from "./pages/Terms";
+import { Suggestions } from "./pages/Suggestions";
 
 const Layout = ({ children }) => {
   return (
@@ -35,7 +36,15 @@ const App = () => {
   return (
     <ThemeProvider>
       {isPreview && (
-        <div style={{ background: '#f59e0b', color: '#000', padding: '8px', textAlign: 'center', fontWeight: 'bold' }}>
+        <div
+          style={{
+            background: "#f59e0b",
+            color: "#000",
+            padding: "8px",
+            textAlign: "center",
+            fontWeight: "bold",
+          }}
+        >
           ⚠️ You are viewing a Preview Build. Authentication is disabled.
         </div>
       )}
@@ -54,8 +63,8 @@ const App = () => {
           <Route path="/about" element={<About />} />
           <Route path="/privacy" element={<Privacy />} />
           <Route path="/terms" element={<TermsComponent />} />
+          <Route path="/suggestions" element={<Suggestions />} />
         </Routes>
-
       </Layout>
     </ThemeProvider>
   );
