@@ -9,7 +9,6 @@ export const createSuggestion = async (req, res) => {
 
     const newSuggestion = await createSuggestionUtil({
       userId: req.user.userId,
-      isBanned: req.user.isBanned,
       suggestion,
       type,
       wantToContribute,
