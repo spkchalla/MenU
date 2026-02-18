@@ -21,7 +21,8 @@ export const createSuggestion = async (req, res) => {
       },
     });
   } catch (error) {
-    res.status(400).json({
+    const statusCode = error.statusCode || 500;
+    res.status(statusCode).json({
       status: "failed",
       err: {
         errMsg: error.message,
@@ -41,7 +42,8 @@ export const getAllSuggestions = async (req, res) => {
       },
     });
   } catch (err) {
-    res.status(400).json({
+    const statusCode = err.statusCode || 500;
+    res.status(statusCode).json({
       status: "failed",
       err: {
         errMsg: err.message,
@@ -63,7 +65,8 @@ export const banUser = async (req, res) => {
       },
     });
   } catch (err) {
-    res.status(400).json({
+    const statusCode = err.statusCode || 500;
+    res.status(statusCode).json({
       status: "failed",
       err: {
         errMsg: err.message,
@@ -83,7 +86,8 @@ export const archiveSuggestion = async (req, res) => {
       },
     });
   } catch (err) {
-    res.status(400).json({
+    const statusCode = err.statusCode || 500;
+    res.status(statusCode).json({
       status: "failed",
       err: {
         errMsg: err.message,

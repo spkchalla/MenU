@@ -6,13 +6,17 @@ import { SuggestionModel } from "../../model/suggestionModel.js";
 export const archiveSuggestionUtil = async (suggestionId) => {
   try {
     if (!mongoose.Types.ObjectId.isValid(suggestionId)) {
-      throw new Error("Invalid suggestion id");
+      const error = new Error("Invalid suggestion id");
+      error.statusCode = 400;
+      throw error;
     }
 
     const suggestion = await SuggestionModel.findById(suggestionId);
 
     if (!suggestion) {
-      throw new Error("Suggestion doesn't exists");
+      const error = new Error("Suggestion doesn't exists");
+      error.statusCode = 404;
+      throw error;
     }
 
     suggestion.isArchived = true;
@@ -21,6 +25,8 @@ export const archiveSuggestionUtil = async (suggestionId) => {
 
     return suggestion;
   } catch (err) {
-    throw new Error(err.message);
+    const error = new Error(err.message);
+    error.statusCode = err.statusCode || 500;
+    throw error;
   }
 };
