@@ -1,6 +1,5 @@
 import mongoose from "mongoose";
-// # The Fix: Use "Logical OR" for Export - Cannot overwrite `UserModel` model once compiled
-export const UserModel = mongoose.models.UserModel || mongoose.model("UserModel", userSchema);
+import UserModel from "../../model/userModel.js";
 
 export const bannUserUtil = async (userId) => {
   try {
