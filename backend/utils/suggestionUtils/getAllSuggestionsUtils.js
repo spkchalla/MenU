@@ -43,6 +43,8 @@ export const getAllSuggestionsUtil = async (filters) => {
 
     return suggestions;
   } catch (err) {
-    throw new Error(err.message);
+    const error = new Error(err.message);
+    error.statsCode = err.statsCode || 500;
+    throw error;
   }
 };
