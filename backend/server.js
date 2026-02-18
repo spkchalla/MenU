@@ -63,7 +63,7 @@ app.get("/", (req, res) => {
   res.send("MenU Backend is active!");
 });
 
-// Morgan logger middlware to logg http requests on developemnt
+// Morgan logger middleware to log HTTP requests in development
 // Terminal output example: GET /tiny 200 2 - 0.188 ms
 
 if (process.env.NODE_ENV === "development") {
