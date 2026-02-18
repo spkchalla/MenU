@@ -52,7 +52,6 @@ export const googleCallback = async (req, res) => {
     const token = generateJWT({
       userId: user._id,
       role: user.role,
-      isBanned: user.isBanned,
     });
 
     res.cookie("token", token, {

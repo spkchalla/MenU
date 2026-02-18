@@ -77,7 +77,6 @@ export const authenticateUser = async (loginInput) => {
         role: user.role,
         email: user.email,
         isApproved: user.isApproved,
-        isBanned: user.isBanned,
       },
       process.env.JWT_SECRET,
       { expiresIn: "7d" },
