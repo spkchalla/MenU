@@ -1,6 +1,5 @@
 import mongoose from "mongoose";
 import { SuggestionModel } from "../../model/suggestionModel.js";
-import UserModel from "../../model/userModel.js";
 
 export const getAllSuggestionsUtil = async (filters) => {
   try {

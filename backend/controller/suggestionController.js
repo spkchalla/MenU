@@ -39,7 +39,7 @@ export const getAllSuggestions = async (req, res) => {
       success: true,
       message: "Suggestions fetched successfully",
       data: {
-        suggestion: suggestions,
+        suggestions,
       },
     });
   } catch (err) {
