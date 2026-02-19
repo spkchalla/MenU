@@ -34,7 +34,7 @@ export const SuggestionForm = () => {
       setType("");
       setWantToContribute(false);
 
-      // Clear success message after 5 seconds
+      // Clear success message after 2 seconds
       setTimeout(() => {
         setSuccess("");
       }, 2000);
@@ -74,24 +74,30 @@ export const SuggestionForm = () => {
         )}
 
         {/* Type Selection */}
-        <div className="form-group">
-          <label className="form-label">Type of Feedback *</label>
+        <fieldset className="form-group" style={{ border: "none", padding: 0, margin: 0 }}>
+          <legend className="form-label">Type of Feedback *</legend>
           <div className="checkbox-group">
-            {["bug", "feature request", "suggestion regarding food"].map((option) => (
-              <label key={option} className="checkbox-label">
-                <input
-                  type="radio"
-                  name="type"
-                  value={option}
-                  checked={type === option}
-                  onChange={(e) => setType(e.target.value)}
-                  className="checkbox-input"
-                />
-                <span className="checkbox-text">{option.charAt(0).toUpperCase() + option.slice(1)}</span>
-              </label>
-            ))}
+            {["bug", "feature request", "suggestion regarding food"].map((option) => {
+              const radioId = `type-${option.replace(/\s+/g, "-")}`;
+              return (
+                <div key={option} className="checkbox-label">
+                  <input
+                    type="radio"
+                    id={radioId}
+                    name="type"
+                    value={option}
+                    checked={type === option}
+                    onChange={(e) => setType(e.target.value)}
+                    className="checkbox-input"
+                  />
+                  <label htmlFor={radioId} className="checkbox-text">
+                    {option.charAt(0).toUpperCase() + option.slice(1)}
+                  </label>
+                </div>
+              );
+            })}
           </div>
-        </div>
+        </fieldset>
 
         {/* Suggestion Text Area */}
         <div className="form-group">
