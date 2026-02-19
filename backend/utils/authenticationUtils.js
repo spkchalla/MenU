@@ -55,7 +55,7 @@ export const createUserAccount = async (registrationData) => {
     return newUser;
   } catch (err) {
     await session.abortTransaction();
-    throw new Error("Error registering User:" + err.message);
+    throw err;
   } finally {
     session.endSession();
   }
@@ -66,16 +66,15 @@ export const authenticateUser = async (loginInput) => {
     const { email, password } = loginInput;
 
     const user = await UserModel.findOne({ email: email.toLowerCase().trim() });
-    if (!user) throw new Error("Invalid email");
+    if (!user) throw new Error("Invalid credentials");
 
     const isMatch = await bcrypt.compare(password, user.password);
-    if (!isMatch) throw new Error("Invalid Password");
+    if (!isMatch) throw new Error("Invalid credentials");
 
     const token = jwt.sign(
       {
         userId: user._id,
         role: user.role,
-        email: user.email,
         isApproved: user.isApproved,
       },
       process.env.JWT_SECRET,
