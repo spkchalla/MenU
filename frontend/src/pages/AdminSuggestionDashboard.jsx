@@ -27,13 +27,13 @@ export const AdminSuggestionDashboard = () => {
       const res = await api.get("/suggestions/allSuggestions", {
         params: filterParams,
       });
-      setSuggestions(res.data.data?.suggestion || []);
+      setSuggestions(res.data.data?.suggestions || []);
 
       if (Object.keys(filterParams).length > 0) {
-        setMessage(`Found ${res.data.data?.suggestion?.length || 0} suggestion(s)`);
+        setMessage(`Found ${res.data.data?.suggestions?.length || 0} suggestion(s)`);
       }
     } catch (err) {
-      setError(err.response?.data?.err?.errMsg || "Failed to fetch suggestions");
+      setError(err.response?.data?.message || "Failed to fetch suggestions");
       console.error(err);
     } finally {
       setLoading(false);
@@ -102,7 +102,7 @@ export const AdminSuggestionDashboard = () => {
       // Refresh suggestions
       fetchSuggestions(activeFilters);
     } catch (err) {
-      setError(err.response?.data?.err?.errMsg || "Failed to ban user");
+      setError(err.response?.data?.message || "Failed to ban user");
       console.error(err);
     }
   };
@@ -119,7 +119,7 @@ export const AdminSuggestionDashboard = () => {
       // Remove from list
       setSuggestions((prev) => prev.filter((s) => s._id !== suggestionId));
     } catch (err) {
-      setError(err.response?.data?.err?.errMsg || "Failed to archive suggestion");
+      setError(err.response?.data?.message || "Failed to archive suggestion");
       console.error(err);
     }
   };
@@ -296,15 +296,15 @@ export const AdminSuggestionDashboard = () => {
                   <div className="user-details">
                     <div className="user-item">
                       <span className="user-label">User:</span>
-                      <span className="user-value">{suggestion.userId.name}</span>
+                      <span className="user-value">{suggestion.user.name}</span>
                     </div>
                     <div className="user-item">
                       <span className="user-label">Email:</span>
-                      <span className="user-value">{suggestion.userId.email}</span>
+                      <span className="user-value">{suggestion.user.email}</span>
                     </div>
                     <div className="user-item">
                       <span className="user-label">User ID:</span>
-                      <span className="user-value user-id">{suggestion.userId._id}</span>
+                      <span className="user-value user-id">{suggestion.user._id}</span>
                     </div>
                   </div>
 
@@ -315,7 +315,7 @@ export const AdminSuggestionDashboard = () => {
 
                 <div className="suggestion-actions">
                   <button
-                    onClick={() => handleBanUser(suggestion.userId._id)}
+                    onClick={() => handleBanUser(suggestion.user._id)}
                     className="action-button ban-button"
                     title="Ban this user from making suggestions"
                   >
