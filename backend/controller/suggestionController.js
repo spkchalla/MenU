@@ -14,7 +14,7 @@ export const createSuggestion = async (req, res) => {
       wantToContribute,
     });
 
-    res.status(201).json({
+    return res.status(201).json({
       success: true,
       message: "Suggestion created successfully",
       data: {
@@ -35,7 +35,7 @@ export const getAllSuggestions = async (req, res) => {
   try {
     const suggestions = await getAllSuggestionsUtil(req.query);
 
-    res.status(200).json({
+    return res.status(200).json({
       success: true,
       message: "Suggestions fetched successfully",
       data: {
@@ -59,7 +59,7 @@ export const banUser = async (req, res) => {
 
     const bannedUser = await bannUserUtil(userId);
 
-    res.status(200).json({
+    return res.status(200).json({
       success: true,
       message: "User banned successfully",
       data: {
@@ -80,7 +80,7 @@ export const archiveSuggestion = async (req, res) => {
   try {
     const archivedSuggestion = await archiveSuggestionUtil(req.params.id);
 
-    res.status(200).json({
+    return res.status(200).json({
       success: true,
       message: "Suggestion archived successfully",
       data: {
