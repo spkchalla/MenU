@@ -25,6 +25,9 @@ const Footer = () => {
           <a href="mailto:cspk1694@protonmail.com" className="footer-link">
             Contact Support
           </a>
+          <a href="/suggestions" className="footer-link">
+            Suggestions
+          </a>
           <a
             href="https://github.com/spkchalla/MenU"
             target="_blank"
@@ -92,69 +95,7 @@ const Footer = () => {
           <button className="text-btn" onClick={handleAdminRequest}>
             Request Admin Access
           </button>
-          <a href="mailto:cspk1694@protonmail.com" className="footer-link">
-            Contact Email
-          </a>
-          <a href="/suggestions" className="footer-link">
-            Suggestions
-          </a>
-          <a
-            href="https://github.com/spkchalla/MenU"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="footer-link"
-          >
-            GitHub
-          </a>
-          <a
-            href="https://buymeachai.ezee.li/spkumar_buymeachai"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="footer-link"
-          >
-            Buy me a Chai
-          </a>
         </div>
-
-        <div className="footer-info">
-          <p>
-            Developed by{" "}
-            <a
-              href="https://github.com/spkchalla"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="footer-link-inline"
-            >
-              SPKUMAR CHALLA
-            </a>
-          </p>
-          <p className="contributors">
-            Contributors:
-            <a
-              href="https://github.com/garvita-d"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="footer-link-inline"
-            >
-              Garvita
-            </a>
-          </p>
-          <p className="contributors">
-            Guidance:{" "}
-            <a
-              href="https://github.com/Likhith025"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="footer-link-inline"
-            >
-              Likhith
-            </a>
-          </p>
-          <button className="text-btn" onClick={handleAdminRequest}>
-            Request Admin Access
-          </button>
-        </div>
-
         <div className="disclaimer">for MU, by student of MU</div>
       </div>
     </footer>
