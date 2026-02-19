@@ -1,41 +1,62 @@
+import mongoose from "mongoose";
 import { SuggestionModel } from "../../model/suggestionModel.js";
 import UserModel from "../../model/userModel.js";
 
 export const getAllSuggestionsUtil = async (filters) => {
   try {
-    const query = { isArchived: false };
+    const pipeline = [];
 
-    if (filters.suggestionId) {
-      query._id = filters.suggestionId;
+    // 1️⃣ Always filter archived first
+    pipeline.push({ $match: { isArchived: false } });
+
+    // 2️⃣ Match suggestionId if exists
+    if (mongoose.Types.ObjectId.isValid(filters.suggestionId)) {
+      pipeline.push({ $match: { _id: new mongoose.Types.ObjectId(filters.suggestionId) } });
     }
 
-    if (filters.userId) {
-      query.userId = filters.userId;
+    // 3️⃣ Join User collection
+    pipeline.push({
+      $lookup: {
+        from: "usermodels",
+        localField: "userId",
+        foreignField: "_id",
+        as: "user",
+      },
+    });
+
+    // 4️⃣ Convert user array → object earlier user =[{}]
+    pipeline.push({
+      $unwind: "$user",
+    });
+
+    // 5️⃣ Apply user filters
+    const userMatch = {};
+
+    if (filters.userId && mongoose.Types.ObjectId.isValid(filters.userId)) {
+      userMatch["user._id"] = new mongoose.Types.ObjectId(filters.userId);
     }
 
-    if (filters.email || filters.name) {
-      const userQuery = {};
-
-      if (filters.name) {
-        userQuery.name = { $regex: filters.name, $options: "i" };
-      }
-
-      if (filters.email) {
-        userQuery.email = { $regex: filters.email, $options: "i" };
-      }
-
-      const users = await UserModel.find(userQuery).select("_id");
-      const userIds = users.map((user) => user._id);
-
-      if (query.userId) {
-        query.$and = [{ userId: query.userId }, { userId: { $in: userIds } }];
-        delete query.userId;
-      } else {
-        query.userId = { $in: userIds };
-      }
+    if (filters.name) {
+      userMatch["user.name"] = { $regex: filters.name, $options: "i" };
     }
 
-    const suggestions = await SuggestionModel.find(query).populate("userId", "_id name email").select("-__v");
+    if (filters.email) {
+      userMatch["user.email"] = { $regex: filters.email, $options: "i" };
+    }
+
+    if (Object.keys(userMatch).length > 0) {
+      pipeline.push({ $match: userMatch });
+    }
+
+    // 6️⃣ Remove unwanted fields
+    pipeline.push({
+      $project: {
+        __v: 0,
+        "user.__v": 0,
+      },
+    });
+
+    const suggestions = await SuggestionModel.aggregate(pipeline);
 
     return suggestions;
   } catch (err) {
