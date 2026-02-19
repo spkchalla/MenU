@@ -15,18 +15,18 @@ export const createSuggestion = async (req, res) => {
     });
 
     res.status(201).json({
-      status: "success",
+      success: true,
+      message: "Suggestion created successfully",
       data: {
         suggestion: newSuggestion,
       },
     });
   } catch (error) {
     const statusCode = error.statusCode || 500;
-    res.status(statusCode).json({
-      status: "failed",
-      err: {
-        errMsg: error.message,
-      },
+    console.error(err);
+    return res.status(statusCode).json({
+      success: false,
+      message: err.message || "Something went wrong. Please try again later.",
     });
   }
 };
@@ -36,18 +36,19 @@ export const getAllSuggestions = async (req, res) => {
     const suggestions = await getAllSuggestionsUtil(req.query);
 
     res.status(200).json({
-      status: "success",
+      success: true,
+      message: "Suggestions fetched successfully",
       data: {
         suggestion: suggestions,
       },
     });
   } catch (err) {
     const statusCode = err.statusCode || 500;
-    res.status(statusCode).json({
-      status: "failed",
-      err: {
-        errMsg: err.message,
-      },
+
+    console.error(err);
+    return res.status(statusCode).json({
+      success: false,
+      message: err.message || "Something went wrong. Please try again later.",
     });
   }
 };
@@ -59,18 +60,18 @@ export const banUser = async (req, res) => {
     const bannedUser = await bannUserUtil(userId);
 
     res.status(200).json({
-      status: "success",
+      success: true,
+      message: "User banned successfully",
       data: {
         user: bannedUser,
       },
     });
   } catch (err) {
     const statusCode = err.statusCode || 500;
-    res.status(statusCode).json({
-      status: "failed",
-      err: {
-        errMsg: err.message,
-      },
+    console.error(err);
+    return res.status(statusCode).json({
+      success: false,
+      message: err.message || "Something went wrong. Please try again later.",
     });
   }
 };
@@ -80,18 +81,18 @@ export const archiveSuggestion = async (req, res) => {
     const archivedSuggestion = await archiveSuggestionUtil(req.params.id);
 
     res.status(200).json({
-      status: "success",
+      success: true,
+      message: "Suggestion archived successfully",
       data: {
         suggestion: archivedSuggestion,
       },
     });
   } catch (err) {
     const statusCode = err.statusCode || 500;
-    res.status(statusCode).json({
-      status: "failed",
-      err: {
-        errMsg: err.message,
-      },
+    console.error(err);
+    return res.status(statusCode).json({
+      success: false,
+      message: err.message || "Something went wrong. Please try again later.",
     });
   }
 };
