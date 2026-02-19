@@ -18,7 +18,7 @@ export const AdminSuggestionDashboard = () => {
   const [activeFilters, setActiveFilters] = useState({});
   const navigate = useNavigate();
   // Fetch suggestions
-  const fetchSuggestions = async (filterParams = {}) => {
+  const fetchSuggestions = React.useCallback(async (filterParams = {}) => {
     setLoading(true);
     setError("");
     setMessage("");
@@ -38,27 +38,29 @@ export const AdminSuggestionDashboard = () => {
     } finally {
       setLoading(false);
     }
-  };
+  }, []);
 
   // Initial load
   useEffect(() => {
-    fetchSuggestions();
-  }, []);
-
-  useEffect(() => {
-    const checkAdmin = async () => {
+    const checkAndFetch = async () => {
       const token = localStorage.getItem("menu_token");
       const role = localStorage.getItem("menu_user_role");
 
       if (!token || role !== "admin") {
-        navigate("/login"); // Redirect if not admin
+        navigate("/login");
         return;
       }
       setIsAdmin(true);
-      setLoading(false);
+      setLoading(true);
+      try {
+        await fetchSuggestions();
+      } catch (err) {
+        // fetchSuggestions already handles error state
+      }
+      // loading will be set to false by fetchSuggestions finally block
     };
-    checkAdmin();
-  }, [navigate]);
+    checkAndFetch();
+  }, [navigate, fetchSuggestions]);
 
   // Handle filter change
   const handleFilterChange = (e) => {
@@ -92,13 +94,21 @@ export const AdminSuggestionDashboard = () => {
 
   // Ban user
   const handleBanUser = async (userId) => {
-    if (!window.confirm("Are you sure you want to ban this user?")) {
+    if (!window.confirm(`Are you sure you want to proceed?`)) {
       return;
     }
 
     try {
-      await api.patch(`/suggestions/banUser/${userId}`);
-      setMessage("User has been banned successfully");
+      const res = await api.patch(`/suggestions/banUser/${userId}`);
+      // Inspect response for ban state
+      const isBanned = res.data?.data?.isBanned;
+      if (isBanned === true) {
+        setMessage("User has been banned successfully");
+      } else if (isBanned === false) {
+        setMessage("User has been unbanned successfully");
+      } else {
+        setMessage("User ban status updated");
+      }
       // Refresh suggestions
       fetchSuggestions(activeFilters);
     } catch (err) {
@@ -316,11 +326,10 @@ export const AdminSuggestionDashboard = () => {
                 <div className="suggestion-actions">
                   <button
                     onClick={() => handleBanUser(suggestion.user._id)}
-                    className={`action-button ban-button ${suggestion.user.isBanned ? "ban-button-disabled" : ""}`}
+                    className={`action-button ban-button `}
                     title="Ban this user from making suggestions"
-                    disabled={suggestion.user.isBanned}
                   >
-                    {suggestion.user.isBanned ? "User already banned" : "Ban User"}
+                    {suggestion.user.isBanned ? "Unban user" : "Ban User"}
                   </button>
                   <button
                     onClick={() => handleArchiveSuggestion(suggestion._id)}
