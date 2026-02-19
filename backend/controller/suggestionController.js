@@ -21,8 +21,8 @@ export const createSuggestion = async (req, res) => {
         suggestion: newSuggestion,
       },
     });
-  } catch (error) {
-    const statusCode = error.statusCode || 500;
+  } catch (err) {
+    const statusCode = err.statusCode || 500;
     console.error(err);
     return res.status(statusCode).json({
       success: false,

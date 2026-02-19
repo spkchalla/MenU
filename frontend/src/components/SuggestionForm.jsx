@@ -39,8 +39,7 @@ export const SuggestionForm = () => {
         setSuccess("");
       }, 2000);
     } catch (err) {
-      setError(err.response?.data?.err?.errMsg || "Failed to submit suggestion. Please try again.");
-      console.error(err);
+      setError(err.response?.data?.message || "Failed to submit suggestion. Please try again.");
     } finally {
       setLoading(false);
     }
