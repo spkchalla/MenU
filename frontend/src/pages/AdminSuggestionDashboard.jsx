@@ -316,10 +316,11 @@ export const AdminSuggestionDashboard = () => {
                 <div className="suggestion-actions">
                   <button
                     onClick={() => handleBanUser(suggestion.user._id)}
-                    className="action-button ban-button"
+                    className={`action-button ban-button ${suggestion.user.isBanned ? "ban-button-disabled" : ""}`}
                     title="Ban this user from making suggestions"
+                    disabled={suggestion.user.isBanned}
                   >
-                    Ban User
+                    {suggestion.user.isBanned ? "User already banned" : "Ban User"}
                   </button>
                   <button
                     onClick={() => handleArchiveSuggestion(suggestion._id)}

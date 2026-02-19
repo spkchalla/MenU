@@ -3,7 +3,11 @@
   margin: 0 auto;
   padding: 2rem 1.5rem;
   color: var(--text-color);
-  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  font-family:
+    "Inter",
+    system-ui,
+    -apple-system,
+    sans-serif;
   animation: fadeIn 0.5s ease-in-out;
 }
 
@@ -115,7 +119,9 @@
   border-radius: 8px;
   background: var(--input-bg, var(--card-bg));
   color: var(--text-color);
-  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+  transition:
+    border-color 0.2s ease,
+    box-shadow 0.2s ease;
 }
 
 .filter-input:focus {
@@ -220,7 +226,7 @@
   transition: all 0.3s ease;
 }
 
-[data-theme='dark'] .suggestion-card {
+[data-theme="dark"] .suggestion-card {
   background: rgba(255, 255, 255, 0.02);
 }
 
@@ -331,7 +337,7 @@
 }
 
 .user-id {
-  font-family: 'Courier New', monospace;
+  font-family: "Courier New", monospace;
   font-size: 0.85rem;
   max-width: 200px;
   overflow: hidden;
@@ -383,9 +389,12 @@
   border: 1px solid rgba(239, 68, 68, 0.3);
 }
 
+.ban-button.ban-button-disabled {
+  cursor: not-allowed;
+}
+
 .ban-button:hover {
-  background: rgba(239, 68, 68, 0.25);
-  border-color: #ef4444;
+  background: rgba(251, 146, 60, 0.25);
 }
 
 .archive-button {
