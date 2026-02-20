@@ -25,12 +25,10 @@ const allowedOrigins = [
   "http://localhost:5173",
   "http://localhost:5174",
   "https://men-u-7es9.vercel.app",
-  "https://menu-eight-sable.vercel.app",
   "https://mu-menu.in",
   "https://www.mu-menu.in",
   "http://mu-menu.in",
   "http://www.mu-menu.in",
-  "https://men-u-f6ez.vercel.app",
   process.env.FRONTEND_URL,
 ].filter(Boolean);
 
@@ -38,17 +36,20 @@ app.use(
   cors({
     origin: function (origin, callback) {
       // In non-production, allow requests with no origin (like mobile apps or curl/postman)
-      // In production, require a valid origin from the allowedOrigins list
       if (!origin) {
         if (process.env.NODE_ENV !== "production") {
           return callback(null, true);
         }
         return callback(new Error("CORS blocked: Origin header required in production"), false);
       }
-      if (allowedOrigins.indexOf(origin) === -1) {
+
+      // Strict check against allowedOrigins
+      if (allowedOrigins.includes(origin)) {
+        return callback(null, true);
+      } else {
+        console.log("CORS blocked origin:", origin);
         return callback(new Error("CORS blocked"), false);
       }
-      return callback(null, true);
     },
     credentials: true,
   }),
