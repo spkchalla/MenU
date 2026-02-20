@@ -21,41 +21,14 @@ import https from "https";
 
 const app = express();
 
-const allowedOrigins = [
-  "http://localhost:5173",
-  "http://localhost:5174",
-  "https://men-u-7es9.vercel.app",
-  "https://mu-menu.in",
-  "https://www.mu-menu.in",
-  "http://mu-menu.in",
-  "http://www.mu-menu.in",
-  process.env.FRONTEND_URL,
-].filter(Boolean);
-
 app.use(
   cors({
-    origin: function (origin, callback) {
-      // In non-production, allow requests with no origin (like mobile apps or curl/postman)
-      if (!origin) {
-        if (process.env.NODE_ENV !== "production") {
-          return callback(null, true);
-        }
-        return callback(new Error("CORS blocked: Origin header required in production"), false);
-      }
-
-      // Strict check against allowedOrigins
-      if (allowedOrigins.includes(origin)) {
-        return callback(null, true);
-      } else {
-        console.log("CORS blocked origin:", origin);
-        return callback(new Error("CORS blocked"), false);
-      }
-    },
+    origin: true,
     credentials: true,
-  }),
+  })
 );
 
-console.log("CORS enabled for origins:", allowedOrigins);
+console.log("CORS policy: Allowed all origins with credentials");
 app.use(express.json());
 app.use(cookieParser());
 
