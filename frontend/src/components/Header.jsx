@@ -89,24 +89,22 @@ const Header = () => {
         <div className="header-actions">
           {isAuthenticated &&
             (isAdmin ? (
-              <>
+              <div className="admin-nav-group">
                 <Link
                   to="/admin/dashboard"
                   className="nav-link admin-link"
-                  style={{ display: "inline-block" }}
                 >
                   Dashboard
                 </Link>
                 <Link
                   to="/admin/suggestions"
                   className="nav-link admin-link"
-                  style={{ marginRight: "1rem", display: "inline-block" }}
                 >
                   Suggestions
                 </Link>
-              </>
+              </div>
             ) : (
-              <Link to="/user/dashboard" className="nav-link admin-link" style={{ display: "inline-block" }}>
+              <Link to="/user/dashboard" className="nav-link admin-link user-dashboard-link">
                 User Dashboard
               </Link>
             ))}
