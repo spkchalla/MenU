@@ -106,3 +106,31 @@
         margin-right: 8px;
     }
 }
+
+/* User Dashboard Link - Wraps text to one word per line */
+.user-dashboard-link {
+    display: inline-flex;
+    flex-direction: column;
+    align-items: center;
+    line-height: 1.1;
+    text-align: center;
+    white-space: pre-wrap; /* Allows wrapping */
+    width: min-content; /* Forces wrapping to min content width (longest word) */
+    margin-right: 12px;
+}
+
+/* Admin Nav Group - Stacks links vertically */
+.admin-nav-group {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end; /* Right align the links */
+    justify-content: center;
+    margin-right: 12px;
+    line-height: 1.2;
+}
+
+.admin-nav-group .admin-link {
+    margin-right: 0; /* Remove default margin from admin links inside the group */
+    display: block; /* Ensure they take up the line */
+    font-size: 0.85rem; /* Slightly smaller to fit better if needed */
+}
