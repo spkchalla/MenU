@@ -78,6 +78,15 @@ const Footer = () => {
               >
                 Goutham Reddy
               </a>
+              ,{" "}
+              <a
+                href="https://github.com/Ramahadam"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="footer-link-inline"
+              >
+                Ramahadam
+              </a>
             </span>
             <span className="separator">•</span>
             <span>
