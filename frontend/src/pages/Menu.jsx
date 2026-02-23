@@ -394,6 +394,39 @@ export const Menu = () => {
         </div>
       )}
 
+      <div className="days-container">
+        <div className="days-row">
+          {["Monday", "Tuesday", "Wednesday", "Thursday"].map((day) => {
+            const isTodayBtn = todayName === day;
+            const isSelected = selectedDay === day;
+            return (
+              <button
+                key={day}
+                onClick={() => fetchMenuByDay(day)}
+                className={`day-btn ${isSelected ? 'selected-day' : ''} ${isTodayBtn && !isSelected ? 'today-outline' : ''}`}
+              >
+                {day}
+              </button>
+            );
+          })}
+        </div>
+        <div className="days-row">
+          {["Friday", "Saturday", "Sunday"].map((day) => {
+            const isTodayBtn = todayName === day;
+            const isSelected = selectedDay === day;
+            return (
+              <button
+                key={day}
+                onClick={() => fetchMenuByDay(day)}
+                className={`day-btn ${isSelected ? 'selected-day' : ''} ${isTodayBtn && !isSelected ? 'today-outline' : ''}`}
+              >
+                {day}
+              </button>
+            );
+          })}
+        </div>
+      </div>
+
       {currentMeal && (
         <div className="current-meal-section">
           <h2>Current / Next Meal</h2>
@@ -457,38 +490,7 @@ export const Menu = () => {
         </div>
       )}
 
-      <div className="days-container">
-        <div className="days-row">
-          {["Monday", "Tuesday", "Wednesday", "Thursday"].map((day) => {
-            const isTodayBtn = todayName === day;
-            const isSelected = selectedDay === day;
-            return (
-              <button
-                key={day}
-                onClick={() => fetchMenuByDay(day)}
-                className={`day-btn ${isSelected ? 'selected-day' : ''} ${isTodayBtn && !isSelected ? 'today-outline' : ''}`}
-              >
-                {day}
-              </button>
-            );
-          })}
-        </div>
-        <div className="days-row">
-          {["Friday", "Saturday", "Sunday"].map((day) => {
-            const isTodayBtn = todayName === day;
-            const isSelected = selectedDay === day;
-            return (
-              <button
-                key={day}
-                onClick={() => fetchMenuByDay(day)}
-                className={`day-btn ${isSelected ? 'selected-day' : ''} ${isTodayBtn && !isSelected ? 'today-outline' : ''}`}
-              >
-                {day}
-              </button>
-            );
-          })}
-        </div>
-      </div>
+
 
       <div className="calendar-section">
         <h3>Check Specific Date</h3>
