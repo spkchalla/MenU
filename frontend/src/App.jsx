@@ -21,6 +21,8 @@ import { Privacy } from "./pages/Privacy";
 import { TermsComponent } from "./pages/Terms";
 import { Suggestions } from "./pages/Suggestions";
 import { AdminSuggestionDashboard } from "./pages/AdminSuggestionDashboard";
+import NotificationPage from "./pages/NotificationPage";
+import AdminNotificationCRUD from "./pages/AdminNotificationCRUD";
 
 const Layout = ({ children }) => {
   return (
@@ -95,6 +97,14 @@ const App = () => {
               </ProtectedRoute>
             }
           />
+          <Route
+            path="/admin/notifications"
+            element={
+              <ProtectedRoute>
+                <AdminNotificationCRUD />
+              </ProtectedRoute>
+            }
+          />
           <Route path="/user/dashboard" element={<UserDashboard />} />
           <Route path="/stats" element={<Stats />}></Route>
           <Route path="/install" element={<InstallGuide />} />
@@ -102,6 +112,14 @@ const App = () => {
           <Route path="/privacy" element={<Privacy />} />
           <Route path="/terms" element={<TermsComponent />} />
           <Route path="/suggestions" element={<Suggestions />} />
+          <Route
+            path="/notifications"
+            element={
+              <ProtectedRoute>
+                <NotificationPage />
+              </ProtectedRoute>
+            }
+          />
         </Routes>
       </Layout>
     </ThemeProvider>

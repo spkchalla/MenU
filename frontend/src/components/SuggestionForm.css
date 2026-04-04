@@ -38,6 +38,47 @@
   border: 1px solid var(--border-color);
 }
 
+.login-prompt-card {
+  background: var(--card-bg);
+  padding: 3rem 2rem;
+  border-radius: 16px;
+  text-align: center;
+  border: 1px solid var(--border-color);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+}
+
+.login-prompt-card h2 {
+  margin-bottom: 1rem;
+  color: var(--text-color);
+}
+
+.login-prompt-card p {
+  color: var(--text-secondary);
+  margin-bottom: 2rem;
+}
+
+.google-auth-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  margin: 0 auto;
+  padding: 12px 24px;
+  background: white;
+  color: #333;
+  border: none;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.google-auth-btn:hover {
+  background: #f1f1f1;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
 .form-group {
   margin-bottom: 1.75rem;
 }

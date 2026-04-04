@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import { Link, useNavigate, useLocation } from "react-router-dom";
 import { useTheme } from "../context/ThemeContext";
 import api from "../utils/api";
@@ -12,6 +12,16 @@ const Header = () => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [isAdmin, setIsAdmin] = useState(false);
   const [showDropdown, setShowDropdown] = useState(false);
+  const [hasUnread, setHasUnread] = useState(false);
+
+  const checkNotifications = useCallback(async () => {
+    try {
+      const res = await api.get("/notifications/unread-status");
+      setHasUnread(res.data.hasUnread);
+    } catch (err) {
+      console.error("Failed to fetch notifications:", err);
+    }
+  }, []);
 
   useEffect(() => {
     const checkAuth = async () => {
@@ -64,7 +74,10 @@ const Header = () => {
       }
     };
     checkAuth();
-  }, [location]);
+    if (localStorage.getItem("menu_token")) {
+      checkNotifications();
+    }
+  }, [location, checkNotifications]);
 
   useEffect(() => {
     if (!showDropdown) return;
@@ -133,6 +146,7 @@ const Header = () => {
                 <div className="profile-icon">
                   {/* Placeholder icon or user initial */}
                   👤
+                  {hasUnread && <span className="unread-dot-header"></span>}
                 </div>
               </button>
 
@@ -145,6 +159,22 @@ const Header = () => {
                   >
                     {isAdmin ? "Admin Dashboard" : "User Dashboard"}
                   </Link>
+                  <Link
+                    to="/notifications"
+                    className="dropdown-item"
+                    onClick={() => setShowDropdown(false)}
+                  >
+                    Notifications
+                  </Link>
+                  {isAdmin && (
+                    <Link
+                      to="/admin/notifications"
+                      className="dropdown-item"
+                      onClick={() => setShowDropdown(false)}
+                    >
+                      Manage Notifications
+                    </Link>
+                  )}
                   <button
                     className="dropdown-item logout-btn"
                     onClick={() => {

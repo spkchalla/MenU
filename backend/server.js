@@ -50,7 +50,7 @@ app.use("/api/user", userRouter);
 app.use("/api/vote", voteRouter);
 app.use("/api/stats", statsRouter);
 app.use("/api/auth", authRoutes);
-app.use("/api/noti", notificationRouter);
+app.use("/api/notifications", notificationRouter);
 app.use("/api/suggestions", suggestionRouter);
 
 // Self-pinging logic to keep the Render instance from spinning down
