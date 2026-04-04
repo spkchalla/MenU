@@ -230,6 +230,21 @@
     color: var(--accent-color);
 }
 
+.dropdown-item-with-dot {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.unread-dot-inline {
+    width: 8px;
+    height: 8px;
+    background: #ef4444;
+    border-radius: 50%;
+    display: inline-block;
+    margin-left: 8px;
+}
+
 .logout-btn {
     border-top: 1px solid var(--card-border);
     color: #ff4757;

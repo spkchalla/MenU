@@ -14,6 +14,8 @@ export const AdminSuggestionDashboard = () => {
     userId: "",
     name: "",
     email: "",
+    type: "",
+    date: "",
   });
   const [activeFilters, setActiveFilters] = useState({});
   const navigate = useNavigate();
@@ -87,6 +89,8 @@ export const AdminSuggestionDashboard = () => {
       userId: "",
       name: "",
       email: "",
+      type: "",
+      date: "",
     });
     setActiveFilters({});
     fetchSuggestions();
@@ -253,6 +257,40 @@ export const AdminSuggestionDashboard = () => {
               value={filters.email}
               onChange={handleFilterChange}
               placeholder="Enter user email"
+              className="filter-input"
+              disabled={loading}
+            />
+          </div>
+
+          <div className="filter-group">
+            <label htmlFor="type" className="filter-label">
+              Feedback Type
+            </label>
+            <select
+              id="type"
+              name="type"
+              value={filters.type}
+              onChange={handleFilterChange}
+              className="filter-input"
+              disabled={loading}
+            >
+              <option value="">All Types</option>
+              <option value="bug">Bug</option>
+              <option value="feature request">Feature Request</option>
+              <option value="suggestion regarding food">Food Suggestion</option>
+            </select>
+          </div>
+
+          <div className="filter-group">
+            <label htmlFor="date" className="filter-label">
+              Date Created
+            </label>
+            <input
+              id="date"
+              type="date"
+              name="date"
+              value={filters.date}
+              onChange={handleFilterChange}
               className="filter-input"
               disabled={loading}
             />
