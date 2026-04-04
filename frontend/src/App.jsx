@@ -115,7 +115,7 @@ const App = () => {
           <Route
             path="/notifications"
             element={
-              <ProtectedRoute>
+              <ProtectedRoute adminOnly={false}>
                 <NotificationPage />
               </ProtectedRoute>
             }

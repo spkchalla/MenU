@@ -13,6 +13,24 @@ export const getAllSuggestionsUtil = async (filters) => {
       pipeline.push({ $match: { _id: new mongoose.Types.ObjectId(filters.suggestionId) } });
     }
 
+    // 2a️⃣ Match type if exists
+    if (filters.type) {
+      pipeline.push({ $match: { type: filters.type } });
+    }
+
+    // 2b️⃣ Match date if exists (match entire day)
+    if (filters.date) {
+      const start = new Date(filters.date);
+      start.setUTCHours(0, 0, 0, 0);
+      const end = new Date(filters.date);
+      end.setUTCHours(23, 59, 59, 999);
+      pipeline.push({
+        $match: {
+          createdAt: { $gte: start, $lte: end }
+        }
+      });
+    }
+
     // 3️⃣ Join User collection
     pipeline.push({
       $lookup: {

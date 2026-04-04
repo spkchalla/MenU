@@ -161,10 +161,10 @@ const Header = () => {
                   </Link>
                   <Link
                     to="/notifications"
-                    className="dropdown-item"
+                    className="dropdown-item dropdown-item-with-dot"
                     onClick={() => setShowDropdown(false)}
                   >
-                    Notifications
+                    Notifications {hasUnread && <span className="unread-dot-inline"></span>}
                   </Link>
                   {isAdmin && (
                     <Link

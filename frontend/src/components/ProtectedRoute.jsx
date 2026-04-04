@@ -12,7 +12,7 @@ const parseJwt = (token) => {
   }
 };
 
-const ProtectedRoute = ({ children }) => {
+const ProtectedRoute = ({ children, adminOnly = true }) => {
   const token = localStorage.getItem("menu_token");
   const payload = token ? parseJwt(token) : null;
 
@@ -29,8 +29,8 @@ const ProtectedRoute = ({ children }) => {
 
   const role = payload?.role;
 
-  // Check if user is an admin
-  if (role !== "admin") {
+  // Check if user is an admin if required
+  if (adminOnly && role !== "admin") {
     return <Navigate to="/" replace />;
   }
 
