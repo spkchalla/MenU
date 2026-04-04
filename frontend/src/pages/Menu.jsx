@@ -388,6 +388,14 @@ export const Menu = () => {
         )}
       </div>
 
+      {isToday && (
+        <div className="home-notification">
+          <span className="sparkle">✨</span>
+          check out the new <Link to="/suggestions" className="notification-link">Suggestion/Complaint feature</Link> in the top bar.
+          <span className="sparkle">✨</span>
+        </div>
+      )}
+
       {!isLoading && !error && !currentMeal && otherMealsList.length === 0 && (
         <div className="no-menu-message">
           <h2>{isToday ? "Didn't receive the Menu from food sutra" : "No menu found for the asked date"}</h2>

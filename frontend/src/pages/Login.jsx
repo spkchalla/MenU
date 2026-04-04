@@ -3,6 +3,8 @@ import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import './Auth.css';
 
+import { jwtDecode } from 'jwt-decode';
+
 // axios instance with env-based base URL
 const api = axios.create({
   baseURL: import.meta.env.VITE_API_BASE_URL,
@@ -31,7 +33,7 @@ export const Login = () => {
       const { token } = res.data;
 
       // Decode token to get role
-      const payload = JSON.parse(atob(token.split('.')[1]));
+      const payload = jwtDecode(token);
 
       // Store token, role, and userId in localStorage
       localStorage.setItem('menu_token', token);

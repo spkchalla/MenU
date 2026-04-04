@@ -2,9 +2,11 @@ import { Navigate } from "react-router-dom";
 // TEMP: Client-side route guard using localStorage JWT
 // TODO: Replace with secure httpOnly cookie/session authentication
 
+import { jwtDecode } from "jwt-decode";
+
 const parseJwt = (token) => {
   try {
-    return JSON.parse(atob(token.split(".")[1]));
+    return jwtDecode(token);
   } catch {
     return null;
   }

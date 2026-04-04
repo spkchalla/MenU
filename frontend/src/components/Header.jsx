@@ -11,6 +11,7 @@ const Header = () => {
 
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [isAdmin, setIsAdmin] = useState(false);
+  const [showDropdown, setShowDropdown] = useState(false);
 
   useEffect(() => {
     const checkAuth = async () => {
@@ -87,34 +88,20 @@ const Header = () => {
         </Link>
 
         <div className="header-actions">
-          {isAuthenticated &&
-            (isAdmin ? (
-              <div className="admin-nav-group">
-                <Link
-                  to="/admin/dashboard"
-                  className="nav-link admin-link"
-                >
-                  Dashboard
-                </Link>
-                <Link
-                  to="/admin/suggestions"
-                  className="nav-link admin-link"
-                >
-                  Suggestions
-                </Link>
-              </div>
-            ) : (
-              <Link to="/user/dashboard" className="nav-link admin-link user-dashboard-link">
-                User Dashboard
-              </Link>
-            ))}
-
           <Link
             to="/about"
             className="nav-link admin-link"
-            style={{ marginRight: "1rem", display: "inline-block" }}
           >
             About
+          </Link>
+
+          <Link
+            to={isAdmin ? "/admin/suggestions" : "/suggestions"}
+            className="nav-link admin-link suggestions-link"
+          >
+            Suggestion/
+            <br />
+            Feedback
           </Link>
 
           <button className="theme-toggle" onClick={toggleTheme} aria-label="Toggle Theme">
@@ -122,9 +109,39 @@ const Header = () => {
           </button>
 
           {isAuthenticated ? (
-            <button className="auth-btn" onClick={handleLogout}>
-              Sign Out
-            </button>
+            <div className="profile-container">
+              <button
+                className="profile-icon-btn"
+                onClick={() => setShowDropdown(!showDropdown)}
+                aria-label="User Profile"
+              >
+                <div className="profile-icon">
+                  {/* Placeholder icon or user initial */}
+                  👤
+                </div>
+              </button>
+
+              {showDropdown && (
+                <div className="profile-dropdown">
+                  <Link
+                    to={isAdmin ? "/admin/dashboard" : "/user/dashboard"}
+                    className="dropdown-item"
+                    onClick={() => setShowDropdown(false)}
+                  >
+                    {isAdmin ? "Admin Dashboard" : "User Dashboard"}
+                  </Link>
+                  <button
+                    className="dropdown-item logout-btn"
+                    onClick={() => {
+                      handleLogout();
+                      setShowDropdown(false);
+                    }}
+                  >
+                    Sign Out
+                  </button>
+                </div>
+              )}
+            </div>
           ) : (
             <Link to="/login" className="auth-btn">
               Sign In
