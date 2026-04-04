@@ -90,21 +90,51 @@ export const Menu = () => {
   const fetchLatestBanner = async () => {
     try {
       const token = localStorage.getItem("menu_token");
-      if (!token) return;
-
       const res = await api.get("/notifications/user/latestBanner");
-      if (res.data.banner) {
-        setBanner(res.data.banner);
-        setShowBanner(true);
+      const bannerData = res.data.banner;
 
-        // Auto-close after 6 seconds
-        setTimeout(() => {
-          setShowBanner(false);
-        }, 6000);
-
-        // Update view count in backend
-        await api.patch(`/notifications/user/updateViewCount/${res.data.banner._id}`);
+      if (!bannerData) {
+        setBanner(null);
+        setShowBanner(false);
+        return;
       }
+
+      const bannerId = bannerData._id;
+
+      // Tracking logic for BOTH authenticated and anonymous
+      // Use localStorage as a strict client-side gate to prevent > 2 views
+      const localStatus = JSON.parse(localStorage.getItem("menu_banner_status") || "{}");
+      const status = localStatus[bannerId] || { views: 0, isRead: false };
+
+      // If already read or seen 2 times, don't show the banner
+      if (status.isRead || status.views >= 2) {
+        setShowBanner(false);
+        return;
+      }
+
+      // Show the banner
+      setBanner(bannerData);
+      setShowBanner(true);
+
+      // Increment views LOCALLY immediately
+      status.views += 1;
+      localStatus[bannerId] = status;
+      localStorage.setItem("menu_banner_status", JSON.stringify(localStatus));
+
+      // Sync with backend if logged in
+      if (token) {
+        try {
+          await api.patch(`/notifications/user/updateViewCount/${bannerId}`);
+        } catch (e) {
+          console.error("Failed to sync view count to server:", e);
+        }
+      }
+
+      // Auto-close after 6 seconds
+      setTimeout(() => {
+        setShowBanner(false);
+      }, 6000);
+
     } catch (err) {
       console.error("Error fetching banner:", err);
     }
@@ -417,8 +447,22 @@ export const Menu = () => {
 
       {isToday && showBanner && banner && (
         <div className="home-notification-banner">
-          <div className="banner-content" onClick={() => {
-            api.patch(`/notifications/user/markAsRead/${banner._id}`);
+          <div className="banner-content" onClick={async () => {
+            const token = localStorage.getItem("menu_token");
+
+            // Mark as read locally
+            const localStatus = JSON.parse(localStorage.getItem("menu_banner_status") || "{}");
+            if (localStatus[banner._id]) {
+              localStatus[banner._id].isRead = true;
+              localStorage.setItem("menu_banner_status", JSON.stringify(localStatus));
+            }
+
+            // Sync mark as read to backend if logged in
+            if (token) {
+              await api.patch(`/notifications/user/markAsRead/${banner._id}`);
+            }
+
+            window.dispatchEvent(new Event("notificationsUpdated"));
             navigate("/notifications");
           }}>
             <span className="sparkle">✨</span>
@@ -428,7 +472,12 @@ export const Menu = () => {
             </span>
             <span className="sparkle">✨</span>
           </div>
-          <button className="banner-close" onClick={() => setShowBanner(false)}>✕</button>
+          <button className="banner-close" onClick={(e) => {
+            e.stopPropagation();
+            setShowBanner(false);
+            // views are already incremented on fetch, so no need for extra logic here
+            // this keeps the red dot since isRead is still false
+          }}>✕</button>
         </div>
       )}
 
