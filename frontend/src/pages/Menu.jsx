@@ -411,10 +411,6 @@ export const Menu = () => {
             <Link to="/install" className="install-btn">
               📲 Add to Home Screen
             </Link>
-
-            <Link to="/suggestion" className="feedback-item-btn">
-              Feedback 💬
-            </Link>
           </>
         )}
       </div>
