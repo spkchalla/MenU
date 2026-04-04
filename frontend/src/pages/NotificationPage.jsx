@@ -28,6 +28,7 @@ const NotificationPage = () => {
         try {
             await api.patch(`/notifications/user/markAsRead/${id}`);
             setNotifications(notifications.map(n => n._id === id ? { ...n, isRead: true } : n));
+            window.dispatchEvent(new Event("notificationsUpdated"));
         } catch (err) {
             console.error("Error marking as read:", err);
         }
@@ -37,6 +38,7 @@ const NotificationPage = () => {
         try {
             await api.patch("/notifications/user/markAllAsRead");
             setNotifications(notifications.map(n => ({ ...n, isRead: true })));
+            window.dispatchEvent(new Event("notificationsUpdated"));
         } catch (err) {
             console.error("Error marking all as read:", err);
         }

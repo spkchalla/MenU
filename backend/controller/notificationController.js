@@ -72,23 +72,32 @@ export const getNotificationsForUser = async (req, res) => {
 // User: Get Latest Banner Notification
 export const getLatestBanner = async (req, res) => {
     try {
-        const userId = req.user.id;
+        // Latest banner is public, but user status is private
+        const userId = req.user?.id;
         const latestBanner = await Notification.findOne({ isBanner: true }).sort({ createdAt: -1 }).lean();
 
         if (!latestBanner) return res.status(200).json({ success: true, banner: null });
 
-        const userStatus = await UserNotification.findOne({ userId, notificationId: latestBanner._id });
+        if (userId) {
+            const userStatus = await UserNotification.findOne({ userId, notificationId: latestBanner._id });
 
-        if (userStatus && userStatus.viewCount >= 2) {
-            return res.status(200).json({ success: true, banner: null, hasUnread: !userStatus.isRead });
+            if (userStatus && (userStatus.isRead || userStatus.viewCount >= 2)) {
+                return res.status(200).json({ success: true, banner: null, hasUnread: !userStatus.isRead });
+            }
+
+            return res.status(200).json({
+                success: true,
+                banner: {
+                    ...latestBanner,
+                    viewCount: userStatus ? userStatus.viewCount : 0
+                }
+            });
         }
 
+        // For anonymous users, just return the banner. Frontend will handle view count via cookies.
         return res.status(200).json({
             success: true,
-            banner: {
-                ...latestBanner,
-                viewCount: userStatus ? userStatus.viewCount : 0
-            }
+            banner: latestBanner
         });
     } catch (err) {
         return res.status(500).json({ message: "Error fetching latest banner", error: err.message });

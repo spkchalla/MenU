@@ -24,6 +24,17 @@ const Header = () => {
   }, []);
 
   useEffect(() => {
+    const handleUpdate = () => {
+      if (localStorage.getItem("menu_token")) {
+        checkNotifications();
+      }
+    };
+
+    window.addEventListener("notificationsUpdated", handleUpdate);
+    return () => window.removeEventListener("notificationsUpdated", handleUpdate);
+  }, [checkNotifications]);
+
+  useEffect(() => {
     const checkAuth = async () => {
       // 1. Check URL params (Oauth callback fallback)
       const params = new URLSearchParams(location.search);

@@ -23,7 +23,17 @@ notificationRouter.delete('/deleteNotification/:id', protectAdmin, deleteNotific
 
 // User Routes
 notificationRouter.get('/user/getAllNotifications', protectUser, getNotificationsForUser);
-notificationRouter.get('/user/latestBanner', protectUser, getLatestBanner);
+notificationRouter.get('/user/latestBanner', (req, res, next) => {
+    // Optional auth: if token exists, try to set req.user, else continue
+    const authHeader = req.headers.authorization;
+    if (authHeader && authHeader.startsWith('Bearer ')) {
+        // We can just use the middleware and ignore error if we want, 
+        // but the current protectUser probably sends 401.
+        // Let's manually check or just allow it to be public and handle it in controller.
+        return protectUser(req, res, next);
+    }
+    next();
+}, getLatestBanner);
 notificationRouter.get('/unread-status', protectUser, getUnreadStatus);
 notificationRouter.patch('/user/updateViewCount/:notificationId', protectUser, updateViewCount);
 notificationRouter.patch('/user/markAsRead/:notificationId', protectUser, markAsRead);
