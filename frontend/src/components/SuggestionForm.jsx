@@ -80,19 +80,26 @@ export const SuggestionForm = () => {
             {["bug", "feature request", "suggestion regarding food"].map((option) => {
               const radioId = `type-${option.replace(/\s+/g, "-")}`;
               return (
-                <div key={option} className="checkbox-label">
-                  <input
-                    type="radio"
-                    id={radioId}
-                    name="type"
-                    value={option}
-                    checked={type === option}
-                    onChange={(e) => setType(e.target.value)}
-                    className="checkbox-input"
-                  />
-                  <label htmlFor={radioId} className="checkbox-text">
-                    {option.charAt(0).toUpperCase() + option.slice(1)}
-                  </label>
+                <div key={option} className="checkbox-label-container">
+                  <div className="checkbox-label">
+                    <input
+                      type="radio"
+                      id={radioId}
+                      name="type"
+                      value={option}
+                      checked={type === option}
+                      onChange={(e) => setType(e.target.value)}
+                      className="checkbox-input"
+                    />
+                    <label htmlFor={radioId} className="checkbox-text">
+                      {option.charAt(0).toUpperCase() + option.slice(1)}
+                    </label>
+                  </div>
+                  {option === "suggestion regarding food" && (
+                    <div className="warning-text">
+                      Please keep your suggestions respectful.
+                    </div>
+                  )}
                 </div>
               );
             })}

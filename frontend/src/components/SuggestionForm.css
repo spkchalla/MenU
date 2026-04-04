@@ -92,6 +92,20 @@
   user-select: none;
 }
 
+.checkbox-label-container {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.warning-text {
+  font-size: 0.8rem;
+  color: #ef4444;
+  margin-left: 2.25rem;
+  font-weight: 500;
+  font-style: italic;
+}
+
 /* Contribute Checkbox */
 .contribute-checkbox {
   background: linear-gradient(135deg, rgba(var(--primary-rgb, 59, 130, 246), 0.05), rgba(var(--secondary-rgb, 139, 92, 246), 0.05));
@@ -203,6 +217,7 @@
     opacity: 0;
     transform: translateY(20px);
   }
+
   to {
     opacity: 1;
     transform: translateY(0);
@@ -214,6 +229,7 @@
     opacity: 0;
     transform: translateY(-10px);
   }
+
   to {
     opacity: 1;
     transform: translateY(0);
@@ -240,7 +256,8 @@
 
   .form-textarea {
     min-height: 120px;
-    font-size: 16px; /* Prevents zoom on iOS */
+    font-size: 16px;
+    /* Prevents zoom on iOS */
   }
 
   .submit-button {
