@@ -581,6 +581,27 @@ h3 {
     order: -1;
 }
 
+.feedback-item-btn {
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    color: var(--text-primary);
+    padding: 8px 14px;
+    border-radius: 10px;
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 0.9rem;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    transition: all 0.2s ease;
+    white-space: nowrap;
+}
+
+.feedback-item-btn:hover {
+    background: rgba(255, 255, 255, 0.2);
+    transform: translateY(-1px);
+}
+
 .share-btn {
     background: rgba(255, 255, 255, 0.1);
     border: 1px solid rgba(255, 255, 255, 0.2);
@@ -758,27 +779,55 @@ h3 {
 }
 
 /* Home Page Notification Styles */
-.home-notification {
+.home-notification-banner {
+    position: relative;
     background: rgba(255, 255, 255, 0.05);
-    border: 2px solid transparent;
+    border: 1px solid transparent;
     background-image: linear-gradient(var(--card-bg), var(--card-bg)), var(--accent-gradient);
     background-origin: border-box;
     background-clip: padding-box, border-box;
-    border-radius: 12px;
-    padding: 8px 16px;
+    border-radius: 8px;
+    padding: 6px 12px;
     text-align: center;
-    font-weight: 600;
-    font-size: 1rem;
+    font-weight: 500;
+    font-size: 0.9rem;
     color: var(--text-primary);
     display: flex;
     align-items: center;
     justify-content: center;
     gap: 8px;
-    margin-bottom: 8px;
-    width: 100%;
+    margin: 0 auto 12px auto;
+    width: fit-content;
+    max-width: 90%;
     box-sizing: border-box;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.15);
     animation: border-glow 3s infinite alternate;
+}
+
+.banner-content {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    cursor: pointer;
+}
+
+.banner-text {
+    flex: 1;
+}
+
+.banner-close {
+    background: none;
+    border: none;
+    color: var(--text-secondary);
+    font-size: 0.8rem;
+    cursor: pointer;
+    padding: 0 4px;
+    opacity: 0.6;
+    transition: opacity 0.2s;
+}
+
+.banner-close:hover {
+    opacity: 1;
 }
 
 .notification-link {

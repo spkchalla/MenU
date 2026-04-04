@@ -28,6 +28,10 @@ export const Menu = () => {
   const [selectedDayDate, setSelectedDayDate] = useState(null);
   const [showLoginModal, setShowLoginModal] = useState(false);
 
+  // Notification Banner State
+  const [banner, setBanner] = useState(null);
+  const [showBanner, setShowBanner] = useState(false);
+
   // New States for Voting & Expansion
   const [isExpanded, setIsExpanded] = useState(false);
   const [firstInOrder, setFirstInOrder] = useState(0); // Which card index to move to top when expanding
@@ -80,6 +84,29 @@ export const Menu = () => {
       setUserVotes(votesMap);
     } catch (err) {
       console.error("Error fetching user votes:", err);
+    }
+  };
+
+  const fetchLatestBanner = async () => {
+    try {
+      const token = localStorage.getItem("menu_token");
+      if (!token) return;
+
+      const res = await api.get("/notifications/user/latestBanner");
+      if (res.data.banner) {
+        setBanner(res.data.banner);
+        setShowBanner(true);
+
+        // Auto-close after 6 seconds
+        setTimeout(() => {
+          setShowBanner(false);
+        }, 6000);
+
+        // Update view count in backend
+        await api.patch(`/notifications/user/updateViewCount/${res.data.banner._id}`);
+      }
+    } catch (err) {
+      console.error("Error fetching banner:", err);
     }
   };
 
@@ -202,7 +229,7 @@ export const Menu = () => {
     const loadInitialMenu = async () => {
       try {
         setIsLoading(true);
-        await Promise.all([fetchCurrentMeal(), fetchOtherMeals(), fetchUserVotes()]);
+        await Promise.all([fetchCurrentMeal(), fetchOtherMeals(), fetchUserVotes(), fetchLatestBanner()]);
       } catch (err) {
         console.error("Error loading initial menu:", err);
       } finally {
@@ -384,15 +411,28 @@ export const Menu = () => {
             <Link to="/install" className="install-btn">
               📲 Add to Home Screen
             </Link>
+
+            <Link to="/suggestion" className="feedback-item-btn">
+              Feedback 💬
+            </Link>
           </>
         )}
       </div>
 
-      {isToday && (
-        <div className="home-notification">
-          <span className="sparkle">✨</span>
-          Check out the new <Link to="/suggestions" className="notification-link">Suggestion/Complaint feature</Link> in the top bar.
-          <span className="sparkle">✨</span>
+      {isToday && showBanner && banner && (
+        <div className="home-notification-banner">
+          <div className="banner-content" onClick={() => {
+            api.patch(`/notifications/user/markAsRead/${banner._id}`);
+            navigate("/notifications");
+          }}>
+            <span className="sparkle">✨</span>
+            <span className="banner-text">
+              {banner.title ? <strong>{banner.title}: </strong> : ""}
+              {banner.message}
+            </span>
+            <span className="sparkle">✨</span>
+          </div>
+          <button className="banner-close" onClick={() => setShowBanner(false)}>✕</button>
         </div>
       )}
 

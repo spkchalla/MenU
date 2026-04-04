@@ -170,6 +170,18 @@
 
 .profile-icon {
     font-size: 1.2rem;
+    position: relative;
+}
+
+.unread-dot-header {
+    position: absolute;
+    top: -2px;
+    right: -2px;
+    width: 10px;
+    height: 10px;
+    background: #ef4444;
+    border-radius: 50%;
+    border: 2px solid var(--card-bg);
 }
 
 .profile-dropdown {
