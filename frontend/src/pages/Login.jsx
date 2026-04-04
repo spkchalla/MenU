@@ -35,6 +35,11 @@ export const Login = () => {
       // Decode token to get role
       const payload = jwtDecode(token);
 
+      // Validate payload
+      if (!payload.role || !payload.userId) {
+        throw new Error("Invalid token payload: missing required claims");
+      }
+
       // Store token, role, and userId in localStorage
       localStorage.setItem('menu_token', token);
       localStorage.setItem('menu_user_role', payload.role);

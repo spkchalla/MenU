@@ -97,7 +97,7 @@ export const SuggestionForm = () => {
                   </div>
                   {option === "suggestion regarding food" && (
                     <div className="warning-text">
-                      Please be respectful, or else you will be banned.
+                      Please keep your suggestions respectful.
                     </div>
                   )}
                 </div>

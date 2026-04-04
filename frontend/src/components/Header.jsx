@@ -66,6 +66,21 @@ const Header = () => {
     checkAuth();
   }, [location]);
 
+  useEffect(() => {
+    if (!showDropdown) return;
+
+    const handleClickOutside = (event) => {
+      if (!event.target.closest(".profile-container")) {
+        setShowDropdown(false);
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [showDropdown]);
+
   const handleLogout = async () => {
     try {
       await api.post("/user/logout");

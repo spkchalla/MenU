@@ -391,7 +391,7 @@ export const Menu = () => {
       {isToday && (
         <div className="home-notification">
           <span className="sparkle">✨</span>
-          check out the new <Link to="/suggestions" className="notification-link">Suggestion/Complaint feature</Link> in the top bar.
+          Check out the new <Link to="/suggestions" className="notification-link">Suggestion/Complaint feature</Link> in the top bar.
           <span className="sparkle">✨</span>
         </div>
       )}

@@ -778,7 +778,7 @@ h3 {
     width: 100%;
     box-sizing: border-box;
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
-    animation: borderGlow 3s infinite alternate;
+    animation: border-glow 3s infinite alternate;
 }
 
 .notification-link {
@@ -798,7 +798,7 @@ h3 {
     animation: twinkle 1.5s infinite alternate;
 }
 
-@keyframes borderGlow {
+@keyframes border-glow {
     from {
         box-shadow: 0 0 10px rgba(56, 189, 248, 0.2);
         border-color: rgba(56, 189, 248, 0.3);

@@ -183,10 +183,10 @@
     min-width: 180px;
     z-index: 1000;
     overflow: hidden;
-    animation: slideDown 0.2s ease-out;
+    animation: slide-down 0.2s ease-out;
 }
 
-@keyframes slideDown {
+@keyframes slide-down {
     from {
         opacity: 0;
         transform: translateY(-10px);
