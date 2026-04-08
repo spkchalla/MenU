@@ -21,14 +21,30 @@ import https from "https";
 
 const app = express();
 
+const allowedOrigins = [
+  "https://www.mu-menu.in",
+  "https://mu-menu.in",
+  "http://localhost:5173",
+  "http://localhost:3000",
+];
+
 app.use(
   cors({
-    origin: true,
+    origin: (origin, callback) => {
+      // Allow requests with no origin (like mobile apps or curl requests)
+      if (!origin) return callback(null, true);
+      if (allowedOrigins.includes(origin)) {
+        callback(null, true);
+      } else {
+        console.warn(`CORS blocked for origin: ${origin}`);
+        callback(new Error("Not allowed by CORS"));
+      }
+    },
     credentials: true,
   })
 );
 
-console.log("CORS policy: Allowed all origins with credentials");
+console.log("CORS policy: Explicitly allowed origins configured");
 app.use(express.json());
 app.use(cookieParser());
 
